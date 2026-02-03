@@ -1,0 +1,214 @@
+# VM监控系统 - 16GB内存优化版 Docker Compose配置
+# 专为16GB内存、6核心配置优化
+
+version: '3.8'
+
+services:
+  # PostgreSQL数据库（限制内存使用）
+  postgresql:
+    image: postgres:14-alpine
+    container_name: vm-monitor-postgres
+    environment:
+      POSTGRES_DB: vm_monitor
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+        reservations:
+          cpus: '0.5'
+          memory: 256M
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis缓存（轻量级）
+  redis:
+    image: redis:7-alpine
+    container_name: vm-monitor-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+        reservations:
+          cpus: '0.25'
+          memory: 128M
+    command: redis-server --maxmemory 128mb --maxmemory-policy allkeys-lru
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  # InfluxDB时序数据库（限制内存）
+  influxdb:
+    image: influxdb:2.7-alpine
+    container_name: vm-monitor-influxdb
+    environment:
+      DOCKER_INFLUXDB_INIT_MODE: setup
+      DOCKER_INFLUXDB_INIT_USERNAME: admin
+      DOCKER_INFLUXDB_INIT_PASSWORD: password
+      DOCKER_INFLUXDB_INIT_ORG: vm-monitor
+      DOCKER_INFLUXDB_INIT_BUCKET: metrics
+    ports:
+      - "8086:8086"
+    volumes:
+      - influxdb_data:/var/lib/influxdb2
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
+        reservations:
+          cpus: '0.5'
+          memory: 256M
+    healthcheck:
+      test: ["CMD", "influx", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # RabbitMQ消息队列（轻量级）
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: vm-monitor-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: password
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+        reservations:
+          cpus: '0.25'
+          memory: 128M
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ClickHouse数据仓库（可选，按需启动）
+  clickhouse:
+    image: clickhouse/clickhouse-server:22.8-alpine
+    container_name: vm-monitor-clickhouse
+    ports:
+      - "8123:8123"
+      - "9000:9000"
+    volumes:
+      - clickhouse_data:/var/lib/clickhouse
+    deploy:
+      resources:
+        limits:
+          cpus: '1.5'
+          memory: 1024M
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+    ulimits:
+      nofile:
+        soft: 262144
+        hard: 262144
+    # 此服务按需启动，注释掉可节省内存
+    profiles:
+      - full
+
+  # Prometheus监控（可选）
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: vm-monitor-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 256M
+        reservations:
+          cpus: '0.5'
+          memory: 128M
+    # 按需启动
+    profiles:
+      - full
+
+  # Grafana可视化（可选）
+  grafana:
+    image: grafana/grafana:latest
+    container_name: vm-monitor-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: admin
+      GF_INSTALL_PLUGINS: ""
+    volumes:
+      - grafana_data:/var/lib/grafana
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+        reservations:
+          cpus: '0.25'
+          memory: 128M
+    # 按需启动
+    profiles:
+      - full
+
+  # Nginx API网关（轻量级）
+  nginx:
+    image: nginx:alpine
+    container_name: vm-monitor-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - nginx_logs:/var/log/nginx
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 128M
+        reservations:
+          cpus: '0.25'
+          memory: 64M
+    depends_on:
+      - postgresql
+      - redis
+
+volumes:
+  postgres_data:
+  redis_data:
+  influxdb_data:
+  rabbitmq_data:
+  clickhouse_data:
+  prometheus_data:
+  grafana_data:
+  nginx_logs:

@@ -1,0 +1,8 @@
+{
+  "name": "VMSentry - Enterprise VM Monitoring System",
+  "description": "A high-performance, enterprise-grade virtual machine monitoring dashboard with AI-driven fault detection, capacity planning, and multi-language support (EN, ZH, JP).",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}

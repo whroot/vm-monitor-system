@@ -3,21 +3,25 @@ package api
 import (
 	"context"
 	"fmt"
+	"log"
 	"net/http"
 	"time"
 
-	"vm-monitoring-system/internal/config"
+	"vm-monitor/server/internal/config"
+	"vm-monitor/server/internal/services"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
 
 // Server HTTP服务器
-type Server struct {
-	router *gin.Engine
-	config *config.Config
-	db     *gorm.DB
-	http   *http.Server
+ type Server struct {
+	router      *gin.Engine
+	config      *config.Config
+	db          *gorm.DB
+	http        *http.Server
+	alertEngine *services.AlertEngine
+	vsphereCollector *services.VSphereCollector
 }
 
 // NewServer 创建服务器实例
@@ -48,6 +52,9 @@ func NewServer(cfg *config.Config, db *gorm.DB) *Server {
 		WriteTimeout: cfg.Server.WriteTimeout,
 	}
 
+	// 初始化vSphere采集器
+	server.setupVSphereCollector()
+
 	return server
 }
 
@@ -76,7 +83,8 @@ func (s *Server) setupRoutes() {
 		// 认证相关（不需要认证）
 		auth := v1.Group("/auth")
 		{
-			authHandler := NewAuthHandler(s.db, s.config)
+			authHandler := NewAuthHandler(s.db, s.config, nil) // TODO: 传入私钥
+			auth.GET("/public-key", authHandler.GetPublicKey)
 			auth.POST("/login", authHandler.Login)
 			auth.POST("/refresh", authHandler.RefreshToken)
 		}
@@ -244,13 +252,52 @@ func (s *Server) setupRoutes() {
 	}
 }
 
+// setupVSphereCollector 初始化vSphere采集器
+func (s *Server) setupVSphereCollector() {
+	// 创建vSphere配置
+	vsphereConfig := &services.VSphereConfig{
+		Host:        s.config.VSphere.Host,
+		Port:        s.config.VSphere.Port,
+		Username:    s.config.VSphere.Username,
+		Password:    s.config.VSphere.Password,
+		Insecure:    s.config.VSphere.Insecure,
+		CollectInterval: s.config.VSphere.CollectInterval,
+		BatchSize:   s.config.VSphere.BatchSize,
+	}
+
+	// 创建vSphere采集器
+	s.vsphereCollector = services.NewVSphereCollector(s.db, vsphereConfig)
+
+	// 启动vSphere采集器
+	if err := s.vsphereCollector.Start(); err != nil {
+		log.Printf("vSphere采集器启动失败: %v", err)
+	} else {
+		log.Println("vSphere采集器已启动")
+	}
+}
+
 // Start 启动服务器
 func (s *Server) Start() error {
+	// 启动告警引擎
+	s.setupAlertEngine()
+
 	return s.http.ListenAndServe()
 }
 
 // Stop 停止服务器
 func (s *Server) Stop() error {
+	// 停止告警引擎
+	if s.alertEngine != nil {
+		s.alertEngine.Stop()
+		log.Println("告警引擎已停止")
+	}
+
+	// 停止vSphere采集器
+	if s.vsphereCollector != nil {
+		s.vsphereCollector.Stop()
+		log.Println("vSphere采集器已停止")
+	}
+
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 	return s.http.Shutdown(ctx)

@@ -1,11 +1,8 @@
-package api
+package middleware
 
 import (
-	"context"
-	"fmt"
 	"net/http"
 	"strings"
-	"time"
 
 	"vm-monitoring-system/internal/models"
 

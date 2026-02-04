@@ -1,6 +1,8 @@
 package api
 
 import (
+	"crypto/rsa"
+	"encoding/base64"
 	"net/http"
 	"strings"
 	"time"
@@ -18,24 +20,33 @@ import (
 
 // AuthHandler 认证处理器
 type AuthHandler struct {
-	db     *gorm.DB
-	config *config.Config
+	db         *gorm.DB
+	config     *config.Config
+	privateKey interface{} // RSA私钥，用于解密密码
 }
 
 // NewAuthHandler 创建认证处理器
-func NewAuthHandler(db *gorm.DB, cfg *config.Config) *AuthHandler {
+func NewAuthHandler(db *gorm.DB, cfg *config.Config, privateKey interface{}) *AuthHandler {
 	return &AuthHandler{
-		db:     db,
-		config: cfg,
+		db:         db,
+		config:     cfg,
+		privateKey: privateKey,
 	}
 }
 
 // LoginRequest 登录请求
 type LoginRequest struct {
-	Username   string `json:"username" binding:"required"`
-	Password   string `json:"password" binding:"required"`
-	RememberMe bool   `json:"rememberMe"`
-	Language   string `json:"language"`
+	Username       string `json:"username" binding:"required"`
+	Password       string `json:"password" binding:"required"`
+	IsEncrypted    bool   `json:"isEncrypted"`    // 密码是否已加密
+	RememberMe     bool   `json:"rememberMe"`
+	Language       string `json:"language"`
+}
+
+// GetPublicKeyResponse 公钥响应
+type GetPublicKeyResponse struct {
+	PublicKey string `json:"publicKey"`  // Base64编码的公钥
+	ExpiresAt int64  `json:"expiresAt"`  // 公钥过期时间戳
 }
 
 // LoginResponse 登录响应
@@ -47,6 +58,20 @@ type LoginResponse struct {
 	Permissions   []string    `json:"permissions"`
 }
 
+// GetPublicKey 获取RSA公钥
+func (h *AuthHandler) GetPublicKey(c *gin.Context) {
+	// TODO: 从配置或密钥管理服务获取公钥
+	// 这里需要实现公钥获取逻辑
+	c.JSON(http.StatusOK, gin.H{
+		"code":    200,
+		"message": "获取成功",
+		"data": GetPublicKeyResponse{
+			PublicKey: "", // 从配置读取
+			ExpiresAt: time.Now().Add(24 * time.Hour).Unix(),
+		},
+	})
+}
+
 // Login 用户登录
 func (h *AuthHandler) Login(c *gin.Context) {
 	var req LoginRequest
@@ -56,6 +81,33 @@ func (h *AuthHandler) Login(c *gin.Context) {
 			"message": "请求参数错误",
 		})
 		return
+	}
+
+	// 解密密码（如果是加密传输）
+	password := req.Password
+	if req.IsEncrypted && h.privateKey != nil {
+		// 解码Base64
+		encryptedBytes, err := base64.StdEncoding.DecodeString(req.Password)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"code":    400,
+				"message": "密码格式错误",
+			})
+			return
+		}
+
+		// 使用私钥解密
+		if rsaPrivateKey, ok := h.privateKey.(*rsa.PrivateKey); ok {
+			decryptedBytes, err := utils.DecryptWithPrivateKey(rsaPrivateKey, encryptedBytes)
+			if err != nil {
+				c.JSON(http.StatusBadRequest, gin.H{
+					"code":    400,
+					"message": "密码解密失败",
+				})
+				return
+			}
+			password = string(decryptedBytes)
+		}
 	}
 
 	// 查找用户
@@ -92,7 +144,7 @@ func (h *AuthHandler) Login(c *gin.Context) {
 	}
 
 	// 验证密码
-	if err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(req.Password)); err != nil {
+	if err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(password)); err != nil {
 		// 增加失败次数
 		user.LoginFailCount++
 		if user.LoginFailCount >= 5 {

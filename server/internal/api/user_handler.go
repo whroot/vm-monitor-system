@@ -20,11 +20,37 @@ func NewUserHandler(db *gorm.DB) *UserHandler {
 
 // List 获取用户列表
 func (h *UserHandler) List(c *gin.Context) {
+	var users []User
+	if err := h.db.Preload("Roles").Find(&users).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"code":    500,
+			"message": "获取用户列表失败",
+		})
+		return
+	}
+
+	// 转换响应数据
+	var userList []gin.H
+	for _, u := range users {
+		userList = append(userList, gin.H{
+			"id":        u.ID,
+			"username":  u.Username,
+			"email":     u.Email,
+			"name":      u.Name,
+			"phone":     u.Phone,
+			"department": u.Department,
+			"status":    u.Status,
+			"roles":     u.Roles,
+			"createdAt": u.CreatedAt,
+			"updatedAt": u.UpdatedAt,
+		})
+	}
+
 	c.JSON(http.StatusOK, gin.H{
 		"code":    200,
 		"message": "获取成功",
 		"data": gin.H{
-			"list": []gin.H{},
+			"list": userList,
 		},
 	})
 }
@@ -32,22 +58,164 @@ func (h *UserHandler) List(c *gin.Context) {
 // Get 获取用户详情
 func (h *UserHandler) Get(c *gin.Context) {
 	userID := c.Param("id")
-	_ = userID
+	
+	var user User
+	if err := h.db.Preload("Roles").Where("id = ?", userID).First(&user).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			c.JSON(http.StatusNotFound, gin.H{
+				"code":    404,
+				"message": "用户不存在",
+			})
+			return
+		}
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"code":    500,
+			"message": "获取用户详情失败",
+		})
+		return
+	}
 
 	c.JSON(http.StatusOK, gin.H{
 		"code":    200,
-		"message": "获取成功",
-		"data":    gin.H{},
-	})
+			"message": "获取成功",
+			"data": gin.H{
+				"id":        user.ID,
+				"username":  user.Username,
+				"email":     user.Email,
+				"name":      user.Name,
+				"phone":     user.Phone,
+				"department": user.Department,
+				"status":    user.Status,
+				"roles":     user.Roles,
+				"preferences": user.Preferences,
+				"createdAt": user.CreatedAt,
+				"updatedAt": user.UpdatedAt,
+			},
+		})
 }
 
 // Create 创建用户
 func (h *UserHandler) Create(c *gin.Context) {
+	var req struct {
+		Username    string `json:"username" binding:"required,min=3,max=50,unique=users.username"`
+		Email       string `json:"email" binding:"required,email,unique=users.email"`
+		Password    string `json:"password" binding:"required,min=8,max=100"`
+		Name        string `json:"name" binding:"required,max=100"`
+		Phone       *string `json:"phone"`
+		Department  *string `json:"department"`
+		Status      string `json:"status" binding:"omitempty,oneof=active inactive locked"`
+		RoleIDs     []uuid.UUID `json:"roleIds"`
+	}
+
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code":    400,
+			"message": "请求参数错误",
+			"errors": err.Error(),
+		})
+		return
+	}
+
+	// 检查用户名和邮箱是否已存在
+	var existingUser User
+	if h.db.Where("username = ?", req.Username).First(&existingUser).Error == nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code":    400,
+			"message": "用户名已存在",
+		})
+		return
+	}
+
+	if h.db.Where("email = ?", req.Email).First(&existingUser).Error == nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code":    400,
+			"message": "邮箱已存在",
+		})
+		return
+	}
+
+	// 创建用户
+	user := User{
+		Username:           req.Username,
+		Email:              req.Email,
+		PasswordHash:       hashPassword(req.Password),
+		Name:               req.Name,
+		Phone:              req.Phone,
+		Department:         req.Department,
+		Status:             req.Status,
+		Preferences: UserPreferences{
+			Language:   "zh-CN",
+			Theme:      "dark",
+			Timezone:   "Asia/Shanghai",
+			DateFormat: "YYYY-MM-DD",
+		},
+	}
+
+	// 开始事务
+	tx := h.db.Begin()
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+		}
+	}()
+
+	// 创建用户
+	if err := tx.Create(&user).Error; err != nil {
+			tx.Rollback()
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"code":    500,
+			"message": "创建用户失败",
+		})
+		return
+	}
+
+	// 分配角色
+	if len(req.RoleIDs) > 0 {
+		var roles []Role
+		if err := tx.Where("id IN ?", req.RoleIDs).Find(&roles).Error; err != nil {
+			tx.Rollback()
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"code":    500,
+				"message": "分配角色失败",
+			})
+			return
+		}
+
+		// 创建用户角色关联
+		userRoles := make([]UserRole, len(roles))
+		for i, role := range roles {
+			userRoles[i] = UserRole{
+				UserID: user.ID,
+				RoleID: role.ID,
+				CreatedAt: time.Now(),
+			}
+		}
+
+		if err := tx.Create(&userRoles).Error; err != nil {
+			tx.Rollback()
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"code":    500,
+				"message": "分配角色失败",
+			})
+			return
+		}
+	}
+
+	// 提交事务
+	if err := tx.Commit().Error; err != nil {
+		tx.Rollback()
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"code":    500,
+			"message": "创建用户失败",
+		})
+		return
+	}
+
 	c.JSON(http.StatusCreated, gin.H{
 		"code":    201,
 		"message": "创建成功",
 		"data": gin.H{
-			"id": uuid.New().String(),
+			"id": user.ID,
 		},
 	})
 }
@@ -55,7 +223,132 @@ func (h *UserHandler) Create(c *gin.Context) {
 // Update 更新用户
 func (h *UserHandler) Update(c *gin.Context) {
 	userID := c.Param("id")
-	_ = userID
+	
+	var req struct {
+		Name        string `json:"name" binding:"max=100"`
+		Phone       *string `json:"phone"`
+		Department  *string `json:"department"`
+		Status      string `json:"status" binding:"omitempty,oneof=active inactive locked"`
+		RoleIDs     []uuid.UUID `json:"roleIds"`
+		Preferences UserPreferences `json:"preferences"`
+	}
+
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"code":    400,
+			"message": "请求参数错误",
+			"errors": err.Error(),
+		})
+		return
+	}
+
+	// 查找用户
+	var user User
+	if err := h.db.Preload("Roles").Where("id = ?", userID).First(&user).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			c.JSON(http.StatusNotFound, gin.H{
+				"code":    404,
+				"message": "用户不存在",
+			})
+			return
+		}
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"code":    500,
+			"message": "获取用户失败",
+		})
+		return
+	}
+
+	// 更新字段
+	updates := make(map[string]interface{})
+	if req.Name != "" {
+		updates["name"] = req.Name
+	}
+	if req.Phone != nil {
+		updates["phone"] = req.Phone
+	}
+	if req.Department != nil {
+		updates["department"] = req.Department
+	}
+	if req.Status != "" {
+		updates["status"] = req.Status
+	}
+	if req.Preferences.Language != "" || req.Preferences.Theme != "" || req.Preferences.Timezone != "" || req.Preferences.DateFormat != "" {
+		updates["preferences"] = req.Preferences
+	}
+
+	// 开始事务
+	tx := h.db.Begin()
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+		}
+	}()
+
+	// 更新用户
+	if err := tx.Model(&user).Updates(updates).Error; err != nil {
+		tx.Rollback()
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"code":    500,
+			"message": "更新用户失败",
+		})
+		return
+	}
+
+	// 更新角色
+	if req.RoleIDs != nil {
+		// 删除现有角色
+		if err := tx.Where("user_id = ?", userID).Delete(&UserRole{}).Error; err != nil {
+			tx.Rollback()
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"code":    500,
+				"message": "更新角色失败",
+			})
+			return
+		}
+
+		// 分配新角色
+		if len(req.RoleIDs) > 0 {
+			var roles []Role
+			if err := tx.Where("id IN ?", req.RoleIDs).Find(&roles).Error; err != nil {
+				tx.Rollback()
+				c.JSON(http.StatusInternalServerError, gin.H{
+					"code":    500,
+					"message": "更新角色失败",
+				})
+				return
+			}
+
+			// 创建用户角色关联
+			userRoles := make([]UserRole, len(roles))
+			for i, role := range roles {
+				userRoles[i] = UserRole{
+					UserID: user.ID,
+					RoleID: role.ID,
+					CreatedAt: time.Now(),
+				}
+			}
+
+			if err := tx.Create(&userRoles).Error; err != nil {
+				tx.Rollback()
+				c.JSON(http.StatusInternalServerError, gin.H{
+					"code":    500,
+					"message": "更新角色失败",
+				})
+				return
+			}
+		}
+	}
+
+	// 提交事务
+	if err := tx.Commit().Error; err != nil {
+		tx.Rollback()
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"code":    500,
+			"message": "更新用户失败",
+		})
+		return
+	}
 
 	c.JSON(http.StatusOK, gin.H{
 		"code":    200,
@@ -66,7 +359,61 @@ func (h *UserHandler) Update(c *gin.Context) {
 // Delete 删除用户
 func (h *UserHandler) Delete(c *gin.Context) {
 	userID := c.Param("id")
-	_ = userID
+	
+	// 检查用户是否存在
+	var user User
+	if err := h.db.Where("id = ?", userID).First(&user).Error; err != nil {
+		if err == gorm.ErrRecordNotFound {
+			c.JSON(http.StatusNotFound, gin.H{
+				"code":    404,
+				"message": "用户不存在",
+			})
+			return
+		}
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"code":    500,
+			"message": "获取用户失败",
+		})
+		return
+	}
+
+	// 开始事务
+	tx := h.db.Begin()
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+		}
+	}()
+
+	// 删除用户角色关联
+	if err := tx.Where("user_id = ?", userID).Delete(&UserRole{}).Error; err != nil {
+		tx.Rollback()
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"code":    500,
+			"message": "删除用户失败",
+		})
+		return
+	}
+
+	// 删除用户
+	if err := tx.Delete(&user).Error; err != nil {
+		tx.Rollback()
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"code":    500,
+			"message": "删除用户失败",
+		})
+		return
+	}
+
+	// 提交事务
+	if err := tx.Commit().Error; err != nil {
+		tx.Rollback()
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"code":    500,
+			"message": "删除用户失败",
+		})
+		return
+	}
 
 	c.JSON(http.StatusOK, gin.H{
 		"code":    200,

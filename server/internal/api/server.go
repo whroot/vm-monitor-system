@@ -15,13 +15,14 @@ import (
 )
 
 // Server HTTP服务器
- type Server struct {
-	router      *gin.Engine
-	config      *config.Config
-	db          *gorm.DB
-	http        *http.Server
-	alertEngine *services.AlertEngine
-	vsphereCollector *services.VSphereCollector
+type Server struct {
+	router            *gin.Engine
+	config            *config.Config
+	db                *gorm.DB
+	http              *http.Server
+	alertEngine       *services.AlertEngine
+	vsphereCollector  *services.VSphereCollector
+	permissionMiddleware *PermissionMiddleware
 }
 
 // NewServer 创建服务器实例
@@ -37,6 +38,9 @@ func NewServer(cfg *config.Config, db *gorm.DB) *Server {
 		config: cfg,
 		db:     db,
 	}
+
+	// 创建权限中间件
+	server.permissionMiddleware = NewPermissionMiddleware(db)
 
 	// 注册中间件
 	server.setupMiddleware()
@@ -188,6 +192,7 @@ func (s *Server) setupRoutes() {
 
 			// 用户权限管理
 			users := authorized.Group("/users")
+			users.Use(s.permissionMiddleware.RequirePermission("users:manage"))
 			{
 				userHandler := NewUserHandler(s.db)
 				users.GET("", userHandler.List)
@@ -203,6 +208,7 @@ func (s *Server) setupRoutes() {
 
 			// 角色管理
 			roles := authorized.Group("/roles")
+			roles.Use(s.permissionMiddleware.RequirePermission("roles:manage"))
 			{
 				roleHandler := NewRoleHandler(s.db)
 				roles.GET("", roleHandler.List)
@@ -217,6 +223,7 @@ func (s *Server) setupRoutes() {
 
 			// 权限矩阵
 			permissions := authorized.Group("/permissions")
+			permissions.Use(s.permissionMiddleware.RequirePermission("permissions:manage"))
 			{
 				permissionHandler := NewPermissionHandler(s.db)
 				permissions.GET("/matrix", permissionHandler.GetMatrix)

@@ -3,7 +3,6 @@ package services
 import (
 	"context"
 	"fmt"
-	"log"
 	"sync"
 	"time"
 
@@ -13,9 +12,11 @@ import (
 	"github.com/vmware/govmomi/view"
 	"github.com/vmware/govmomi/vim25/mo"
 	"github.com/vmware/govmomi/vim25/types"
-
-	"vm-monitoring-system/internal/models"
+	"go.uber.org/zap"
 	"gorm.io/gorm"
+
+	"vm-monitoring-system/internal/logger"
+	"vm-monitoring-system/internal/models"
 )
 
 // VSphereCollector vSphere数据采集器

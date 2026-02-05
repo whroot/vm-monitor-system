@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Plus, Search, Filter, MoreVertical, Server, AlertCircle } from 'lucide-react';
-import { useVMStore } from '@stores/vmStore';
-import { VM } from '@types/api';
+import { Plus, Search, Filter, MoreVertical, Server } from 'lucide-react';
+import { useVMStore } from '../../stores/vmStore';
+import { VM } from '../../types/api';
 
 const VMList: React.FC = () => {
   const { t } = useTranslation();

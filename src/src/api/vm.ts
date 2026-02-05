@@ -1,29 +1,25 @@
 import apiClient from './client';
-import { VM, VMListRequest, VMListResponse, VMGroup } from '@types/api';
+import { VM, VMListRequest, VMListResponse, VMGroup } from '../types/api';
 
 export const vmApi = {
   // 获取VM列表
   list: async (params: VMListRequest): Promise<VMListResponse> => {
-    const response = await apiClient.get('/vms', { params });
-    return response as VMListResponse;
+    return apiClient.get('/vms', { params }) as unknown as Promise<VMListResponse>;
   },
 
   // 获取VM详情
   get: async (id: string): Promise<VM> => {
-    const response = await apiClient.get(`/vms/${id}`);
-    return response as VM;
+    return apiClient.get(`/vms/${id}`) as unknown as Promise<VM>;
   },
 
   // 创建VM
   create: async (data: Partial<VM>): Promise<VM> => {
-    const response = await apiClient.post('/vms', data);
-    return response as VM;
+    return apiClient.post('/vms', data) as unknown as Promise<VM>;
   },
 
   // 更新VM
   update: async (id: string, data: Partial<VM>): Promise<VM> => {
-    const response = await apiClient.put(`/vms/${id}`, data);
-    return response as VM;
+    return apiClient.put(`/vms/${id}`, data) as unknown as Promise<VM>;
   },
 
   // 删除VM
@@ -33,40 +29,34 @@ export const vmApi = {
 
   // 同步VMware信息
   sync: async (data: { type: 'full' | 'incremental'; datacenterId?: string; clusterId?: string; hostId?: string }): Promise<{ syncId: string; status: string }> => {
-    const response = await apiClient.post('/vms/sync', data);
-    return response as { syncId: string; status: string };
+    return apiClient.post('/vms/sync', data) as unknown as Promise<{ syncId: string; status: string }>;
   },
 
   // 获取VM统计
   getStatistics: async (): Promise<unknown> => {
-    const response = await apiClient.get('/vms/statistics');
-    return response;
+    return apiClient.get('/vms/statistics') as unknown as Promise<unknown>;
   },
 
   // 批量操作
   batch: async (data: { action: 'start' | 'stop' | 'restart' | 'delete'; vmIds: string[]; force?: boolean }): Promise<{ taskId: string; status: string }> => {
-    const response = await apiClient.post('/vms/batch', data);
-    return response as { taskId: string; status: string };
+    return apiClient.post('/vms/batch', data) as unknown as Promise<{ taskId: string; status: string }>;
   },
 
   // ========== 分组管理 ==========
 
   // 获取分组列表
   getGroups: async (): Promise<VMGroup[]> => {
-    const response = await apiClient.get('/vms/groups');
-    return response as VMGroup[];
+    return apiClient.get('/vms/groups') as unknown as Promise<VMGroup[]>;
   },
 
   // 创建分组
   createGroup: async (data: Partial<VMGroup>): Promise<VMGroup> => {
-    const response = await apiClient.post('/vms/groups', data);
-    return response as VMGroup;
+    return apiClient.post('/vms/groups', data) as unknown as Promise<VMGroup>;
   },
 
   // 更新分组
   updateGroup: async (id: string, data: Partial<VMGroup>): Promise<VMGroup> => {
-    const response = await apiClient.put(`/vms/groups/${id}`, data);
-    return response as VMGroup;
+    return apiClient.put(`/vms/groups/${id}`, data) as unknown as Promise<VMGroup>;
   },
 
   // 删除分组

@@ -1,6 +1,7 @@
 package services
 
 import (
+	"github.com/google/uuid"
 	"vm-monitoring-system/internal/models"
 
 	"gorm.io/gorm"
@@ -104,7 +105,10 @@ func (s *RBACService) RemovePermissionFromRole(roleID string, permissionID strin
 		Delete(&models.RolePermission{}).Error
 }
 
-func parseUUID(s string) models.UUID {
-	// 简化的UUID解析，实际应使用uuid.Parse
-	return models.UUID{}
+func parseUUID(s string) uuid.UUID {
+	parsed, err := uuid.Parse(s)
+	if err != nil {
+		return uuid.Nil
+	}
+	return parsed
 }

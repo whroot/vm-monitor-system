@@ -1,29 +1,25 @@
 import apiClient from './client';
-import { SystemOverview, RealtimeMetrics, ExportTask } from '@types/api';
+import { SystemOverview, RealtimeMetrics, ExportTask } from '../types/api';
 
 export const realtimeApi = {
   // 获取VM当前指标
   getVMMetrics: async (vmId: string): Promise<RealtimeMetrics> => {
-    const response = await apiClient.get(`/realtime/vms/${vmId}`);
-    return response as RealtimeMetrics;
+    return apiClient.get(`/realtime/vms/${vmId}`) as unknown as Promise<RealtimeMetrics>;
   },
 
   // 批量获取VM指标
   batchGetMetrics: async (vmIds: string[], metrics?: string[]): Promise<RealtimeMetrics[]> => {
-    const response = await apiClient.post('/realtime/vms/batch', { vmIds, metrics });
-    return (response as { metrics: RealtimeMetrics[] }).metrics;
+    return apiClient.post('/realtime/vms/batch', { vmIds, metrics }) as unknown as Promise<RealtimeMetrics[]>;
   },
 
   // 获取分组聚合指标
   getGroupMetrics: async (groupId: string): Promise<unknown> => {
-    const response = await apiClient.get(`/realtime/groups/${groupId}`);
-    return response;
+    return apiClient.get(`/realtime/groups/${groupId}`) as unknown as Promise<unknown>;
   },
 
   // 获取全局概览
   getOverview: async (): Promise<SystemOverview> => {
-    const response = await apiClient.get('/realtime/overview');
-    return response as SystemOverview;
+    return apiClient.get('/realtime/overview') as unknown as Promise<SystemOverview>;
   },
 };
 
@@ -38,8 +34,7 @@ export const historyApi = {
     page?: number;
     pageSize?: number;
   }): Promise<unknown> => {
-    const response = await apiClient.post('/history/query', params);
-    return response;
+    return apiClient.post('/history/query', params) as unknown as Promise<unknown>;
   },
 
   // 聚合统计
@@ -51,8 +46,7 @@ export const historyApi = {
     dimensions: string[];
     groupBy?: string;
   }): Promise<unknown> => {
-    const response = await apiClient.post('/history/aggregate', params);
-    return response;
+    return apiClient.post('/history/aggregate', params) as unknown as Promise<unknown>;
   },
 
   // 趋势分析
@@ -63,8 +57,7 @@ export const historyApi = {
     metrics: string[];
     forecast?: { enabled: boolean; horizon: number; method: string };
   }): Promise<unknown> => {
-    const response = await apiClient.post('/history/trends', params);
-    return response;
+    return apiClient.post('/history/trends', params) as unknown as Promise<unknown>;
   },
 
   // 导出数据
@@ -75,13 +68,11 @@ export const historyApi = {
     format: 'csv' | 'excel' | 'json';
     aggregation: string;
   }): Promise<{ id: string; status: string }> => {
-    const response = await apiClient.post('/history/export', params);
-    return response as { id: string; status: string };
+    return apiClient.post('/history/export', params) as unknown as Promise<{ id: string; status: string }>;
   },
 
   // 获取导出任务
   getExportTask: async (taskId: string): Promise<ExportTask> => {
-    const response = await apiClient.get(`/history/export/${taskId}`);
-    return response as ExportTask;
+    return apiClient.get(`/history/export/${taskId}`) as unknown as Promise<ExportTask>;
   },
 };

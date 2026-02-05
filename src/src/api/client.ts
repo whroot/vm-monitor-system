@@ -1,10 +1,10 @@
-import axios, { AxiosError, AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
-import { ApiResponse } from '@types/api';
-import { useAuthStore } from '@stores/authStore';
+import axios, { AxiosError, AxiosInstance, InternalAxiosRequestConfig } from 'axios';
+import { ApiResponse } from '../types/api';
+import { useAuthStore } from '../stores/authStore';
 
 // 创建 axios 实例
 const apiClient: AxiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api/v1',
+  baseURL: (import.meta.env as unknown as { VITE_API_BASE_URL?: string }).VITE_API_BASE_URL || 'http://localhost:8080/api/v1',
   timeout: 30000,
   headers: {
     'Content-Type': 'application/json',
@@ -33,18 +33,19 @@ apiClient.interceptors.request.use(
 
 // 响应拦截器
 apiClient.interceptors.response.use(
-  (response: AxiosResponse<ApiResponse<unknown>>) => {
+  (response) => {
     // 如果响应格式正确，返回 data
-    if (response.data && typeof response.data.code === 'number') {
-      if (response.data.code >= 200 && response.data.code < 300) {
-        return response.data.data;
+    if (response.data && typeof (response.data as ApiResponse<unknown>).code === 'number') {
+      const apiResponse = response.data as ApiResponse<unknown>;
+      if (apiResponse.code >= 200 && apiResponse.code < 300) {
+        return apiResponse.data;
       } else {
-        return Promise.reject(new Error(response.data.message));
+        return Promise.reject(new Error(apiResponse.message));
       }
     }
     return response.data;
   },
-  async (error: AxiosError<ApiResponse<unknown>>) => {
+  async (error: AxiosError) => {
     const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };
 
     // 401 未授权 - Token过期
@@ -90,9 +91,10 @@ apiClient.interceptors.response.use(
     }
 
     // 其他错误
-    const message = error.response?.data?.message || error.message || 'Unknown error';
+    const message = (error.response?.data as ApiResponse<unknown>)?.message || error.message || 'Unknown error';
     return Promise.reject(new Error(message));
   }
 );
 
 export default apiClient;
+

@@ -192,14 +192,16 @@ func (i *RBACInitializer) createDefaultAdmin() error {
 	}
 
 	// 创建admin用户
+	// ⚠️ 首次登录必须修改密码
 	passwordHash, _ := hashPassword("admin123")
 	user := models.User{
-		ID:           uuid.New(),
-		Username:     "admin",
-		Email:        "admin@vm-monitor.com",
-		PasswordHash: passwordHash,
-		Name:         "系统管理员",
-		Status:       "active",
+		ID:                 uuid.New(),
+		Username:           "admin",
+		Email:              "admin@vm-monitor.com",
+		PasswordHash:       passwordHash,
+		Name:               "系统管理员",
+		Status:             "active",
+		MustChangePassword: true, // ⚠️ 首次登录必须修改密码
 		Preferences: models.UserPreferences{
 			Language:   "zh-CN",
 			Theme:      "dark",

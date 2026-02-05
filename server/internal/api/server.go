@@ -3,14 +3,15 @@ package api
 import (
 	"context"
 	"fmt"
-	"log"
 	"net/http"
 	"time"
 
-	"vm-monitor/server/internal/config"
-	"vm-monitor/server/internal/services"
+	"vm-monitoring-system/internal/config"
+	"vm-monitoring-system/internal/logger"
+	"vm-monitoring-system/internal/services"
 
 	"github.com/gin-gonic/gin"
+	"go.uber.org/zap"
 	"gorm.io/gorm"
 )
 
@@ -23,6 +24,7 @@ type Server struct {
 	alertEngine       *services.AlertEngine
 	vsphereCollector  *services.VSphereCollector
 	permissionMiddleware *PermissionMiddleware
+	wsHub            *WebSocketHub
 }
 
 // NewServer 创建服务器实例
@@ -38,6 +40,10 @@ func NewServer(cfg *config.Config, db *gorm.DB) *Server {
 		config: cfg,
 		db:     db,
 	}
+
+	// 创建 WebSocket Hub
+	server.wsHub = NewWebSocketHub()
+	server.wsHub.Start()
 
 	// 创建权限中间件
 	server.permissionMiddleware = NewPermissionMiddleware(db)
@@ -112,6 +118,7 @@ func (s *Server) setupRoutes() {
 			vms := authorized.Group("/vms")
 			{
 				vmHandler := NewVMHandler(s.db)
+				vmHandler.SetCollector(s.vsphereCollector)
 				vms.GET("", vmHandler.List)
 				vms.GET("/:id", vmHandler.Get)
 				vms.POST("", vmHandler.Create)
@@ -136,11 +143,19 @@ func (s *Server) setupRoutes() {
 			// 实时监控
 			realtime := authorized.Group("/realtime")
 			{
-				realtimeHandler := NewRealtimeHandler(s.db)
+				realtimeHandler := NewRealtimeHandler(s.db, s.wsHub)
 				realtime.GET("/vms/:id", realtimeHandler.GetVMMetrics)
 				realtime.POST("/vms/batch", realtimeHandler.BatchGetMetrics)
 				realtime.GET("/groups/:id", realtimeHandler.GetGroupMetrics)
+				realtime.GET("/clusters/:id", realtimeHandler.GetClusters)
 				realtime.GET("/overview", realtimeHandler.GetOverview)
+			}
+
+			// WebSocket实时推送（需要认证）
+			v1 := s.router.Group("/ws/v1")
+			v1.Use(JWTAuth(s.config.JWT.Secret))
+			{
+				v1.GET("/realtime", s.wsHub.HandleConnection)
 			}
 
 			// 历史数据
@@ -277,9 +292,9 @@ func (s *Server) setupVSphereCollector() {
 
 	// 启动vSphere采集器
 	if err := s.vsphereCollector.Start(); err != nil {
-		log.Printf("vSphere采集器启动失败: %v", err)
+		logger.Error("vSphere采集器启动失败", zap.Error(err))
 	} else {
-		log.Println("vSphere采集器已启动")
+		logger.Info("vSphere采集器已启动")
 	}
 }
 
@@ -293,16 +308,22 @@ func (s *Server) Start() error {
 
 // Stop 停止服务器
 func (s *Server) Stop() error {
+	// 停止 WebSocket Hub
+	if s.wsHub != nil {
+		s.wsHub.Stop()
+		logger.Info("WebSocket Hub 已停止")
+	}
+
 	// 停止告警引擎
 	if s.alertEngine != nil {
 		s.alertEngine.Stop()
-		log.Println("告警引擎已停止")
+		logger.Info("告警引擎已停止")
 	}
 
 	// 停止vSphere采集器
 	if s.vsphereCollector != nil {
 		s.vsphereCollector.Stop()
-		log.Println("vSphere采集器已停止")
+		logger.Info("vSphere采集器已停止")
 	}
 
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)

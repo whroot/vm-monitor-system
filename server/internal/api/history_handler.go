@@ -1,16 +1,23 @@
 package api
 
 import (
+	"encoding/csv"
+	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 	"strconv"
+	"strings"
 	"time"
+
+	"vm-monitoring-system/internal/logger"
+	"vm-monitoring-system/internal/models"
+	"vm-monitoring-system/internal/services"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
+	"go.uber.org/zap"
 	"gorm.io/gorm"
-
-	"vm-monitoring-system/internal/services"
 )
 
 // HistoryHandler 历史数据处理器
@@ -492,10 +499,9 @@ func (h *HistoryHandler) Export(c *gin.Context) {
 	
 	// 异步处理导出
 	go func() {
-		// 查询数据
 		metrics, err := h.timeSeriesService.QueryMetrics(req.VMIDs, req.Metrics, startTime, endTime)
 		if err != nil {
-			log.Printf("导出任务 %s 失败: %v", taskID, err)
+			logger.Error("导出任务失败", zap.String("task_id", taskID), zap.Error(err))
 			return
 		}
 
@@ -509,18 +515,18 @@ func (h *HistoryHandler) Export(c *gin.Context) {
 		// 保存文件
 		filename := fmt.Sprintf("export_%s.csv", taskID)
 		filepath := "./exports/" + filename
-		
+
 		if err := os.MkdirAll("./exports", 0755); err != nil {
-			log.Printf("创建导出目录失败: %v", err)
+			logger.Error("创建导出目录失败", zap.String("path", "./exports"), zap.Error(err))
 			return
 		}
 
 		if err := os.WriteFile(filepath, []byte(csvData), 0644); err != nil {
-			log.Printf("保存导出文件失败: %v", err)
+			logger.Error("保存导出文件失败", zap.String("path", filepath), zap.Error(err))
 			return
 		}
 
-		log.Printf("导出任务 %s 完成，文件保存至: %s", taskID, filepath)
+		logger.Info("导出任务完成", zap.String("task_id", taskID), zap.String("path", filepath))
 	}()
 
 	c.JSON(http.StatusAccepted, gin.H{

@@ -4,13 +4,14 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"log"
 	"sync"
 	"time"
 
 	"github.com/google/uuid"
+	"go.uber.org/zap"
 	"gorm.io/gorm"
 
+	"vm-monitoring-system/internal/logger"
 	"vm-monitoring-system/internal/models"
 )
 
@@ -75,7 +76,7 @@ func (e *AlertEngine) Start() error {
 	// 启动评估循环
 	go e.evaluationLoop()
 
-	log.Println("告警引擎已启动，评估间隔:", e.evalInterval)
+	logger.Info("告警引擎已启动", zap.Duration("评估间隔", e.evalInterval))
 	return nil
 }
 
@@ -90,7 +91,7 @@ func (e *AlertEngine) Stop() {
 
 	close(e.stopChan)
 	e.isRunning = false
-	log.Println("告警引擎已停止")
+	logger.Info("告警引擎已停止")
 }
 
 // IsRunning 检查引擎是否运行中
@@ -125,7 +126,7 @@ func (e *AlertEngine) loadRules() error {
 		// 加载条件
 		var conditions []models.AlertCondition
 		if err := e.db.Where("rule_id = ?", rule.ID).Order("sort_order").Find(&conditions).Error; err != nil {
-			log.Printf("加载规则 %s 的条件失败: %v", rule.ID, err)
+			logger.Error("加载规则条件失败", zap.String("rule_id", rule.ID.String()), zap.Error(err))
 			continue
 		}
 
@@ -139,7 +140,7 @@ func (e *AlertEngine) loadRules() error {
 	e.rules = newRules
 	e.rulesMutex.Unlock()
 
-	log.Printf("已加载 %d 条告警规则", len(newRules))
+	logger.Info("已加载告警规则", zap.Int("count", len(newRules)))
 	return nil
 }
 
@@ -172,7 +173,7 @@ func (e *AlertEngine) evaluateAllRules() {
 
 	for _, ruleWithCond := range rules {
 		if err := e.evaluateRule(ruleWithCond); err != nil {
-			log.Printf("评估规则 %s 失败: %v", ruleWithCond.Rule.ID, err)
+			logger.Error("评估规则失败", zap.String("rule_id", ruleWithCond.Rule.ID.String()), zap.Error(err))
 		}
 	}
 }
@@ -208,14 +209,14 @@ func (e *AlertEngine) evaluateRule(ruleWithCond *AlertRuleWithConditions) error 
 		// 评估条件
 		triggered, metricData, err := e.evaluateConditions(ruleWithCond, vm)
 		if err != nil {
-			log.Printf("评估条件失败 (规则:%s, VM:%s): %v", rule.ID, vm.ID, err)
+			logger.Error("评估条件失败", zap.String("rule_id", rule.ID.String()), zap.String("vm_id", vm.ID.String()), zap.Error(err))
 			continue
 		}
 
 		if triggered {
 			// 创建告警记录
 			if err := e.createAlert(rule, vm, metricData); err != nil {
-				log.Printf("创建告警失败: %v", err)
+				logger.Error("创建告警失败", zap.Error(err))
 				continue
 			}
 
@@ -432,11 +433,11 @@ func (e *AlertEngine) resolveAlert(alertKey string, vmID uuid.UUID, ruleID uuid.
 	}
 
 	if err := e.db.Save(&alert).Error; err != nil {
-		log.Printf("解决告警失败: %v", err)
+		logger.Error("解决告警失败", zap.Error(err))
 		return
 	}
 
-	log.Printf("告警已自动恢复: %s", alert.RuleName)
+	logger.Info("告警已自动恢复", zap.String("rule_name", alert.RuleName))
 }
 
 // createAlert 创建告警记录
@@ -521,7 +522,7 @@ func (e *AlertEngine) createAlert(rule models.AlertRule, vm models.VM, metricDat
 		go e.notifier.SendAlert(context.Background(), alert, rule.NotificationConfig)
 	}
 
-	log.Printf("告警已触发: %s - %s", rule.Name, vm.Name)
+	logger.Info("告警已触发", zap.String("rule_name", rule.Name), zap.String("vm_name", vm.Name))
 	return nil
 }
 

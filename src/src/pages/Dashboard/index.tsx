@@ -2,15 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   PieChart, Pie, Cell, ResponsiveContainer,
-  LineChart, Line, XAxis, YAxis, Tooltip, AreaChart, Area
+  XAxis, YAxis, Tooltip, AreaChart, Area
 } from 'recharts';
 import {
   TrendingUp, TrendingDown,
   Activity, Cpu, HardDrive, Network,
   AlertCircle, ShieldCheck, Server, Clock
 } from 'lucide-react';
-import { realtimeApi } from '@api/realtime';
-import { SystemOverview } from '@types/api';
+import { realtimeApi } from '../../api/realtime';
+import { SystemOverview } from '../../types/api';
 
 const Dashboard: React.FC = () => {
   const { t } = useTranslation();

@@ -1,12 +1,10 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import { ArrowLeft, Server, Cpu, HardDrive, Activity } from 'lucide-react';
 
 const VMDetail: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { t } = useTranslation();
 
   return (
     <div className="space-y-6 animate-fade-in">

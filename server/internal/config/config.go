@@ -142,7 +142,9 @@ func setDefaults() {
 	viper.SetDefault("redis.max_retries", 3)
 
 	// JWT
-	viper.SetDefault("jwt.secret", "your-secret-key-change-in-production")
+	// ⚠️ 生产环境必须通过环境变量 JWT_SECRET 配置
+	// 使用: export JWT_SECRET="$(openssl rand -base64 64)"
+	viper.SetDefault("jwt.secret", "") // 空值将在auth_handler中检查环境变量
 	viper.SetDefault("jwt.access_expiry", "1h")
 	viper.SetDefault("jwt.refresh_expiry", "168h") // 7 days
 	viper.SetDefault("jwt.remember_expiry", "720h") // 30 days

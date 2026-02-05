@@ -279,6 +279,13 @@ export interface HistoryDataPoint {
   };
 }
 
+// 修改密码请求
+export interface ChangePasswordRequest {
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
 // 导出任务
 export interface ExportTask {
   id: string;

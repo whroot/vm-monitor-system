@@ -51,11 +51,12 @@ type GetPublicKeyResponse struct {
 
 // LoginResponse 登录响应
 type LoginResponse struct {
-	User          models.User `json:"user"`
-	AccessToken   string      `json:"accessToken"`
-	RefreshToken  string      `json:"refreshToken"`
-	ExpiresIn     int         `json:"expiresIn"`
-	Permissions   []string    `json:"permissions"`
+	User              models.User `json:"user"`
+	AccessToken       string      `json:"accessToken"`
+	RefreshToken      string      `json:"refreshToken"`
+	ExpiresIn         int         `json:"expiresIn"`
+	Permissions       []string    `json:"permissions"`
+	MustChangePassword bool       `json:"mustChangePassword"` // 是否需要修改密码
 }
 
 // GetPublicKey 获取RSA公钥
@@ -167,6 +168,9 @@ func (h *AuthHandler) Login(c *gin.Context) {
 	user.LastLoginAt = &now
 	user.LastLoginIP = utils.StringPtr(c.ClientIP())
 
+	// 检查是否需要修改密码
+	mustChangePassword := user.MustChangePassword
+
 	// 更新语言偏好
 	if req.Language != "" {
 		user.Preferences.Language = req.Language
@@ -204,16 +208,20 @@ func (h *AuthHandler) Login(c *gin.Context) {
 	user.PasswordHash = ""
 	user.MFASecret = nil
 
+	// 如果需要修改密码，标记返回
+	responseData := LoginResponse{
+		User:               user,
+		AccessToken:       accessToken,
+		RefreshToken:      refreshToken,
+		ExpiresIn:         int(h.config.JWT.AccessExpiry.Seconds()),
+		Permissions:       permissions,
+		MustChangePassword: mustChangePassword,
+	}
+
 	c.JSON(http.StatusOK, gin.H{
 		"code":    200,
 		"message": "登录成功",
-		"data": LoginResponse{
-			User:         user,
-			AccessToken:  accessToken,
-			RefreshToken: refreshToken,
-			ExpiresIn:    int(h.config.JWT.AccessExpiry.Seconds()),
-			Permissions:  permissions,
-		},
+		"data":    responseData,
 	})
 }
 

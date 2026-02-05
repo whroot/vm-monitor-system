@@ -1,6 +1,6 @@
 import { create } from 'zustand';
-import { VM, VMGroup, VMListRequest, VMListResponse } from '@types/api';
-import { vmApi } from '@api/vm';
+import { VM, VMGroup, VMListRequest } from '../types/api';
+import { vmApi } from '../api/vm';
 
 interface VMState {
   // VM列表

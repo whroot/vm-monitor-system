@@ -1,17 +1,17 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { User, LoginRequest } from '../types/api';
-import { authApi } from '../api/auth';
+import { authApi, mockAuth } from '../api/auth';
+
+const MOCK_MODE = true;
 
 interface AuthState {
-  // 状态
   user: User | null;
   isAuthenticated: boolean;
   permissions: string[];
   isLoading: boolean;
   error: string | null;
 
-  // 方法
   login: (credentials: LoginRequest) => Promise<void>;
   logout: () => Promise<void>;
   fetchUser: () => Promise<void>;
@@ -32,9 +32,8 @@ export const useAuthStore = create<AuthState>()(
       login: async (credentials) => {
         set({ isLoading: true, error: null });
         try {
-          const response = await authApi.login(credentials);
+          const response = MOCK_MODE ? await mockAuth.login(credentials) : await authApi.login(credentials);
           
-          // 保存 Token
           localStorage.setItem('accessToken', response.accessToken);
           localStorage.setItem('refreshToken', response.refreshToken);
           localStorage.setItem('language', response.user.preferences.language);
@@ -56,11 +55,10 @@ export const useAuthStore = create<AuthState>()(
 
       logout: async () => {
         try {
-          await authApi.logout();
+          if (!MOCK_MODE) await authApi.logout();
         } catch (error) {
           console.error('Logout error:', error);
         } finally {
-          // 清除本地存储
           localStorage.removeItem('accessToken');
           localStorage.removeItem('refreshToken');
           
@@ -75,14 +73,37 @@ export const useAuthStore = create<AuthState>()(
 
       fetchUser: async () => {
         try {
-          const response = await authApi.getMe();
+          if (MOCK_MODE) {
+            const token = localStorage.getItem('accessToken');
+            if (token?.startsWith('mock-')) {
+              set({
+                user: {
+                  id: 'usr_001',
+                  username: 'admin',
+                  email: 'admin@company.com',
+                  name: '系统管理员',
+                  department: 'IT部',
+                  roles: [{ id: 'role_admin', name: '系统管理员', description: '拥有所有权限', level: 1, path: '/admin', isSystem: true, createdAt: '', updatedAt: '' }],
+                  status: 'active' as const,
+                  mustChangePassword: false,
+                  mfaEnabled: false,
+                  preferences: { language: 'zh-CN', theme: 'dark', timezone: 'Asia/Shanghai', dateFormat: 'YYYY-MM-DD' },
+                  createdAt: '2026-02-03T10:30:00Z',
+                  updatedAt: '2026-02-03T10:30:00Z',
+                },
+                permissions: ['vm:read', 'vm:write', 'alert:read', 'alert:write', 'user:read', 'user:write', '*'],
+                isAuthenticated: true,
+              });
+              return;
+            }
+          }
+          const response = MOCK_MODE ? { user: null, permissions: [] } : await authApi.getMe();
           set({
             user: response.user,
             permissions: response.permissions,
             isAuthenticated: true,
           });
         } catch (error) {
-          // Token 无效，登出
           get().logout();
         }
       },

@@ -1,66 +1,105 @@
 import apiClient from './client';
 import { VM, VMListRequest, VMListResponse, VMGroup } from '../types/api';
 
+const MOCK_MODE = true;
+
+const mockVMs: VM[] = Array.from({ length: 20 }, (_, i) => ({
+  id: `vm_${i + 1}`,
+  vmwareId: `vmware-${1000 + i}`,
+  name: `prod-app-${String(i + 1).padStart(2, '0')}`,
+  ip: `192.168.1.${100 + i}`,
+  os: (i % 2 === 0 ? 'Linux' : 'Windows') as 'Linux' | 'Windows',
+  osVersion: i % 2 === 0 ? 'Ubuntu 22.04 LTS' : 'Windows Server 2022',
+  cpuCores: 4 + (i % 4),
+  memoryGB: 8 + (i % 8) * 4,
+  diskGB: 100 + i * 50,
+  networkAdapters: 1 + (i % 3),
+  powerState: (i % 5 === 0 ? 'poweredOff' : 'poweredOn') as 'poweredOn' | 'poweredOff' | 'suspended',
+  hostId: `host-${i % 3 + 1}`,
+  hostName: `esxi-${i % 3 + 1}.company.com`,
+  datacenterId: `dc-${i % 2 + 1}`,
+  datacenterName: i % 2 === 0 ? '数据中心-北京' : '数据中心-上海',
+  clusterId: `cluster-${i % 2 + 1}`,
+  clusterName: i % 2 === 0 ? '生产集群' : '测试集群',
+  status: (i % 10 === 0 ? 'error' : i % 5 === 0 ? 'offline' : 'online') as 'online' | 'offline' | 'error' | 'unknown',
+  lastSeen: new Date(Date.now() - i * 60000).toISOString(),
+  vmwareToolsStatus: 'running' as const,
+  tags: i % 3 === 0 ? ['核心', '数据库'] : i % 2 === 0 ? ['Web服务器'] : ['应用服务器'],
+  description: `生产环境虚拟机 #${i + 1}`,
+  createdAt: '2025-01-15T10:30:00Z',
+  updatedAt: new Date().toISOString(),
+}));
+
 export const vmApi = {
-  // 获取VM列表
   list: async (params: VMListRequest): Promise<VMListResponse> => {
+    if (MOCK_MODE) {
+      await new Promise(r => setTimeout(r, 300));
+      return { list: mockVMs, pagination: { page: params.page || 1, pageSize: params.pageSize || 20, total: mockVMs.length, totalPages: Math.ceil(mockVMs.length / (params.pageSize || 20)) }, summary: { total: mockVMs.length, online: mockVMs.filter(v => v.status === 'online').length, offline: mockVMs.filter(v => v.status === 'offline').length, error: mockVMs.filter(v => v.status === 'error').length } };
+    }
     return apiClient.get('/vms', { params }) as unknown as Promise<VMListResponse>;
   },
 
-  // 获取VM详情
   get: async (id: string): Promise<VM> => {
+    if (MOCK_MODE) {
+      await new Promise(r => setTimeout(r, 200));
+      return mockVMs.find(v => v.id === id) || mockVMs[0];
+    }
     return apiClient.get(`/vms/${id}`) as unknown as Promise<VM>;
   },
 
-  // 创建VM
   create: async (data: Partial<VM>): Promise<VM> => {
+    if (MOCK_MODE) return { ...mockVMs[0], ...data, id: `vm_${Date.now()}`, name: data.name || 'new-vm' } as VM;
     return apiClient.post('/vms', data) as unknown as Promise<VM>;
   },
 
-  // 更新VM
   update: async (id: string, data: Partial<VM>): Promise<VM> => {
+    if (MOCK_MODE) return { ...mockVMs[0], ...data, id } as VM;
     return apiClient.put(`/vms/${id}`, data) as unknown as Promise<VM>;
   },
 
-  // 删除VM
   delete: async (id: string): Promise<void> => {
+    if (MOCK_MODE) return;
     await apiClient.delete(`/vms/${id}`);
   },
 
-  // 同步VMware信息
   sync: async (data: { type: 'full' | 'incremental'; datacenterId?: string; clusterId?: string; hostId?: string }): Promise<{ syncId: string; status: string }> => {
+    if (MOCK_MODE) return { syncId: `sync_${Date.now()}`, status: 'running' };
     return apiClient.post('/vms/sync', data) as unknown as Promise<{ syncId: string; status: string }>;
   },
 
-  // 获取VM统计
   getStatistics: async (): Promise<unknown> => {
+    if (MOCK_MODE) return { total: 150, online: 140, offline: 5, error: 3, cpuUsage: 45.2, memoryUsage: 62.1 };
     return apiClient.get('/vms/statistics') as unknown as Promise<unknown>;
   },
 
-  // 批量操作
   batch: async (data: { action: 'start' | 'stop' | 'restart' | 'delete'; vmIds: string[]; force?: boolean }): Promise<{ taskId: string; status: string }> => {
+    if (MOCK_MODE) return { taskId: `task_${Date.now()}`, status: 'completed' };
     return apiClient.post('/vms/batch', data) as unknown as Promise<{ taskId: string; status: string }>;
   },
 
-  // ========== 分组管理 ==========
-
-  // 获取分组列表
   getGroups: async (): Promise<VMGroup[]> => {
+    if (MOCK_MODE) return [
+      { id: 'g1', name: '生产集群', description: '核心生产虚拟机', type: 'cluster', vmCount: 50, onlineCount: 48, offlineCount: 1, errorCount: 1, isSystem: true, createdAt: '', updatedAt: '' },
+      { id: 'g2', name: '测试集群', description: '测试环境虚拟机', type: 'cluster', vmCount: 30, onlineCount: 25, offlineCount: 3, errorCount: 2, isSystem: true, createdAt: '', updatedAt: '' },
+      { id: 'g3', name: '开发环境', description: '开发测试机器', type: 'custom', vmCount: 20, onlineCount: 18, offlineCount: 2, errorCount: 0, isSystem: false, createdAt: '', updatedAt: '' },
+    ];
     return apiClient.get('/vms/groups') as unknown as Promise<VMGroup[]>;
   },
 
-  // 创建分组
   createGroup: async (data: Partial<VMGroup>): Promise<VMGroup> => {
+    if (MOCK_MODE) return { id: `g_${Date.now()}`, name: data.name || '新分组', vmCount: 0, onlineCount: 0, offlineCount: 0, errorCount: 0, isSystem: false, createdAt: '', updatedAt: '', ...data } as VMGroup;
     return apiClient.post('/vms/groups', data) as unknown as Promise<VMGroup>;
   },
 
-  // 更新分组
   updateGroup: async (id: string, data: Partial<VMGroup>): Promise<VMGroup> => {
+    if (MOCK_MODE) return { id, name: data.name || '分组', vmCount: 0, onlineCount: 0, offlineCount: 0, errorCount: 0, isSystem: false, createdAt: '', updatedAt: '', ...data } as VMGroup;
     return apiClient.put(`/vms/groups/${id}`, data) as unknown as Promise<VMGroup>;
   },
 
-  // 删除分组
   deleteGroup: async (id: string): Promise<void> => {
+    if (MOCK_MODE) return;
     await apiClient.delete(`/vms/groups/${id}`);
   },
 };
+
+export const mockVM = { mockVMs };

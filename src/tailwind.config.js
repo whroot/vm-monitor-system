@@ -7,24 +7,17 @@ export default {
   theme: {
     extend: {
       colors: {
-        // 主色调
         background: '#0f1419',
         surface: '#1a1f2e',
         border: '#2a3441',
-        
-        // 状态色
         success: '#00d4aa',
         warning: '#ff9800',
         danger: '#f44336',
         info: '#2196f3',
-        
-        // 文字色
         'text-primary': '#ffffff',
         'text-secondary': '#e0e0e0',
         'text-tertiary': '#b0b8c5',
         'text-muted': '#8090a0',
-        
-        // 数据可视化色
         'chart-cpu': '#2196f3',
         'chart-memory': '#4caf50',
         'chart-disk': '#ff9800',

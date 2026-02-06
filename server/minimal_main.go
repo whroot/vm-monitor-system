@@ -32,12 +32,12 @@ func main() {
 	mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
 		fmt.Fprintf(w, "VM监控系统后端运行正常！\n")
-		fmt.Fprintf(w, "时间: %s\n", cfg.Server)
+		fmt.Fprintf(w, "配置: %+v\n", cfg.Server)
 	})
 	
 	// 启动HTTP服务器
 	addr := fmt.Sprintf("%s:%d", cfg.Server.Host, cfg.Server.Port)
-	fmt.Printf("🚀 启动HTTP服务器: http://%s\n", addr)
+	fmt.Printf("🚀 启动HTTP服务器: http://localhost:%d\n", cfg.Server.Port)
 	
 	if err := http.ListenAndServe(addr, mux); err != nil {
 		fmt.Printf("❌ 服务器启动失败: %v\n", err)

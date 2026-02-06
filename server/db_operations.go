@@ -6,21 +6,28 @@ import (
 	"github.com/google/uuid"
 	"golang.org/x/crypto/bcrypt"
 
+	"vm-monitoring-system/internal/config"
 	"vm-monitoring-system/internal/models"
 )
+
+// strPtr 字符串指针辅助函数
+func strPtr(s string) *string {
+	return &s
+}
 
 func main() {
 	fmt.Println("🧪 数据库操作测试...")
 	
 	// 初始化数据库
-	db, err := models.InitDB(models.DatabaseConfig{
+	dbConfig := config.DatabaseConfig{
 		Host:            "localhost",
 		Port:            5432,
 		User:            "postgres", 
 		Password:        "postgres",
 		Database:        "vm_monitoring",
 		SSLMode:         "disable",
-	})
+	}
+	db, err := models.InitDB(dbConfig)
 	if err != nil {
 		fmt.Printf("❌ 数据库连接失败: %v\n", err)
 		return
@@ -39,7 +46,7 @@ func main() {
 		Status:             "active",
 		MustChangePassword: false,
 		MFAEnabled:         false,
-		Preferences:       "{}",
+		Preferences:       models.UserPreferences{Language: "zh-CN"},
 	}
 	
 	if err := db.Create(&user).Error; err != nil {
@@ -62,10 +69,10 @@ func main() {
 	// 创建测试VM
 	vm := models.VM{
 		ID:        uuid.New(),
-		VMwareID: "vm-test-001",
+		VMwareID: strPtr("vm-test-001"),
 		Name:      "测试虚拟机",
-		IP:        "192.168.1.100",
-		OSType:    "linux",
+		IP:        strPtr("192.168.1.100"),
+		OSType:    strPtr("linux"),
 		Status:    "running",
 	}
 	

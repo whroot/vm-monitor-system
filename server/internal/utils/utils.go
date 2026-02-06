@@ -5,6 +5,8 @@ import (
 	"encoding/hex"
 	"regexp"
 	"time"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 // StringPtr 返回字符串指针
@@ -16,13 +18,21 @@ func StringPtr(s string) *string {
 func TimePtr(t time.Time) *time.Time {
 	return &t
 }
-}
 
 // HashString 计算字符串哈希
 func HashString(s string) string {
 	h := sha256.New()
 	h.Write([]byte(s))
 	return hex.EncodeToString(h.Sum(nil))
+}
+
+// HashPassword 计算密码哈希
+func HashPassword(password string) (string, error) {
+	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	if err != nil {
+		return "", err
+	}
+	return string(hash), nil
 }
 
 // ValidatePasswordComplexity 验证密码复杂度

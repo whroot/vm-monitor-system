@@ -25,6 +25,15 @@ redis:
   min_idle_conns: 10
   max_retries: 3
 
+vsphere:
+  host: ""
+  port: 443
+  username: ""
+  password: ""
+  insecure: true
+  collect_interval: 30s
+  batch_size: 100
+
 jwt:
   secret: change-this-secret-key-in-production
   access_expiry: 1h

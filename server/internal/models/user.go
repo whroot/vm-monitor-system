@@ -16,7 +16,7 @@ type User struct {
 	Name               string         `gorm:"type:varchar(100);not null" json:"name"`
 	Phone              *string        `gorm:"type:varchar(20)" json:"phone,omitempty"`
 	Department         *string        `gorm:"type:varchar(100)" json:"department,omitempty"`
-	Status             string         `gorm:"type:vvarchar(20);not null;default:'active'" json:"status"`
+	Status             string         `gorm:"type:varchar(20);not null;default:'active'" json:"status"`
 	MustChangePassword bool           `gorm:"not null;default:false" json:"mustChangePassword"`
 	MFAEnabled         bool           `gorm:"not null;default:false" json:"mfaEnabled"`
 	MFASecret          *string        `gorm:"type:varchar(255)" json:"-"`

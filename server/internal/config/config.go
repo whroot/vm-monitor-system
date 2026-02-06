@@ -12,6 +12,7 @@ type Config struct {
 	Server   ServerConfig   `mapstructure:"server"`
 	Database DatabaseConfig `mapstructure:"database"`
 	Redis    RedisConfig    `mapstructure:"redis"`
+	VSphere  VSphereConfig  `mapstructure:"vsphere"`
 	JWT      JWTConfig      `mapstructure:"jwt"`
 	Log      LogConfig      `mapstructure:"log"`
 }
@@ -81,6 +82,17 @@ func (c *RedisConfig) Addr() string {
 	return fmt.Sprintf("%s:%d", c.Host, c.Port)
 }
 
+// VSphereConfig vSphere配置
+type VSphereConfig struct {
+	Host            string        `mapstructure:"host"`
+	Port            int           `mapstructure:"port"`
+	Username        string        `mapstructure:"username"`
+	Password        string        `mapstructure:"password"`
+	Insecure        bool          `mapstructure:"insecure"`
+	CollectInterval time.Duration `mapstructure:"collect_interval"`
+	BatchSize       int           `mapstructure:"batch_size"`
+}
+
 // Load 加载配置
 func Load() (*Config, error) {
 	viper.SetConfigName("config")
@@ -140,6 +152,15 @@ func setDefaults() {
 	viper.SetDefault("redis.pool_size", 100)
 	viper.SetDefault("redis.min_idle_conns", 10)
 	viper.SetDefault("redis.max_retries", 3)
+
+	// VSphere
+	viper.SetDefault("vsphere.host", "")
+	viper.SetDefault("vsphere.port", 443)
+	viper.SetDefault("vsphere.username", "")
+	viper.SetDefault("vsphere.password", "")
+	viper.SetDefault("vsphere.insecure", true)
+	viper.SetDefault("vsphere.collect_interval", "30s")
+	viper.SetDefault("vsphere.batch_size", 100)
 
 	// JWT
 	// ⚠️ 生产环境必须通过环境变量 JWT_SECRET 配置

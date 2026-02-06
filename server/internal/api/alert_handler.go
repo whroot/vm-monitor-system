@@ -12,7 +12,7 @@ import (
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 
-	"vm-monitor/server/internal/models"
+	"vm-monitoring-system/internal/models"
 )
 
 // AlertHandler 告警处理器

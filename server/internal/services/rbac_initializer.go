@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"vm-monitoring-system/internal/models"
+	"vm-monitoring-system/internal/utils"
 
 	"github.com/google/uuid"
 	"gorm.io/gorm"
@@ -193,7 +194,7 @@ func (i *RBACInitializer) createDefaultAdmin() error {
 
 	// 创建admin用户
 	// ⚠️ 首次登录必须修改密码
-	passwordHash, _ := hashPassword("admin123")
+	passwordHash, _ := utils.HashPassword("admin123")
 	user := models.User{
 		ID:                 uuid.New(),
 		Username:           "admin",

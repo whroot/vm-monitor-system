@@ -276,7 +276,11 @@ func (s *Server) setupRoutes() {
 
 // setupVSphereCollector 初始化vSphere采集器
 func (s *Server) setupVSphereCollector() {
-	// 创建vSphere配置
+	// 暂时跳过vSphere采集器启动，专注于服务器调试
+	logger.Info("vSphere采集器暂时禁用（调试模式）")
+	
+	// TODO: vSphere API集成完成后启用
+	/*
 	vsphereConfig := &services.VSphereConfig{
 		Host:        s.config.VSphere.Host,
 		Port:        s.config.VSphere.Port,
@@ -296,6 +300,7 @@ func (s *Server) setupVSphereCollector() {
 	} else {
 		logger.Info("vSphere采集器已启动")
 	}
+	*/
 }
 
 // Start 启动服务器

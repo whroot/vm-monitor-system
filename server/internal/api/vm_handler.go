@@ -558,13 +558,6 @@ func (h *VMHandler) Statistics(c *gin.Context) {
 	Success(c, stats)
 }
 
-	c.JSON(http.StatusOK, gin.H{
-		"code":    200,
-		"message": "更新成功",
-		"data":    group,
-	})
-}
-
 // DeleteGroup 删除分组
 func (h *VMHandler) DeleteGroup(c *gin.Context) {
 	id := c.Param("id")

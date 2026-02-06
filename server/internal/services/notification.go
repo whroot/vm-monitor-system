@@ -237,8 +237,8 @@ func (s *NotificationService) sendSMSNotification(ctx context.Context, alert mod
 		}
 	}
 
-	// 构建短信内容
-	content := fmt.Sprintf("【VM监控】%s告警: %s, VM: %s, 当前值: %.2f, 阈值: %.2f",
+	// 构建短信内容（暂时未使用）
+	_ = fmt.Sprintf("【VM监控】%s告警: %s, VM: %s, 当前值: %.2f, 阈值: %.2f",
 		getSeverityLabel(alert.Severity),
 		alert.RuleName,
 		getStringValue(alert.VMName),

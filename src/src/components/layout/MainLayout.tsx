@@ -25,6 +25,21 @@ const MainLayout: React.FC = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [showLangMenu, setShowLangMenu] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(3);
+
+  const notifications = [
+    { id: 1, type: 'critical', message: 'prod-web-01 CPU使用率过高 (95%)', time: '5分钟前' },
+    { id: 2, type: 'warning', message: 'cache-server 内存使用率达82%', time: '15分钟前' },
+    { id: 3, type: 'info', message: '新告警规则已生效', time: '1小时前' },
+  ];
+
+  const handleNotificationClick = () => {
+    setShowNotifications(!showNotifications);
+    if (!showNotifications && unreadCount > 0) {
+      setUnreadCount(0);
+    }
+  };
 
   const menuItems = [
     { key: '/dashboard', icon: LayoutDashboard, label: t('dashboard') },
@@ -144,12 +159,72 @@ const MainLayout: React.FC = () => {
             </div>
 
             {/* Notifications */}
-            <button className="relative p-2 text-text-tertiary hover:text-white transition-all">
-              <Bell className="w-5 h-5" />
-              <span className="absolute top-0 right-0 w-4 h-4 bg-danger rounded-full text-xs flex items-center justify-center text-white">
-                3
-              </span>
-            </button>
+            <div className="relative">
+              <button
+                onClick={handleNotificationClick}
+                className="relative p-2 text-text-tertiary hover:text-white transition-all"
+              >
+                <Bell className="w-5 h-5" />
+                {unreadCount > 0 && (
+                  <span className="absolute top-0 right-0 w-4 h-4 bg-danger rounded-full text-xs flex items-center justify-center text-white">
+                    {unreadCount}
+                  </span>
+                )}
+              </button>
+
+              {showNotifications && (
+                <div className="absolute right-0 mt-2 w-80 bg-surface border border-border rounded-xl shadow-2xl z-50">
+                  <div className="px-4 py-3 border-b border-border flex justify-between items-center">
+                    <span className="font-medium text-white">通知</span>
+                    <div className="flex items-center gap-2">
+                      {unreadCount > 0 && (
+                        <button
+                          onClick={() => setUnreadCount(0)}
+                          className="text-xs text-primary hover:underline"
+                        >
+                          全部已读
+                        </button>
+                      )}
+                      <button
+                        onClick={() => navigate('/alerts')}
+                        className="text-xs text-primary hover:underline"
+                      >
+                        查看全部
+                      </button>
+                    </div>
+                  </div>
+                  <div className="max-h-96 overflow-y-auto">
+                    {notifications.map((notif) => (
+                      <div
+                        key={notif.id}
+                        className="px-4 py-3 border-b border-border hover:bg-border/50 cursor-pointer transition-colors"
+                        onClick={() => {
+                          navigate('/alerts');
+                          setShowNotifications(false);
+                          setUnreadCount(0);
+                        }}
+                      >
+                        <div className="flex items-start gap-3">
+                          <div className={`w-2 h-2 rounded-full mt-2 ${
+                            notif.type === 'critical' ? 'bg-danger' :
+                            notif.type === 'warning' ? 'bg-warning' : 'bg-info'
+                          }`} />
+                          <div className="flex-1">
+                            <p className="text-sm text-white">{notif.message}</p>
+                            <p className="text-xs text-text-muted mt-1">{notif.time}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  {notifications.length === 0 && (
+                    <div className="px-4 py-8 text-center text-text-muted text-sm">
+                      暂无通知
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
 
             {/* User Menu */}
             <div className="relative">

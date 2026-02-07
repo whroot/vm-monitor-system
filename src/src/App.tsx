@@ -14,6 +14,7 @@ import HistoryData from '@pages/HistoryData';
 import AlertManagement from '@pages/AlertManagement';
 import UserManagement from '@pages/UserManagement';
 import SystemSettings from '@pages/SystemSettings';
+import Profile from '@pages/Profile';
 
 // 路由守卫组件
 const PrivateRoute = ({ children }: { children: React.ReactNode }) => {
@@ -54,6 +55,7 @@ function App() {
         <Route path="alerts" element={<AlertManagement />} />
         <Route path="users" element={<UserManagement />} />
         <Route path="system" element={<SystemSettings />} />
+        <Route path="profile" element={<Profile />} />
       </Route>
 
       {/* 404 */}

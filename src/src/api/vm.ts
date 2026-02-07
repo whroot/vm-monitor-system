@@ -1,7 +1,7 @@
 import apiClient from './client';
-import { VM, VMListRequest, VMListResponse, VMGroup } from '../types/api';
+import { VM, VMListRequest, VMListResponse, VMGroup, VMMetrics, VMMetricsHistoryResponse } from '../types/api';
 
-const MOCK_MODE = true;
+const MOCK_MODE = false;
 
 const mockVMs: VM[] = Array.from({ length: 20 }, (_, i) => ({
   id: `vm_${i + 1}`,
@@ -36,7 +36,25 @@ export const vmApi = {
       await new Promise(r => setTimeout(r, 300));
       return { list: mockVMs, pagination: { page: params.page || 1, pageSize: params.pageSize || 20, total: mockVMs.length, totalPages: Math.ceil(mockVMs.length / (params.pageSize || 20)) }, summary: { total: mockVMs.length, online: mockVMs.filter(v => v.status === 'online').length, offline: mockVMs.filter(v => v.status === 'offline').length, error: mockVMs.filter(v => v.status === 'error').length } };
     }
-    return apiClient.get('/vms', { params }) as unknown as Promise<VMListResponse>;
+    const response = await apiClient.get('/vms', { params }) as { vms: VM[]; total: number; page: number; pageSize: number };
+    const runningCount = response.vms.filter((v: VM) => v.status === 'running' || v.status === 'online').length;
+    const stoppedCount = response.vms.filter((v: VM) => v.status === 'poweredOff' || v.status === 'offline').length;
+    const warningCount = response.vms.filter((v: VM) => v.status === 'warning' || v.status === 'error').length;
+    return {
+      list: response.vms,
+      pagination: {
+        page: response.page,
+        pageSize: response.pageSize,
+        total: response.total,
+        totalPages: Math.ceil(response.total / response.pageSize),
+      },
+      summary: {
+        total: response.total,
+        online: runningCount,
+        offline: stoppedCount,
+        error: warningCount,
+      },
+    };
   },
 
   get: async (id: string): Promise<VM> => {
@@ -44,17 +62,20 @@ export const vmApi = {
       await new Promise(r => setTimeout(r, 200));
       return mockVMs.find(v => v.id === id) || mockVMs[0];
     }
-    return apiClient.get(`/vms/${id}`) as unknown as Promise<VM>;
+    const response = await apiClient.get(`/vms/${id}`) as { data: VM };
+    return response.data;
   },
 
   create: async (data: Partial<VM>): Promise<VM> => {
     if (MOCK_MODE) return { ...mockVMs[0], ...data, id: `vm_${Date.now()}`, name: data.name || 'new-vm' } as VM;
-    return apiClient.post('/vms', data) as unknown as Promise<VM>;
+    const response = await apiClient.post('/vms', data) as { data: VM };
+    return response.data;
   },
 
   update: async (id: string, data: Partial<VM>): Promise<VM> => {
     if (MOCK_MODE) return { ...mockVMs[0], ...data, id } as VM;
-    return apiClient.put(`/vms/${id}`, data) as unknown as Promise<VM>;
+    const response = await apiClient.put(`/vms/${id}`, data) as { data: VM };
+    return response.data;
   },
 
   delete: async (id: string): Promise<void> => {
@@ -69,7 +90,7 @@ export const vmApi = {
 
   getStatistics: async (): Promise<unknown> => {
     if (MOCK_MODE) return { total: 150, online: 140, offline: 5, error: 3, cpuUsage: 45.2, memoryUsage: 62.1 };
-    return apiClient.get('/vms/statistics') as unknown as Promise<unknown>;
+    return apiClient.get('/vms/stats') as unknown as Promise<unknown>;
   },
 
   batch: async (data: { action: 'start' | 'stop' | 'restart' | 'delete'; vmIds: string[]; force?: boolean }): Promise<{ taskId: string; status: string }> => {
@@ -99,6 +120,47 @@ export const vmApi = {
   deleteGroup: async (id: string): Promise<void> => {
     if (MOCK_MODE) return;
     await apiClient.delete(`/vms/groups/${id}`);
+  },
+
+  getAllMetrics: async (): Promise<VMMetrics[]> => {
+    if (MOCK_MODE) {
+      return mockVMs.map((vm, i) => ({
+        vmId: vm.id,
+        vmName: vm.name,
+        cpuUsage: Math.round(Math.random() * 100 * 10) / 10,
+        memoryUsage: Math.round(Math.random() * 100 * 10) / 10,
+        diskUsage: Math.round(Math.random() * 100 * 10) / 10,
+        diskReadMbps: Math.round(Math.random() * 200 * 10) / 10,
+        diskWriteMbps: Math.round(Math.random() * 150 * 10) / 10,
+        networkInMbps: Math.round(Math.random() * 100 * 10) / 10,
+        networkOutMbps: Math.round(Math.random() * 100 * 10) / 10,
+        temperature: Math.round(35 + Math.random() * 30),
+        updatedAt: new Date().toISOString(),
+      }));
+    }
+    const response = await apiClient.get('/vms/metrics/all') as { data: VMMetrics[] };
+    return response.data;
+  },
+
+  getMetricsHistory: async (vmId: string, period: string = '24h'): Promise<VMMetricsHistoryResponse> => {
+    if (MOCK_MODE) {
+      const vm = mockVMs.find(v => v.id === vmId) || mockVMs[0];
+      const hours = period === '1h' ? 1 : period === '6h' ? 6 : period === '24h' ? 24 : period === '7d' ? 168 : 720;
+      const metrics = Array.from({ length: hours }, (_, i) => ({
+        timestamp: new Date(Date.now() - (hours - i - 1) * 3600000).toISOString(),
+        cpuUsage: Math.round(Math.random() * 100 * 10) / 10,
+        memoryUsage: Math.round(Math.random() * 100 * 10) / 10,
+        diskUsage: Math.round(Math.random() * 100 * 10) / 10,
+        diskReadMbps: Math.round(Math.random() * 200 * 10) / 10,
+        diskWriteMbps: Math.round(Math.random() * 150 * 10) / 10,
+        networkInMbps: Math.round(Math.random() * 100 * 10) / 10,
+        networkOutMbps: Math.round(Math.random() * 100 * 10) / 10,
+        temperature: Math.round(35 + Math.random() * 30),
+      }));
+      return { vmId, vmName: vm.name, period, metrics };
+    }
+    const response = await apiClient.get(`/vms/${vmId}/metrics/history`, { params: { period } }) as { data: VMMetricsHistoryResponse };
+    return response.data;
   },
 };
 

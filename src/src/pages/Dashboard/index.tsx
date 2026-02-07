@@ -10,12 +10,12 @@ import {
   AlertCircle, ShieldCheck, Server, Clock
 } from 'lucide-react';
 import { realtimeApi } from '../../api/realtime';
-import { SystemOverview } from '../../types/api';
+import { DashboardMetrics } from '../../types/api';
 
 const Dashboard: React.FC = () => {
   const { t } = useTranslation();
   const [mode, setMode] = useState<'normal' | 'fault'>('normal');
-  const [overview, setOverview] = useState<SystemOverview | null>(null);
+  const [overview, setOverview] = useState<DashboardMetrics | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

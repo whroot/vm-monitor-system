@@ -1,0 +1,1 @@
+javascript:(function(){localStorage.clear();sessionStorage.clear();console.log('✅ 已清除所有缓存');})()

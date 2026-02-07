@@ -1,8 +1,8 @@
 import { create } from 'zustand';
-import { VM, VMGroup, VMListRequest } from '../types/api';
+import { VM, VMGroup, VMListRequest, VMMetrics, VMMetricsHistoryResponse } from '../types/api';
 import { vmApi } from '../api/vm';
 
-const MOCK_MODE = true;
+const MOCK_MODE = false;
 
 interface VMState {
   vms: VM[];
@@ -12,6 +12,9 @@ interface VMState {
   groups: VMGroup[];
   selectedVM: VM | null;
   queryParams: VMListRequest;
+  metrics: VMMetrics[];
+  isLoadingMetrics: boolean;
+  metricsHistory: VMMetricsHistoryResponse | null;
   
   fetchVMs: (params?: VMListRequest) => Promise<void>;
   fetchVMById: (id: string) => Promise<void>;
@@ -24,6 +27,8 @@ interface VMState {
   updateGroup: (id: string, data: Partial<VMGroup>) => Promise<void>;
   deleteGroup: (id: string) => Promise<void>;
   setQueryParams: (params: Partial<VMListRequest>) => void;
+  fetchAllMetrics: () => Promise<void>;
+  fetchMetricsHistory: (vmId: string, period?: string) => Promise<void>;
 }
 
 const mockVMs: VM[] = Array.from({ length: 20 }, (_, i) => ({
@@ -65,6 +70,9 @@ export const useVMStore = create<VMState>()((set, get) => ({
   ],
   selectedVM: null,
   queryParams: { page: 1, pageSize: 20 },
+  metrics: [],
+  isLoadingMetrics: false,
+  metricsHistory: null,
 
   fetchVMs: async (params) => {
     set({ isLoading: true, error: null });
@@ -185,4 +193,24 @@ export const useVMStore = create<VMState>()((set, get) => ({
   },
 
   setQueryParams: (params) => set({ queryParams: { ...get().queryParams, ...params } }),
+
+  fetchAllMetrics: async () => {
+    set({ isLoadingMetrics: true, error: null });
+    try {
+      const metrics = await vmApi.getAllMetrics();
+      set({ metrics, isLoadingMetrics: false });
+    } catch (error) {
+      set({ error: error instanceof Error ? error.message : '获取指标失败', isLoadingMetrics: false });
+    }
+  },
+
+  fetchMetricsHistory: async (vmId, period = '24h') => {
+    set({ isLoadingMetrics: true, error: null });
+    try {
+      const history = await vmApi.getMetricsHistory(vmId, period);
+      set({ metricsHistory: history, isLoadingMetrics: false });
+    } catch (error) {
+      set({ error: error instanceof Error ? error.message : '获取历史指标失败', isLoadingMetrics: false });
+    }
+  },
 }));

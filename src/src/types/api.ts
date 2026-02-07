@@ -51,6 +51,7 @@ export interface User {
   name: string;
   phone?: string;
   department?: string;
+  avatar?: string;
   roles: Role[];
   status: 'active' | 'inactive' | 'locked' | 'expired' | 'pending';
   mustChangePassword: boolean;
@@ -198,6 +199,56 @@ export interface RealtimeMetrics {
 
 // 系统概览
 export interface SystemOverview {
+  totalVMs: number;
+  runningVMs: number;
+  stoppedVMs: number;
+  warningVMs: number;
+  cpuUsage: number;
+  memoryUsage: number;
+  diskUsage: number;
+  activeAlerts: number;
+  healthyHosts: number;
+  totalHosts: number;
+}
+
+// VM实时指标（与后端API对应）
+export interface VMMetrics {
+  vmId: string;
+  vmName: string;
+  cpuUsage: number;
+  memoryUsage: number;
+  diskUsage: number;
+  diskReadMbps: number;
+  diskWriteMbps: number;
+  networkInMbps: number;
+  networkOutMbps: number;
+  temperature: number;
+  updatedAt: string;
+}
+
+// VM历史指标记录
+export interface VMMetricsHistoryRecord {
+  timestamp: string;
+  cpuUsage: number;
+  memoryUsage: number;
+  diskUsage: number;
+  diskReadMbps: number;
+  diskWriteMbps: number;
+  networkInMbps: number;
+  networkOutMbps: number;
+  temperature: number;
+}
+
+// VM历史指标响应
+export interface VMMetricsHistoryResponse {
+  vmId: string;
+  vmName: string;
+  period: string;
+  metrics: VMMetricsHistoryRecord[];
+}
+
+// 仪表盘概览指标
+export interface DashboardMetrics {
   timestamp: string;
   status: 'healthy' | 'degraded' | 'unhealthy' | 'maintenance';
   healthScore: {

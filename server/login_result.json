@@ -1,0 +1,16 @@
+{
+  "code": 200,
+  "data": {
+    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjY2E0OTgzZS1kMTk4LTQyMDMtOTVmMi1mZTQyZTc3MjUwNWMiLCJ1c2VybmFtZSI6InRlc3R1c2VyMyIsInJvbGUiOiJ1c2VyIiwiaXNzIjoidm0tbW9uaXRvci1zeXN0ZW0iLCJleHAiOjE3NzA0NzkwMDMsImlhdCI6MTc3MDM5MjYwM30.qFH6d2NhBIv-k2CElglM-8yE1qM8pJxiGZS7b-vqyaw",
+    "expiresIn": 86400,
+    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjY2E0OTgzZS1kMTk4LTQyMDMtOTVmMi1mZTQyZTc3MjUwNWMiLCJ1c2VybmFtZSI6InRlc3R1c2VyMyIsInJvbGUiOiJ1c2VyIiwiaXNzIjoidm0tbW9uaXRvci1zeXN0ZW0iLCJleHAiOjE3NzA5OTc0MDMsImlhdCI6MTc3MDM5MjYwM30.VuzepImxNNInBcRNzRW-4WuwL3g6zpqwsJgjSiyGcVU",
+    "tokenType": "Bearer",
+    "user": {
+      "email": "test3@example.com",
+      "id": "cca4983e-d198-4203-95f2-fe42e772505c",
+      "name": "测试用户3",
+      "username": "testuser3"
+    }
+  },
+  "message": "登录成功"
+}

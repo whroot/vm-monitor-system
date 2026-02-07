@@ -3,7 +3,7 @@ import { persist } from 'zustand/middleware';
 import { User, LoginRequest } from '../types/api';
 import { authApi, mockAuth } from '../api/auth';
 
-const MOCK_MODE = true;
+const MOCK_MODE = false;
 
 interface AuthState {
   user: User | null;
@@ -16,6 +16,7 @@ interface AuthState {
   logout: () => Promise<void>;
   fetchUser: () => Promise<void>;
   changePassword: (oldPassword: string, newPassword: string) => Promise<void>;
+  updateProfile: (data: { name?: string; email?: string; phone?: string; department?: string }) => Promise<void>;
   hasPermission: (permission: string) => boolean;
   setLanguage: (language: string) => void;
 }
@@ -36,7 +37,7 @@ export const useAuthStore = create<AuthState>()(
           
           localStorage.setItem('accessToken', response.accessToken);
           localStorage.setItem('refreshToken', response.refreshToken);
-          localStorage.setItem('language', response.user.preferences.language);
+          localStorage.setItem('language', response.user.preferences?.language || 'zh-CN');
           
           set({
             user: response.user,
@@ -98,8 +99,25 @@ export const useAuthStore = create<AuthState>()(
             }
           }
           const response = MOCK_MODE ? { user: null, permissions: [] } : await authApi.getMe();
+          const backendUser = response.user;
+          const defaultRoles = [{ id: 'role_user', name: '普通用户', description: '普通用户角色', level: 10, path: '/user', isSystem: true, createdAt: '', updatedAt: '' }];
           set({
-            user: response.user,
+            user: {
+              id: backendUser?.id || 'unknown',
+              username: backendUser?.username || 'unknown',
+              email: backendUser?.email || '',
+              name: backendUser?.name || 'Unknown',
+              phone: backendUser?.phone || '',
+              department: backendUser?.department || '',
+              avatar: backendUser?.avatar || '',
+              roles: backendUser?.roles?.length ? backendUser.roles : defaultRoles,
+              status: backendUser?.status || 'active',
+              mustChangePassword: false,
+              mfaEnabled: false,
+              preferences: backendUser?.preferences || { language: 'zh-CN', theme: 'dark', timezone: 'Asia/Shanghai', dateFormat: 'YYYY-MM-DD' },
+              createdAt: backendUser?.createdAt || new Date().toISOString(),
+              updatedAt: backendUser?.updatedAt || new Date().toISOString(),
+            },
             permissions: response.permissions,
             isAuthenticated: true,
           });
@@ -120,6 +138,23 @@ export const useAuthStore = create<AuthState>()(
         } catch (error) {
           set({
             error: error instanceof Error ? error.message : '密码修改失败',
+            isLoading: false,
+          });
+          throw error;
+        }
+      },
+
+      updateProfile: async (data) => {
+        set({ isLoading: true, error: null });
+        try {
+          const updatedUser = await authApi.updateProfile(data);
+          set((state) => ({
+            user: state.user ? { ...state.user, ...updatedUser } : updatedUser,
+            isLoading: false,
+          }));
+        } catch (error) {
+          set({
+            error: error instanceof Error ? error.message : '资料更新失败',
             isLoading: false,
           });
           throw error;

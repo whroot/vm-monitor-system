@@ -9,27 +9,28 @@ import (
 
 // User 用户模型
 type User struct {
-	ID                 uuid.UUID      `gorm:"type:uuid;primary_key;default:gen_random_uuid()" json:"id"`
-	Username           string         `gorm:"type:varchar(50);uniqueIndex;not null" json:"username"`
-	Email              string         `gorm:"type:varchar(100);uniqueIndex;not null" json:"email"`
-	PasswordHash       string         `gorm:"type:varchar(255);not null" json:"-"`
-	Name               string         `gorm:"type:varchar(100);not null" json:"name"`
-	Phone              *string        `gorm:"type:varchar(20)" json:"phone,omitempty"`
-	Department         *string        `gorm:"type:varchar(100)" json:"department,omitempty"`
-	Status             string         `gorm:"type:varchar(20);not null;default:'active'" json:"status"`
-	MustChangePassword bool           `gorm:"not null;default:false" json:"mustChangePassword"`
-	MFAEnabled         bool           `gorm:"not null;default:false" json:"mfaEnabled"`
-	MFASecret          *string        `gorm:"type:varchar(255)" json:"-"`
-	LastLoginAt        *time.Time     `json:"lastLoginAt,omitempty"`
-	LastLoginIP        *string        `gorm:"type:inet" json:"lastLoginIp,omitempty"`
-	LoginFailCount     int            `gorm:"not null;default:0" json:"-"`
-	LockedUntil        *time.Time     `json:"-"`
-	PasswordExpiredAt  *time.Time     `json:"-"`
+	ID                 uuid.UUID       `gorm:"type:uuid;primary_key;default:gen_random_uuid()" json:"id"`
+	Username           string          `gorm:"type:varchar(50);uniqueIndex;not null" json:"username"`
+	Email              string          `gorm:"type:varchar(100);uniqueIndex;not null" json:"email"`
+	PasswordHash       string          `gorm:"type:varchar(255);not null" json:"-"`
+	Name               string          `gorm:"type:varchar(100);not null" json:"name"`
+	Phone              *string         `gorm:"type:varchar(20)" json:"phone,omitempty"`
+	Department         *string         `gorm:"type:varchar(100)" json:"department,omitempty"`
+	Avatar             *string         `gorm:"type:text" json:"avatar,omitempty"`
+	Status             string          `gorm:"type:varchar(20);not null;default:'active'" json:"status"`
+	MustChangePassword bool            `gorm:"not null;default:false" json:"mustChangePassword"`
+	MFAEnabled         bool            `gorm:"not null;default:false" json:"mfaEnabled"`
+	MFASecret          *string         `gorm:"type:varchar(255)" json:"-"`
+	LastLoginAt        *time.Time      `json:"lastLoginAt,omitempty"`
+	LastLoginIP        *string         `gorm:"type:inet" json:"lastLoginIp,omitempty"`
+	LoginFailCount     int             `gorm:"not null;default:0" json:"-"`
+	LockedUntil        *time.Time      `json:"-"`
+	PasswordExpiredAt  *time.Time      `json:"-"`
 	Preferences        UserPreferences `gorm:"type:jsonb;not null" json:"preferences"`
-	CreatedAt          time.Time      `json:"createdAt"`
-	UpdatedAt          time.Time      `json:"updatedAt"`
-	CreatedBy          *uuid.UUID     `gorm:"type:uuid" json:"-"`
-	UpdatedBy          *uuid.UUID     `gorm:"type:uuid" json:"-"`
+	CreatedAt          time.Time       `json:"createdAt"`
+	UpdatedAt          time.Time       `json:"updatedAt"`
+	CreatedBy          *uuid.UUID      `gorm:"type:uuid" json:"-"`
+	UpdatedBy          *uuid.UUID      `gorm:"type:uuid" json:"-"`
 
 	// 关联
 	Roles []Role `gorm:"many2many:user_roles;" json:"roles,omitempty"`
@@ -113,10 +114,10 @@ type Role struct {
 	UpdatedBy   *uuid.UUID `gorm:"type:uuid" json:"-"`
 
 	// 关联
-	Parent       *Role       `gorm:"foreignkey:ParentID" json:"parent,omitempty"`
-	Children     []Role      `gorm:"foreignkey:ParentID" json:"children,omitempty"`
-	Permissions  []Permission `gorm:"many2many:role_permissions;" json:"permissions,omitempty"`
-	UserCount    int         `gorm:"-" json:"userCount"`
+	Parent      *Role        `gorm:"foreignkey:ParentID" json:"parent,omitempty"`
+	Children    []Role       `gorm:"foreignkey:ParentID" json:"children,omitempty"`
+	Permissions []Permission `gorm:"many2many:role_permissions;" json:"permissions,omitempty"`
+	UserCount   int          `gorm:"-" json:"userCount"`
 }
 
 // TableName 指定表名
@@ -188,4 +189,13 @@ type UserSession struct {
 // TableName 指定表名
 func (UserSession) TableName() string {
 	return "user_sessions"
+}
+
+// MustParseUUID 解析UUID，失败时panic
+func MustParseUUID(s string) uuid.UUID {
+	id, err := uuid.Parse(s)
+	if err != nil {
+		panic(err)
+	}
+	return id
 }

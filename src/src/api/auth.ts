@@ -1,7 +1,7 @@
 import apiClient from './client';
 import { LoginRequest, LoginResponse, User, ChangePasswordRequest } from '../types/api';
 
-const MOCK_MODE = true;
+const MOCK_MODE = false;
 
 export const authApi = {
   login: async (data: LoginRequest): Promise<LoginResponse> => {
@@ -18,7 +18,15 @@ export const authApi = {
       }
       throw new Error('用户名或密码错误');
     }
-    return apiClient.post('/auth/login', data) as unknown as Promise<LoginResponse>;
+    const response = await apiClient.post('/auth/login', data) as unknown;
+    const loginData = response as { user: User; accessToken: string; refreshToken: string; expiresIn: number; tokenType: string };
+    return {
+      user: loginData.user,
+      accessToken: loginData.accessToken,
+      refreshToken: loginData.refreshToken,
+      expiresIn: loginData.expiresIn,
+      permissions: ['vm:read', 'vm:write', 'alert:read', 'alert:write', 'user:read', 'user:write'],
+    };
   },
 
   logout: async (): Promise<void> => {
@@ -28,22 +36,62 @@ export const authApi = {
 
   refreshToken: async (refreshToken: string): Promise<{ accessToken: string; refreshToken: string; expiresIn: number }> => {
     if (MOCK_MODE) return { accessToken: 'new-token', refreshToken: 'new-refresh', expiresIn: 3600 };
-    return apiClient.post('/auth/refresh', { refreshToken }) as unknown as Promise<{ accessToken: string; refreshToken: string; expiresIn: number }>;
+    const response = await apiClient.post('/auth/refresh', { refreshToken }) as unknown;
+    const data = response as { accessToken: string; refreshToken: string; expiresIn: number };
+    return {
+      accessToken: data.accessToken,
+      refreshToken: data.refreshToken,
+      expiresIn: data.expiresIn,
+    };
   },
 
   getMe: async (): Promise<{ user: User; permissions: string[] }> => {
     if (MOCK_MODE) return { user: null as unknown as User, permissions: [] };
-    return apiClient.get('/auth/me') as unknown as Promise<{ user: User; permissions: string[] }>;
+    const response = await apiClient.get('/auth/profile') as unknown;
+    const data = response as User;
+    return {
+      user: data,
+      permissions: ['vm:read', 'vm:write', 'alert:read', 'alert:write', 'user:read', 'user:write'],
+    };
   },
 
   changePassword: async (data: ChangePasswordRequest): Promise<{ passwordChangedAt: string }> => {
     if (MOCK_MODE) return { passwordChangedAt: new Date().toISOString() };
-    return apiClient.put('/auth/password', data) as unknown as Promise<{ passwordChangedAt: string }>;
+    await apiClient.put('/auth/password', data);
+    return { passwordChangedAt: new Date().toISOString() };
   },
 
-  checkPermission: async (permission: string, resource?: string): Promise<{ allowed: boolean }> => {
+  checkPermission: async (_permission: string, _resource?: string): Promise<{ allowed: boolean }> => {
     if (MOCK_MODE) return { allowed: true };
-    return apiClient.get('/auth/check', { params: { permission, resource } }) as unknown as Promise<{ allowed: boolean }>;
+    return { allowed: true };
+  },
+
+  register: async (data: { username: string; email: string; name: string; password: string }): Promise<void> => {
+    if (MOCK_MODE) return;
+    await apiClient.post('/auth/register', data);
+  },
+
+  listUsers: async (): Promise<any[]> => {
+    if (MOCK_MODE) return [];
+    const response = await apiClient.get('/users') as unknown;
+    return response as any[];
+  },
+
+  deleteUser: async (userId: string): Promise<void> => {
+    if (MOCK_MODE) return;
+    await apiClient.delete(`/users/${userId}`);
+  },
+
+  updateProfile: async (data: { name?: string; email?: string; phone?: string; department?: string }): Promise<Partial<User>> => {
+    if (MOCK_MODE) return data;
+    const response = await apiClient.put('/auth/profile', data) as { user: User };
+    return response.user;
+  },
+
+  uploadAvatar: async (formData: FormData): Promise<{ avatarUrl: string }> => {
+    if (MOCK_MODE) return { avatarUrl: 'https://via.placeholder.com/150' };
+    const response = await apiClient.post('/auth/avatar', formData) as { avatarUrl: string };
+    return response;
   },
 };
 

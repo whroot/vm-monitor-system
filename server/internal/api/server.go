@@ -17,14 +17,14 @@ import (
 
 // Server HTTP服务器
 type Server struct {
-	router            *gin.Engine
-	config            *config.Config
-	db                *gorm.DB
-	http              *http.Server
-	alertEngine       *services.AlertEngine
-	vsphereCollector  *services.VSphereCollector
+	router               *gin.Engine
+	config               *config.Config
+	db                   *gorm.DB
+	http                 *http.Server
+	alertEngine          *services.AlertEngine
+	vsphereCollector     *services.VSphereCollector
 	permissionMiddleware *PermissionMiddleware
-	wsHub            *WebSocketHub
+	wsHub                *WebSocketHub
 }
 
 // NewServer 创建服务器实例
@@ -248,6 +248,17 @@ func (s *Server) setupRoutes() {
 				permissions.POST("/report", permissionHandler.GenerateReport)
 			}
 
+			// 仪表盘
+			dashboard := authorized.Group("/dashboard")
+			{
+				dashboardHandler := NewDashboardHandler(s.db)
+				dashboard.GET("/overview", dashboardHandler.GetOverview)
+				dashboard.GET("/vm-status", dashboardHandler.GetVMStatus)
+				dashboard.GET("/alerts", dashboardHandler.GetAlerts)
+				dashboard.GET("/health-trend", dashboardHandler.GetHealthTrend)
+				dashboard.GET("/problem-vms", dashboardHandler.GetProblemVMs)
+			}
+
 			// 系统健康
 			system := authorized.Group("/system")
 			{
@@ -278,28 +289,28 @@ func (s *Server) setupRoutes() {
 func (s *Server) setupVSphereCollector() {
 	// 暂时跳过vSphere采集器启动，专注于服务器调试
 	logger.Info("vSphere采集器暂时禁用（调试模式）")
-	
+
 	// TODO: vSphere API集成完成后启用
 	/*
-	vsphereConfig := &services.VSphereConfig{
-		Host:        s.config.VSphere.Host,
-		Port:        s.config.VSphere.Port,
-		Username:    s.config.VSphere.Username,
-		Password:    s.config.VSphere.Password,
-		Insecure:    s.config.VSphere.Insecure,
-		CollectInterval: s.config.VSphere.CollectInterval,
-		BatchSize:   s.config.VSphere.BatchSize,
-	}
+		vsphereConfig := &services.VSphereConfig{
+			Host:        s.config.VSphere.Host,
+			Port:        s.config.VSphere.Port,
+			Username:    s.config.VSphere.Username,
+			Password:    s.config.VSphere.Password,
+			Insecure:    s.config.VSphere.Insecure,
+			CollectInterval: s.config.VSphere.CollectInterval,
+			BatchSize:   s.config.VSphere.BatchSize,
+		}
 
-	// 创建vSphere采集器
-	s.vsphereCollector = services.NewVSphereCollector(s.db, vsphereConfig)
+		// 创建vSphere采集器
+		s.vsphereCollector = services.NewVSphereCollector(s.db, vsphereConfig)
 
-	// 启动vSphere采集器
-	if err := s.vsphereCollector.Start(); err != nil {
-		logger.Error("vSphere采集器启动失败", zap.Error(err))
-	} else {
-		logger.Info("vSphere采集器已启动")
-	}
+		// 启动vSphere采集器
+		if err := s.vsphereCollector.Start(); err != nil {
+			logger.Error("vSphere采集器启动失败", zap.Error(err))
+		} else {
+			logger.Info("vSphere采集器已启动")
+		}
 	*/
 }
 

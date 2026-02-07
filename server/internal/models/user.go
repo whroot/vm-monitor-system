@@ -33,7 +33,7 @@ type User struct {
 	UpdatedBy          *uuid.UUID      `gorm:"type:uuid" json:"-"`
 
 	// 关联
-	Roles []Role `gorm:"many2many:user_roles;" json:"roles,omitempty"`
+	Roles []Role `gorm:"many2many:user_roles;foreignKey:ID;references:ID;joinForeignKey:UserID;joinReferences:RoleID" json:"roles,omitempty"`
 }
 
 // UserPreferences 用户偏好设置
@@ -145,8 +145,8 @@ func (Permission) TableName() string {
 // UserRole 用户角色关联
 type UserRole struct {
 	ID        uuid.UUID `gorm:"type:uuid;primary_key;default:gen_random_uuid()" json:"id"`
-	UserID    uuid.UUID `gorm:"type:uuid;not null;uniqueIndex:idx_user_role" json:"userId"`
-	RoleID    uuid.UUID `gorm:"type:uuid;not null;uniqueIndex:idx_user_role" json:"roleId"`
+	UserID    uuid.UUID `gorm:"type:uuid;not null;uniqueIndex:idx_user_role;foreignKey:UserID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"userId"`
+	RoleID    uuid.UUID `gorm:"type:uuid;not null;uniqueIndex:idx_user_role;foreignKey:RoleID;references:ID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE" json:"roleId"`
 	CreatedAt time.Time `json:"createdAt"`
 }
 

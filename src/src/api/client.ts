@@ -38,12 +38,12 @@ apiClient.interceptors.response.use(
     if (response.data && typeof (response.data as ApiResponse<unknown>).code === 'number') {
       const apiResponse = response.data as ApiResponse<unknown>;
       if (apiResponse.code >= 200 && apiResponse.code < 300) {
-        return apiResponse.data;
+        return apiResponse.data as typeof response;
       } else {
         return Promise.reject(new Error(apiResponse.message));
       }
     }
-    return response.data;
+    return response;
   },
   async (error: AxiosError) => {
     const originalRequest = error.config as InternalAxiosRequestConfig & { _retry?: boolean };

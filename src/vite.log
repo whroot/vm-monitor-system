@@ -1,0 +1,10 @@
+
+  VITE v5.4.21  ready in 150 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: http://192.168.0.102:5173/
+9:12:36 PM [vite] hmr update /src/pages/AlertManagement/index.tsx, /src/styles/tailwind.css
+9:13:17 PM [vite] hmr update /src/pages/AlertManagement/index.tsx, /src/styles/tailwind.css
+9:14:10 PM [vite] hmr update /src/pages/AlertManagement/index.tsx, /src/styles/tailwind.css
+9:26:30 PM [vite] hmr update /src/pages/AlertManagement/index.tsx, /src/styles/tailwind.css
+9:27:25 PM [vite] hmr update /src/styles/tailwind.css, /src/pages/AlertManagement/index.tsx

@@ -2,8 +2,6 @@ import { create } from 'zustand';
 import { AlertRecord } from '../types/api';
 import { alertApi, AlertRule, AlertStats } from '../api/alert';
 
-const MOCK_MODE = false;
-
 interface AlertState {
   rules: AlertRule[];
   records: AlertRecord[];

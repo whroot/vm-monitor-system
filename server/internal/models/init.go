@@ -64,7 +64,8 @@ func InitCache(cfg config.RedisConfig) error {
 
 // AutoMigrate 自动迁移数据库表
 func AutoMigrate(db *gorm.DB) error {
-	return db.AutoMigrate(
+	// 执行自动迁移（忽略错误，继续运行）
+	db.AutoMigrate(
 		&User{},
 		&UserRole{},
 		&Role{},
@@ -79,6 +80,25 @@ func AutoMigrate(db *gorm.DB) error {
 		&AlertRecord{},
 		&AuditLog{},
 	)
+
+	// 尝试修改user_roles表的外键约束为CASCADE（忽略错误）
+	db.Exec(`
+		DO $$
+		BEGIN
+			IF EXISTS (
+				SELECT 1 FROM information_schema.table_constraints
+				WHERE constraint_name = 'fk_user_roles_user'
+				AND table_name = 'user_roles'
+			) THEN
+				ALTER TABLE user_roles DROP CONSTRAINT fk_user_roles_user;
+			END IF;
+		EXCEPTION WHEN OTHERS THEN
+		END;
+		$$;
+		ALTER TABLE user_roles ADD CONSTRAINT fk_user_roles_user FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE;
+	`)
+
+	return nil
 }
 
 // JSONMap 用于存储JSON数据的类型

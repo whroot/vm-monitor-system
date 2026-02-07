@@ -91,8 +91,8 @@ export const permissionApi = {
 
   createRole: async (data: Partial<Role>): Promise<Role> => {
     if (MOCK_MODE) return { id: `r_${Date.now()}`, name: data.name || '新角色', level: 10, path: '/user', isSystem: false, createdAt: '', updatedAt: '', ...data };
-    const response = await apiClient.post('/roles', data) as { roleId: string };
-    return { id: response.roleId, name: data.name || '', level: data.level || 10, path: data.path || '', isSystem: false, createdAt: '', updatedAt: '', ...data };
+    const apiResponse = await apiClient.post('/roles', data) as { roleId: string };
+    return { id: apiResponse.roleId, name: data.name || '', level: data.level || 10, path: data.path || '', isSystem: false, createdAt: '', updatedAt: '', ...data };
   },
 
   updateRole: async (id: string, data: Partial<Role>): Promise<void> => {

@@ -9,47 +9,102 @@ import {
   Activity, Cpu, HardDrive, Network,
   AlertCircle, ShieldCheck, Server, Clock
 } from 'lucide-react';
-import { realtimeApi } from '../../api/realtime';
-import { DashboardMetrics } from '../../types/api';
+import dashboardApi, {
+  OverviewResponse,
+  VMStatusDistribution,
+  DashboardAlert,
+  ProblemVM
+} from '../../api/dashboard';
 
 const Dashboard: React.FC = () => {
   const { t } = useTranslation();
   const [mode, setMode] = useState<'normal' | 'fault'>('normal');
-  const [overview, setOverview] = useState<DashboardMetrics | null>(null);
+  const [overview, setOverview] = useState<OverviewResponse | null>(null);
+  const [vmStatus, setVMStatus] = useState<VMStatusDistribution[]>([]);
+  const [alerts, setAlerts] = useState<DashboardAlert[]>([]);
+  const [problemVMs, setProblemVMs] = useState<ProblemVM[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchOverview();
-    const interval = setInterval(fetchOverview, 30000); // 30秒刷新
+    fetchDashboardData();
+    const interval = setInterval(fetchDashboardData, 30000); // 30秒刷新
     return () => clearInterval(interval);
   }, []);
 
-  const fetchOverview = async () => {
+  const fetchDashboardData = async () => {
     try {
-      const data = await realtimeApi.getOverview();
-      setOverview(data);
+      const [overviewData, statusData, alertsData, problemVMsData] = await Promise.all([
+        dashboardApi.getOverview(),
+        dashboardApi.getVMStatus(),
+        dashboardApi.getAlerts(5),
+        dashboardApi.getProblemVMs(),
+      ]);
+      setOverview(overviewData);
+      setVMStatus(statusData.distribution);
+      setAlerts(alertsData.alerts);
+      setProblemVMs(problemVMsData.vms);
+
+      // 如果有严重告警，自动切换到故障模式
+      const hasCritical = alertsData.alerts.some(a => a.severity === 'critical');
+      if (hasCritical && mode === 'normal') {
+        setMode('fault');
+      }
     } catch (error) {
-      console.error('Failed to fetch overview:', error);
+      console.error('Failed to fetch dashboard data:', error);
     } finally {
       setLoading(false);
     }
   };
 
-  // 模拟数据
-  const healthScore = overview?.healthScore?.value || 92;
-  
+  const healthScore = overview?.healthScore || 92;
+  const systemStatus = overview?.systemStatus || 'healthy';
+
   const metrics = [
-    { label: t('cpu'), value: '42.5%', trend: '+2.4%', up: true, icon: Cpu, color: '#2196f3' },
-    { label: t('memory'), value: '12.8 GB', trend: '-1.1%', up: false, icon: Activity, color: '#4caf50' },
-    { label: t('disk'), value: '78.2%', trend: '+0.5%', up: true, icon: HardDrive, color: '#ff9800' },
-    { label: t('network'), value: '1.2 Gbps', trend: '+12%', up: true, icon: Network, color: '#9c27b0' },
+    {
+      label: t('cpu'),
+      value: `${overview?.metrics?.cpu?.usagePercent?.toFixed(1) || 0}%`,
+      trend: `${overview?.metrics?.cpu?.trendValue > 0 ? '+' : ''}${overview?.metrics?.cpu?.trendValue?.toFixed(1) || 0}%`,
+      up: (overview?.metrics?.cpu?.trendValue || 0) >= 0,
+      icon: Cpu,
+      color: '#2196f3'
+    },
+    {
+      label: t('memory'),
+      value: `${overview?.metrics?.memory?.usagePercent?.toFixed(1) || 0}%`,
+      trend: `${overview?.metrics?.memory?.trendValue > 0 ? '+' : ''}${overview?.metrics?.memory?.trendValue?.toFixed(1) || 0}%`,
+      up: (overview?.metrics?.memory?.trendValue || 0) >= 0,
+      icon: Activity,
+      color: '#4caf50'
+    },
+    {
+      label: t('disk'),
+      value: `${overview?.metrics?.disk?.usagePercent?.toFixed(1) || 0}%`,
+      trend: `${overview?.metrics?.disk?.trendValue > 0 ? '+' : ''}${overview?.metrics?.disk?.trendValue?.toFixed(1) || 0}%`,
+      up: (overview?.metrics?.disk?.trendValue || 0) >= 0,
+      icon: HardDrive,
+      color: '#ff9800'
+    },
+    {
+      label: t('network'),
+      value: `${((overview?.metrics?.network?.inboundMbps || 0) / 1024).toFixed(1)} Gbps`,
+      trend: `${overview?.metrics?.network?.trendValue > 0 ? '+' : ''}${overview?.metrics?.network?.trendValue?.toFixed(1) || 0}%`,
+      up: (overview?.metrics?.network?.trendValue || 0) >= 0,
+      icon: Network,
+      color: '#9c27b0'
+    },
   ];
 
-  const vmStatsData = [
-    { name: t('online'), value: overview?.vmMonitoring?.onlineVMs || 85, color: '#00d4aa' },
-    { name: t('warningStatus'), value: 10, color: '#ff9800' },
-    { name: t('errorStatus'), value: overview?.vmMonitoring?.errorVMs || 3, color: '#f44336' },
-    { name: t('offline'), value: overview?.vmMonitoring?.offlineVMs || 2, color: '#607d8b' },
+  const vmStatsData = vmStatus.length > 0 ? vmStatus.map(s => ({
+    name: s.status === 'online' ? t('online') :
+          s.status === 'offline' ? t('offline') :
+          s.status === 'warning' ? t('warningStatus') : t('criticalStatus'),
+    value: s.count,
+    color: s.color
+  })) : [
+    { name: t('online'), value: overview?.summary?.onlineVMs || 85, color: '#00d4aa' },
+    { name: t('warningStatus'), value: overview?.summary?.warningVMs || 10, color: '#ff9800' },
+    { name: t('criticalStatus'), value: overview?.summary?.criticalVMs || 3, color: '#f44336' },
+    { name: t('offline'), value: overview?.summary?.offlineVMs || 2, color: '#607d8b' },
   ];
 
   const performanceData = [
@@ -60,12 +115,6 @@ const Dashboard: React.FC = () => {
     { time: '16:00', cpu: 65, mem: 68 },
     { time: '20:00', cpu: 42, mem: 55 },
     { time: '23:59', cpu: 38, mem: 48 },
-  ];
-
-  const recentAlerts = [
-    { id: '1', vm: 'prod-db-01', type: 'High CPU Load', level: 'critical', time: '2 mins ago' },
-    { id: '2', vm: 'app-server-cluster', type: 'Disk Pressure', level: 'high', time: '15 mins ago' },
-    { id: '3', vm: 'web-server-03', type: 'Memory Usage', level: 'medium', time: '1 hour ago' },
   ];
 
   if (loading) {
@@ -270,25 +319,31 @@ const Dashboard: React.FC = () => {
                 <button className="text-sm text-info hover:underline">{t('viewAll')}</button>
               </div>
               <div className="space-y-4">
-                {recentAlerts.map((alert) => (
+                {alerts.length > 0 ? alerts.map((alert) => (
                   <div
                     key={alert.id}
                     className="flex items-center gap-4 p-4 bg-background rounded-xl border border-border hover:border-warning/50 transition-all"
                   >
                     <div className={`p-2 rounded-lg ${
-                      alert.level === 'critical' ? 'bg-danger/20 text-danger' :
-                      alert.level === 'high' ? 'bg-warning/20 text-warning' :
+                      alert.severity === 'critical' ? 'bg-danger/20 text-danger' :
+                      alert.severity === 'high' || alert.severity === 'warning' ? 'bg-warning/20 text-warning' :
                       'bg-info/20 text-info'
                     }`}>
                       <AlertCircle className="w-5 h-5" />
                     </div>
                     <div className="flex-1">
-                      <div className="text-sm font-medium text-white">{alert.vm}</div>
-                      <div className="text-xs text-text-muted">{alert.type}</div>
+                      <div className="text-sm font-medium text-white">{alert.vmName}</div>
+                      <div className="text-xs text-text-muted">{alert.message}</div>
                     </div>
-                    <div className="text-xs text-text-muted">{alert.time}</div>
+                    <div className="text-xs text-text-muted">
+                      {new Date(alert.occurredAt).toLocaleString()}
+                    </div>
                   </div>
-                ))}
+                )) : (
+                  <div className="text-center text-text-muted py-8">
+                    {t('noAlerts')}
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -297,21 +352,21 @@ const Dashboard: React.FC = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             <div className="card text-center">
               <Server className="w-8 h-8 text-info mx-auto mb-2" />
-              <div className="text-3xl font-bold text-white">{overview?.vmMonitoring?.totalVMs || 150}</div>
+              <div className="text-3xl font-bold text-white">{overview?.summary?.totalVMs || 0}</div>
               <div className="text-sm text-text-muted">{t('totalVMs')}</div>
             </div>
             <div className="card text-center">
               <div className="w-8 h-8 bg-success/20 rounded-lg flex items-center justify-center mx-auto mb-2">
                 <Server className="w-5 h-5 text-success" />
               </div>
-              <div className="text-3xl font-bold text-success">{overview?.vmMonitoring?.onlineVMs || 140}</div>
+              <div className="text-3xl font-bold text-success">{overview?.summary?.onlineVMs || 0}</div>
               <div className="text-sm text-text-muted">{t('onlineVMs')}</div>
             </div>
             <div className="card text-center">
               <div className="w-8 h-8 bg-danger/20 rounded-lg flex items-center justify-center mx-auto mb-2">
                 <Server className="w-5 h-5 text-danger" />
               </div>
-              <div className="text-3xl font-bold text-danger">{overview?.vmMonitoring?.offlineVMs || 5}</div>
+              <div className="text-3xl font-bold text-danger">{overview?.summary?.offlineVMs || 0}</div>
               <div className="text-sm text-text-muted">{t('offlineVMs')}</div>
             </div>
             <div className="card text-center">
@@ -319,7 +374,7 @@ const Dashboard: React.FC = () => {
                 <AlertCircle className="w-5 h-5 text-warning" />
               </div>
               <div className="text-3xl font-bold text-warning">
-                {(overview?.alerts?.critical || 0) + (overview?.alerts?.high || 0)}
+                {(overview?.summary?.warningVMs || 0) + (overview?.summary?.criticalVMs || 0)}
               </div>
               <div className="text-sm text-text-muted">{t('alertVMs')}</div>
             </div>
@@ -328,32 +383,74 @@ const Dashboard: React.FC = () => {
       ) : (
         // Fault Mode
         <div className="space-y-6">
-          <div className="bg-danger/10 border border-danger/20 rounded-2xl p-6">
+          <div className={`border rounded-2xl p-6 ${
+            problemVMs.length > 0
+              ? 'bg-danger/10 border-danger/20'
+              : 'bg-success/10 border-success/20'
+          }`}>
             <div className="flex items-center gap-4">
-              <AlertCircle className="w-8 h-8 text-danger" />
+              <AlertCircle className={`w-8 h-8 ${
+                problemVMs.length > 0 ? 'text-danger' : 'text-success'
+              }`} />
               <div>
-                <h2 className="text-xl font-bold text-danger">检测到严重告警</h2>
-                <p className="text-text-muted">当前有 {recentAlerts.length} 个VM存在问题需要处理</p>
+                <h2 className={`text-xl font-bold ${
+                  problemVMs.length > 0 ? 'text-danger' : 'text-success'
+                }`}>
+                  {problemVMs.length > 0 ? '检测到严重告警' : '系统运行正常'}
+                </h2>
+                <p className="text-text-muted">
+                  {problemVMs.length > 0
+                    ? `当前有 ${problemVMs.length} 个VM存在问题需要处理`
+                    : '所有VM运行正常，没有待处理的告警'
+                  }
+                </p>
               </div>
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {recentAlerts.map((alert) => (
+            {problemVMs.length > 0 ? problemVMs.map((vm) => (
               <div
-                key={alert.id}
-                className="bg-danger/5 border border-danger/20 rounded-2xl p-6 hover:border-danger/50 transition-all"
+                key={vm.vmId}
+                className={`border rounded-2xl p-6 hover:border-danger/50 transition-all ${
+                  vm.severity === 'critical'
+                    ? 'bg-danger/5 border-danger/20'
+                    : 'bg-warning/5 border-warning/20'
+                }`}
               >
                 <div className="flex items-start gap-4">
-                  <div className="p-3 bg-danger/20 rounded-xl">
-                    <Server className="w-6 h-6 text-danger" />
+                  <div className={`p-3 rounded-xl ${
+                    vm.severity === 'critical'
+                      ? 'bg-danger/20'
+                      : 'bg-warning/20'
+                  }`}>
+                    <Server className={`w-6 h-6 ${
+                      vm.severity === 'critical' ? 'text-danger' : 'text-warning'
+                    }`} />
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-lg font-semibold text-white">{alert.vm}</h3>
-                    <p className="text-danger font-medium mt-1">{alert.type}</p>
-                    <p className="text-sm text-text-muted mt-2">{alert.time}</p>
+                    <h3 className="text-lg font-semibold text-white">{vm.vmName}</h3>
+                    <p className={`font-medium mt-1 ${
+                      vm.severity === 'critical' ? 'text-danger' : 'text-warning'
+                    }`}>
+                      {vm.ip || 'N/A'}
+                    </p>
+                    <div className="mt-2 space-y-1">
+                      {vm.issues.map((issue, idx) => (
+                        <p key={idx} className="text-sm text-text-muted">
+                          {issue.message}: {issue.value}
+                        </p>
+                      ))}
+                    </div>
+                    <p className="text-sm text-text-muted mt-2">
+                      持续时间: {vm.duration}
+                    </p>
                     <div className="flex gap-2 mt-4">
-                      <button className="px-4 py-2 bg-danger text-white rounded-lg text-sm font-medium hover:bg-danger/90">
+                      <button className={`px-4 py-2 text-white rounded-lg text-sm font-medium ${
+                        vm.severity === 'critical'
+                          ? 'bg-danger hover:bg-danger/90'
+                          : 'bg-warning hover:bg-warning/90'
+                      }`}>
                         查看详情
                       </button>
                       <button className="px-4 py-2 bg-surface border border-border text-text-secondary rounded-lg text-sm font-medium hover:border-text-tertiary">
@@ -363,7 +460,12 @@ const Dashboard: React.FC = () => {
                   </div>
                 </div>
               </div>
-            ))}
+            )) : (
+              <div className="col-span-full text-center py-12">
+                <ShieldCheck className="w-16 h-16 text-success mx-auto mb-4" />
+                <p className="text-text-muted">{t('noProblemVMs')}</p>
+              </div>
+            )}
           </div>
         </div>
       )}

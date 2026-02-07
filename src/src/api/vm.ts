@@ -37,9 +37,9 @@ export const vmApi = {
       return { list: mockVMs, pagination: { page: params.page || 1, pageSize: params.pageSize || 20, total: mockVMs.length, totalPages: Math.ceil(mockVMs.length / (params.pageSize || 20)) }, summary: { total: mockVMs.length, online: mockVMs.filter(v => v.status === 'online').length, offline: mockVMs.filter(v => v.status === 'offline').length, error: mockVMs.filter(v => v.status === 'error').length } };
     }
     const response = await apiClient.get('/vms', { params }) as { vms: VM[]; total: number; page: number; pageSize: number };
-    const runningCount = response.vms.filter((v: VM) => v.status === 'running' || v.status === 'online').length;
-    const stoppedCount = response.vms.filter((v: VM) => v.status === 'poweredOff' || v.status === 'offline').length;
-    const warningCount = response.vms.filter((v: VM) => v.status === 'warning' || v.status === 'error').length;
+    const runningCount = response.vms.filter((v: VM) => v.status === 'online').length;
+    const stoppedCount = response.vms.filter((v: VM) => v.status === 'offline').length;
+    const warningCount = response.vms.filter((v: VM) => v.status === 'error').length;
     return {
       list: response.vms,
       pagination: {
@@ -62,20 +62,20 @@ export const vmApi = {
       await new Promise(r => setTimeout(r, 200));
       return mockVMs.find(v => v.id === id) || mockVMs[0];
     }
-    const response = await apiClient.get(`/vms/${id}`) as { data: VM };
-    return response.data;
+    const response = await apiClient.get(`/vms/${id}`) as VM;
+    return response;
   },
 
   create: async (data: Partial<VM>): Promise<VM> => {
     if (MOCK_MODE) return { ...mockVMs[0], ...data, id: `vm_${Date.now()}`, name: data.name || 'new-vm' } as VM;
-    const response = await apiClient.post('/vms', data) as { data: VM };
-    return response.data;
+    const response = await apiClient.post('/vms', data) as VM;
+    return response;
   },
 
   update: async (id: string, data: Partial<VM>): Promise<VM> => {
     if (MOCK_MODE) return { ...mockVMs[0], ...data, id } as VM;
-    const response = await apiClient.put(`/vms/${id}`, data) as { data: VM };
-    return response.data;
+    const response = await apiClient.put(`/vms/${id}`, data) as VM;
+    return response;
   },
 
   delete: async (id: string): Promise<void> => {
@@ -124,7 +124,7 @@ export const vmApi = {
 
   getAllMetrics: async (): Promise<VMMetrics[]> => {
     if (MOCK_MODE) {
-      return mockVMs.map((vm, i) => ({
+      return mockVMs.map((vm) => ({
         vmId: vm.id,
         vmName: vm.name,
         cpuUsage: Math.round(Math.random() * 100 * 10) / 10,
@@ -138,14 +138,14 @@ export const vmApi = {
         updatedAt: new Date().toISOString(),
       }));
     }
-    const response = await apiClient.get('/vms/metrics/all') as { data: VMMetrics[] };
-    return response.data;
+    const response = await apiClient.get('/vms/metrics/all') as VMMetrics[];
+    return response;
   },
 
-  getMetricsHistory: async (vmId: string, period: string = '24h'): Promise<VMMetricsHistoryResponse> => {
+  getMetricsHistory: async (vmId: string, period: string = '24h', startTime?: string, endTime?: string): Promise<VMMetricsHistoryResponse> => {
     if (MOCK_MODE) {
       const vm = mockVMs.find(v => v.id === vmId) || mockVMs[0];
-      const hours = period === '1h' ? 1 : period === '6h' ? 6 : period === '24h' ? 24 : period === '7d' ? 168 : 720;
+      let hours = period === '1h' ? 1 : period === '6h' ? 6 : period === '24h' ? 24 : period === '7d' ? 168 : 720;
       const metrics = Array.from({ length: hours }, (_, i) => ({
         timestamp: new Date(Date.now() - (hours - i - 1) * 3600000).toISOString(),
         cpuUsage: Math.round(Math.random() * 100 * 10) / 10,
@@ -159,8 +159,16 @@ export const vmApi = {
       }));
       return { vmId, vmName: vm.name, period, metrics };
     }
-    const response = await apiClient.get(`/vms/${vmId}/metrics/history`, { params: { period } }) as { data: VMMetricsHistoryResponse };
-    return response.data;
+    const params: any = { period };
+    if (startTime) params.startTime = startTime;
+    if (endTime) params.endTime = endTime;
+    const response = await apiClient.get(`/vms/${vmId}/metrics/history`, { params }) as any;
+    return {
+      vmId,
+      vmName: response.vmName || '',
+      period: response.period || period,
+      metrics: response.metrics || [],
+    };
   },
 };
 

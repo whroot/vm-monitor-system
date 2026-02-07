@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import { User, Mail, Phone, Building, Shield, Save, Check, Camera, RefreshCw } from 'lucide-react';
 import { useAuthStore } from '@stores/authStore';
 import { authApi } from '../../api/auth';
 
 const Profile: React.FC = () => {
-  const { t } = useTranslation();
-  const { user, fetchUser, logout } = useAuthStore();
+  const { user, fetchUser } = useAuthStore();
   const [saved, setSaved] = useState(false);
   const [saving, setSaving] = useState(false);
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
@@ -22,11 +20,11 @@ const Profile: React.FC = () => {
     try {
       const userData = await authApi.getMe();
       setProfile({
-        name: userData.name || '',
-        email: userData.email || '',
-        phone: userData.phone || '',
-        department: userData.department || '',
-        avatar: (userData as any).avatar || '',
+        name: userData.user.name || '',
+        email: userData.user.email || '',
+        phone: userData.user.phone || '',
+        department: userData.user.department || '',
+        avatar: userData.user.avatar || '',
       });
     } catch (error) {
       console.error('加载用户数据失败:', error);

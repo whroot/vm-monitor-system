@@ -26,44 +26,44 @@ func NewAlertHandler(db *gorm.DB) *AlertHandler {
 }
 
 // RuleRequest 告警规则请求
- type RuleRequest struct {
-	Name              string                 `json:"name" binding:"required,max=200"`
-	Description       string                 `json:"description,omitempty"`
-	Scope             string                 `json:"scope" binding:"required,oneof=all vm group cluster host datacenter"`
-	ScopeID           *uuid.UUID             `json:"scopeId,omitempty"`
-	ScopeName         string                 `json:"scopeName,omitempty"`
-	ConditionLogic    string                 `json:"conditionLogic" binding:"required,oneof=and or"`
-	Enabled           bool                   `json:"enabled"`
-	Cooldown          int                    `json:"cooldown" binding:"min=0,max=86400"`
-	Severity          string                 `json:"severity" binding:"required,oneof=critical high medium low"`
+type RuleRequest struct {
+	Name               string                 `json:"name" binding:"required,max=200"`
+	Description        string                 `json:"description,omitempty"`
+	Scope              string                 `json:"scope" binding:"required,oneof=all vm group cluster host datacenter"`
+	ScopeID            *uuid.UUID             `json:"scopeId,omitempty"`
+	ScopeName          string                 `json:"scopeName,omitempty"`
+	ConditionLogic     string                 `json:"conditionLogic" binding:"required,oneof=and or"`
+	Enabled            bool                   `json:"enabled"`
+	Cooldown           int                    `json:"cooldown" binding:"min=0,max=86400"`
+	Severity           string                 `json:"severity" binding:"required,oneof=critical high medium low"`
 	NotificationConfig map[string]interface{} `json:"notificationConfig"`
-	Conditions        []ConditionRequest     `json:"conditions" binding:"required,min=1,dive"`
+	Conditions         []ConditionRequest     `json:"conditions" binding:"required,min=1,dive"`
 }
 
 // ConditionRequest 告警条件请求
- type ConditionRequest struct {
-	Metric      string   `json:"metric" binding:"required,max=50"`
-	MetricType  string   `json:"metricType" binding:"required,max=100"`
-	Operator    string   `json:"operator" binding:"required,oneof=> >= < <= == !="`
-	Threshold   float64  `json:"threshold" binding:"required"`
+type ConditionRequest struct {
+	Metric       string  `json:"metric" binding:"required,max=50"`
+	MetricType   string  `json:"metricType" binding:"required,max=100"`
+	Operator     string  `json:"operator" binding:"required,oneof=> >= < <= == !="`
+	Threshold    float64 `json:"threshold" binding:"required"`
 	ThresholdStr *string `json:"thresholdStr,omitempty"`
-	Duration    int      `json:"duration" binding:"min=0,max=3600"`
-	Aggregation string   `json:"aggregation" binding:"omitempty,oneof=last avg max min sum"`
-	SortOrder   int      `json:"sortOrder"`
+	Duration     int     `json:"duration" binding:"min=0,max=3600"`
+	Aggregation  string  `json:"aggregation" binding:"omitempty,oneof=last avg max min sum"`
+	SortOrder    int     `json:"sortOrder"`
 }
 
 // RecordFilter 告警记录筛选
- type RecordFilter struct {
-	Page        int        `form:"page" binding:"min=1"`
-	PageSize    int        `form:"pageSize" binding:"min=1,max=100"`
-	Status      string     `form:"status" binding:"omitempty,oneof=active acknowledged resolved all"`
-	Severity    []string   `form:"severity[]"`
-	RuleID      string     `form:"ruleId"`
-	VMID        string     `form:"vmId"`
-	StartTime   *time.Time `form:"startTime" time_format:"2006-01-02T15:04:05Z07:00"`
-	EndTime     *time.Time `form:"endTime" time_format:"2006-01-02T15:04:05Z07:00"`
-	Keyword     string     `form:"keyword"`
-	AcknowledgedBy string `form:"acknowledgedBy"`
+type RecordFilter struct {
+	Page           int        `form:"page" binding:"min=1"`
+	PageSize       int        `form:"pageSize" binding:"min=1,max=100"`
+	Status         string     `form:"status" binding:"omitempty,oneof=active acknowledged resolved all"`
+	Severity       []string   `form:"severity[]"`
+	RuleID         string     `form:"ruleId"`
+	VMID           string     `form:"vmId"`
+	StartTime      *time.Time `form:"startTime" time_format:"2006-01-02T15:04:05Z07:00"`
+	EndTime        *time.Time `form:"endTime" time_format:"2006-01-02T15:04:05Z07:00"`
+	Keyword        string     `form:"keyword"`
+	AcknowledgedBy string     `form:"acknowledgedBy"`
 }
 
 // ========== 告警规则 ==========
@@ -165,7 +165,7 @@ func (h *AlertHandler) ListRules(c *gin.Context) {
 // GetRule 获取告警规则详情
 func (h *AlertHandler) GetRule(c *gin.Context) {
 	ruleID := c.Param("id")
-	
+
 	var id uuid.UUID
 	if err := id.UnmarshalText([]byte(ruleID)); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -315,7 +315,7 @@ func (h *AlertHandler) CreateRule(c *gin.Context) {
 // UpdateRule 更新告警规则
 func (h *AlertHandler) UpdateRule(c *gin.Context) {
 	ruleID := c.Param("id")
-	
+
 	var id uuid.UUID
 	if err := id.UnmarshalText([]byte(ruleID)); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -356,13 +356,13 @@ func (h *AlertHandler) UpdateRule(c *gin.Context) {
 
 	// 更新规则字段
 	updates := map[string]interface{}{
-		"name":               req.Name,
-		"scope":              req.Scope,
-		"condition_logic":    req.ConditionLogic,
-		"enabled":            req.Enabled,
-		"cooldown":           req.Cooldown,
-		"severity":           req.Severity,
-		"updated_at":         time.Now(),
+		"name":            req.Name,
+		"scope":           req.Scope,
+		"condition_logic": req.ConditionLogic,
+		"enabled":         req.Enabled,
+		"cooldown":        req.Cooldown,
+		"severity":        req.Severity,
+		"updated_at":      time.Now(),
 	}
 
 	if req.Description != "" {
@@ -458,7 +458,7 @@ func (h *AlertHandler) UpdateRule(c *gin.Context) {
 // DeleteRule 删除告警规则
 func (h *AlertHandler) DeleteRule(c *gin.Context) {
 	ruleID := c.Param("id")
-	
+
 	var id uuid.UUID
 	if err := id.UnmarshalText([]byte(ruleID)); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -487,9 +487,9 @@ func (h *AlertHandler) DeleteRule(c *gin.Context) {
 
 	// 软删除
 	updates := map[string]interface{}{
-		"is_deleted":  true,
-		"deleted_at":  time.Now(),
-		"updated_at":  time.Now(),
+		"is_deleted": true,
+		"deleted_at": time.Now(),
+		"updated_at": time.Now(),
 	}
 
 	// 获取用户信息
@@ -608,7 +608,7 @@ type AcknowledgeRequest struct {
 
 // ListRecords 获取告警记录列表
 func (h *AlertHandler) ListRecords(c *gin.Context) {
-	// 解析分页参数
+	// 解析分页和排序参数
 	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
 	pageSize, _ := strconv.Atoi(c.DefaultQuery("pageSize", "20"))
 	if page < 1 {
@@ -616,6 +616,26 @@ func (h *AlertHandler) ListRecords(c *gin.Context) {
 	}
 	if pageSize < 1 || pageSize > 100 {
 		pageSize = 20
+	}
+
+	// 解析排序参数
+	sortBy := c.DefaultQuery("sortBy", "triggered_at")
+	sortOrder := c.DefaultQuery("sortOrder", "desc")
+
+	// 验证排序字段
+	validSortFields := map[string]bool{
+		"triggered_at":  true,
+		"rule_name":     true,
+		"vm_name":       true,
+		"severity":      true,
+		"status":        true,
+		"trigger_value": true,
+	}
+	if !validSortFields[sortBy] {
+		sortBy = "triggered_at"
+	}
+	if sortOrder != "asc" && sortOrder != "desc" {
+		sortOrder = "desc"
 	}
 
 	// 解析筛选参数
@@ -682,7 +702,8 @@ func (h *AlertHandler) ListRecords(c *gin.Context) {
 	// 分页查询
 	var records []models.AlertRecord
 	offset := (page - 1) * pageSize
-	if err := query.Order("triggered_at DESC").
+	orderClause := sortBy + " " + strings.ToUpper(sortOrder)
+	if err := query.Order(orderClause).
 		Limit(pageSize).Offset(offset).
 		Find(&records).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
@@ -712,7 +733,7 @@ func (h *AlertHandler) ListRecords(c *gin.Context) {
 // GetRecord 获取告警记录详情
 func (h *AlertHandler) GetRecord(c *gin.Context) {
 	recordID := c.Param("id")
-	
+
 	var id uuid.UUID
 	if err := id.UnmarshalText([]byte(recordID)); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -748,7 +769,7 @@ func (h *AlertHandler) GetRecord(c *gin.Context) {
 // Acknowledge 确认告警
 func (h *AlertHandler) Acknowledge(c *gin.Context) {
 	recordID := c.Param("id")
-	
+
 	var id uuid.UUID
 	if err := id.UnmarshalText([]byte(recordID)); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -790,9 +811,9 @@ func (h *AlertHandler) Acknowledge(c *gin.Context) {
 
 	now := time.Now()
 	updates := map[string]interface{}{
-		"status":           "acknowledged",
-		"acknowledged_at":  now,
-		"updated_at":       now,
+		"status":          "acknowledged",
+		"acknowledged_at": now,
+		"updated_at":      now,
 	}
 
 	// 获取用户信息
@@ -800,7 +821,7 @@ func (h *AlertHandler) Acknowledge(c *gin.Context) {
 	if userID, exists := c.Get("userID"); exists {
 		if uid, ok := userID.(uuid.UUID); ok {
 			updates["acknowledged_by"] = uid
-			
+
 			// 获取用户名
 			var user models.User
 			if err := h.db.Select("name").First(&user, uid).Error; err == nil {
@@ -826,10 +847,10 @@ func (h *AlertHandler) Acknowledge(c *gin.Context) {
 		"code":    200,
 		"message": "确认成功",
 		"data": gin.H{
-			"id":              recordID,
-			"status":          "acknowledged",
-			"acknowledgedAt":  now.Format(time.RFC3339),
-			"acknowledgedBy":  userName,
+			"id":             recordID,
+			"status":         "acknowledged",
+			"acknowledgedAt": now.Format(time.RFC3339),
+			"acknowledgedBy": userName,
 		},
 	})
 }
@@ -881,7 +902,7 @@ func (h *AlertHandler) BatchAcknowledge(c *gin.Context) {
 	if userID, exists := c.Get("userID"); exists {
 		if uid, ok := userID.(uuid.UUID); ok {
 			updates["acknowledged_by"] = uid
-			
+
 			var user models.User
 			if err := h.db.Select("name").First(&user, uid).Error; err == nil {
 				userName = user.Name
@@ -920,7 +941,7 @@ type ResolveRequest struct {
 // Resolve 解决告警
 func (h *AlertHandler) Resolve(c *gin.Context) {
 	recordID := c.Param("id")
-	
+
 	var id uuid.UUID
 	if err := id.UnmarshalText([]byte(recordID)); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -961,9 +982,9 @@ func (h *AlertHandler) Resolve(c *gin.Context) {
 
 	now := time.Now()
 	updates := map[string]interface{}{
-		"status":       "resolved",
-		"resolved_at":  now,
-		"updated_at":   now,
+		"status":      "resolved",
+		"resolved_at": now,
+		"updated_at":  now,
 	}
 
 	// 计算持续时间
@@ -977,7 +998,7 @@ func (h *AlertHandler) Resolve(c *gin.Context) {
 	if userID, exists := c.Get("userID"); exists {
 		if uid, ok := userID.(uuid.UUID); ok {
 			updates["resolved_by"] = uid
-			
+
 			var user models.User
 			if err := h.db.Select("name").First(&user, uid).Error; err == nil {
 				userName = user.Name
@@ -1002,10 +1023,10 @@ func (h *AlertHandler) Resolve(c *gin.Context) {
 		"code":    200,
 		"message": "解决成功",
 		"data": gin.H{
-			"id":          recordID,
-			"status":      "resolved",
-			"resolvedAt":  now.Format(time.RFC3339),
-			"resolvedBy":  userName,
+			"id":         recordID,
+			"status":     "resolved",
+			"resolvedAt": now.Format(time.RFC3339),
+			"resolvedBy": userName,
 		},
 	})
 }
@@ -1013,7 +1034,7 @@ func (h *AlertHandler) Resolve(c *gin.Context) {
 // Ignore 忽略告警
 func (h *AlertHandler) Ignore(c *gin.Context) {
 	recordID := c.Param("id")
-	
+
 	var id uuid.UUID
 	if err := id.UnmarshalText([]byte(recordID)); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -1051,16 +1072,16 @@ func (h *AlertHandler) Ignore(c *gin.Context) {
 
 	now := time.Now()
 	updates := map[string]interface{}{
-		"status":       "ignored",
-		"resolved_at":  now,
-		"updated_at":   now,
+		"status":      "ignored",
+		"resolved_at": now,
+		"updated_at":  now,
 	}
 
 	// 获取用户信息
 	if userID, exists := c.Get("userID"); exists {
 		if uid, ok := userID.(uuid.UUID); ok {
 			updates["resolved_by"] = uid
-			
+
 			var user models.User
 			if err := h.db.Select("name").First(&user, uid).Error; err == nil {
 				updates["resolved_by_name"] = user.Name
@@ -1177,11 +1198,11 @@ func (h *AlertHandler) Trends(c *gin.Context) {
 
 	// 按天统计告警数量
 	var trends []struct {
-		Date          string `json:"date"`
-		Total         int64  `json:"total"`
-		Active        int64  `json:"active"`
-		Acknowledged  int64  `json:"acknowledged"`
-		Resolved      int64  `json:"resolved"`
+		Date         string `json:"date"`
+		Total        int64  `json:"total"`
+		Active       int64  `json:"active"`
+		Acknowledged int64  `json:"acknowledged"`
+		Resolved     int64  `json:"resolved"`
 	}
 
 	// 使用数据库原生查询获取按天的统计

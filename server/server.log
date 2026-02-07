@@ -1,0 +1,1745 @@
+🔧 启动完整API服务器（含权限管理）...
+🌱 初始化权限数据...
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/internal/models/seed.go:41
+[0m[33m[4.669ms] [34;1m[rows:1][0m SELECT * FROM "permissions" WHERE id = 'vm:read' ORDER BY "permissions"."id" LIMIT 1
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/internal/models/seed.go:41
+[0m[33m[0.283ms] [34;1m[rows:1][0m SELECT * FROM "permissions" WHERE id = 'vm:write' ORDER BY "permissions"."id" LIMIT 1
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/internal/models/seed.go:41
+[0m[33m[0.247ms] [34;1m[rows:1][0m SELECT * FROM "permissions" WHERE id = 'vm:delete' ORDER BY "permissions"."id" LIMIT 1
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/internal/models/seed.go:41
+[0m[33m[0.336ms] [34;1m[rows:1][0m SELECT * FROM "permissions" WHERE id = 'vm:metrics' ORDER BY "permissions"."id" LIMIT 1
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/internal/models/seed.go:41
+[0m[33m[0.241ms] [34;1m[rows:1][0m SELECT * FROM "permissions" WHERE id = 'alert:read' ORDER BY "permissions"."id" LIMIT 1
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/internal/models/seed.go:41
+[0m[33m[0.123ms] [34;1m[rows:1][0m SELECT * FROM "permissions" WHERE id = 'alert:write' ORDER BY "permissions"."id" LIMIT 1
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/internal/models/seed.go:41
+[0m[33m[0.100ms] [34;1m[rows:1][0m SELECT * FROM "permissions" WHERE id = 'alert:acknowledge' ORDER BY "permissions"."id" LIMIT 1
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/internal/models/seed.go:41
+[0m[33m[0.108ms] [34;1m[rows:1][0m SELECT * FROM "permissions" WHERE id = 'alert:resolve' ORDER BY "permissions"."id" LIMIT 1
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/internal/models/seed.go:41
+[0m[33m[0.091ms] [34;1m[rows:1][0m SELECT * FROM "permissions" WHERE id = 'user:read' ORDER BY "permissions"."id" LIMIT 1
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/internal/models/seed.go:41
+[0m[33m[0.089ms] [34;1m[rows:1][0m SELECT * FROM "permissions" WHERE id = 'user:write' ORDER BY "permissions"."id" LIMIT 1
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/internal/models/seed.go:41
+[0m[33m[0.091ms] [34;1m[rows:1][0m SELECT * FROM "permissions" WHERE id = 'user:delete' ORDER BY "permissions"."id" LIMIT 1
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/internal/models/seed.go:41
+[0m[33m[0.087ms] [34;1m[rows:1][0m SELECT * FROM "permissions" WHERE id = 'role:read' ORDER BY "permissions"."id" LIMIT 1
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/internal/models/seed.go:41
+[0m[33m[0.178ms] [34;1m[rows:1][0m SELECT * FROM "permissions" WHERE id = 'role:write' ORDER BY "permissions"."id" LIMIT 1
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/internal/models/seed.go:41
+[0m[33m[0.094ms] [34;1m[rows:1][0m SELECT * FROM "permissions" WHERE id = 'system:settings' ORDER BY "permissions"."id" LIMIT 1
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/internal/models/seed.go:41
+[0m[33m[0.103ms] [34;1m[rows:1][0m SELECT * FROM "permissions" WHERE id = 'system:logs' ORDER BY "permissions"."id" LIMIT 1
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/internal/models/seed.go:87
+[0m[33m[1.938ms] [34;1m[rows:1][0m SELECT * FROM "roles" WHERE id = '11111111-1111-1111-1111-111111111111' ORDER BY "roles"."id" LIMIT 1
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/internal/models/seed.go:87
+[0m[33m[0.292ms] [34;1m[rows:1][0m SELECT * FROM "roles" WHERE id = '22222222-2222-2222-2222-222222222222' ORDER BY "roles"."id" LIMIT 1
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/internal/models/seed.go:87
+[0m[33m[0.253ms] [34;1m[rows:1][0m SELECT * FROM "roles" WHERE id = '33333333-3333-3333-3333-333333333333' ORDER BY "roles"."id" LIMIT 1
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/internal/models/seed.go:103
+[0m[33m[1.122ms] [34;1m[rows:22][0m SELECT * FROM "role_permissions" WHERE "role_permissions"."role_id" = '11111111-1111-1111-1111-111111111111'
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/internal/models/seed.go:103
+[0m[33m[0.876ms] [34;1m[rows:22][0m SELECT * FROM "permissions" WHERE "permissions"."id" IN ('alert:acknowledge','alert:admin','alert:read','alert:resolve','alert:write','history:export','history:read','role:read','role:write','system:admin','system:logs','system:read','system:settings','user:admin','user:delete','user:read','user:write','vm:admin','vm:delete','vm:metrics','vm:read','vm:write')
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/internal/models/seed.go:103
+[0m[33m[2.524ms] [34;1m[rows:1][0m SELECT * FROM "roles" WHERE "roles"."id" = '11111111-1111-1111-1111-111111111111' ORDER BY "roles"."id" LIMIT 1
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/internal/models/seed.go:114
+[0m[33m[0.248ms] [34;1m[rows:12][0m SELECT * FROM "role_permissions" WHERE "role_permissions"."role_id" = '22222222-2222-2222-2222-222222222222'
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/internal/models/seed.go:114
+[0m[33m[0.487ms] [34;1m[rows:12][0m SELECT * FROM "permissions" WHERE "permissions"."id" IN ('alert:acknowledge','alert:read','alert:resolve','alert:write','history:export','history:read','system:logs','vm:admin','vm:delete','vm:metrics','vm:read','vm:write')
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/internal/models/seed.go:114
+[0m[33m[1.069ms] [34;1m[rows:1][0m SELECT * FROM "roles" WHERE "roles"."id" = '22222222-2222-2222-2222-222222222222' ORDER BY "roles"."id" LIMIT 1
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/internal/models/seed.go:128
+[0m[33m[0.098ms] [34;1m[rows:3][0m SELECT * FROM "role_permissions" WHERE "role_permissions"."role_id" = '33333333-3333-3333-3333-333333333333'
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/internal/models/seed.go:128
+[0m[33m[0.197ms] [34;1m[rows:3][0m SELECT * FROM "permissions" WHERE "permissions"."id" IN ('alert:read','vm:metrics','vm:read')
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/internal/models/seed.go:128
+[0m[33m[0.464ms] [34;1m[rows:1][0m SELECT * FROM "roles" WHERE "roles"."id" = '33333333-3333-3333-3333-333333333333' ORDER BY "roles"."id" LIMIT 1
+✅ 权限数据初始化完成
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[4.095ms] [34;1m[rows:1][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND table_type = 'BASE TABLE'
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[0.371ms] [34;1m[rows:1][0m SELECT CURRENT_DATABASE()
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[15.911ms] [34;1m[rows:-][0m SELECT c.column_name, c.is_nullable = 'YES', c.udt_name, c.character_maximum_length, c.numeric_precision, c.numeric_precision_radix, c.numeric_scale, c.datetime_precision, 8 * typlen, c.column_default, pd.description, c.identity_increment FROM information_schema.columns AS c JOIN pg_type AS pgt ON c.udt_name = pgt.typname LEFT JOIN pg_catalog.pg_description as pd ON pd.objsubid = c.ordinal_position AND pd.objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = c.table_name AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = c.table_schema)) where table_catalog = 'vm_monitoring' AND table_schema = CURRENT_SCHEMA() AND table_name = 'users'
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[0.842ms] [34;1m[rows:-][0m SELECT * FROM "users" LIMIT 5
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[9.465ms] [34;1m[rows:-][0m SELECT constraint_name FROM information_schema.table_constraints tc JOIN information_schema.constraint_column_usage AS ccu USING (constraint_schema, constraint_catalog, table_name, constraint_name) JOIN information_schema.columns AS c ON c.table_schema = tc.constraint_schema AND tc.table_name = c.table_name AND ccu.column_name = c.column_name WHERE constraint_type IN ('PRIMARY KEY', 'UNIQUE') AND c.table_catalog = 'vm_monitoring' AND c.table_schema = CURRENT_SCHEMA() AND c.table_name = 'users' AND constraint_type = 'UNIQUE'
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[5.415ms] [34;1m[rows:-][0m SELECT c.column_name, constraint_name, constraint_type FROM information_schema.table_constraints tc JOIN information_schema.constraint_column_usage AS ccu USING (constraint_schema, constraint_catalog, table_name, constraint_name) JOIN information_schema.columns AS c ON c.table_schema = tc.constraint_schema AND tc.table_name = c.table_name AND ccu.column_name = c.column_name WHERE constraint_type IN ('PRIMARY KEY', 'UNIQUE') AND c.table_catalog = 'vm_monitoring' AND c.table_schema = CURRENT_SCHEMA() AND c.table_name = 'users'
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[0.444ms] [34;1m[rows:-][0m SELECT a.attname as column_name, format_type(a.atttypid, a.atttypmod) AS data_type
+		FROM pg_attribute a JOIN pg_class b ON a.attrelid = b.oid AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA())
+		WHERE a.attnum > 0 -- hide internal columns
+		AND NOT a.attisdropped -- hide deleted columns
+		AND b.relname = 'users'
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[1.478ms] [34;1m[rows:0][0m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'id') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[1.028ms] [34;1m[rows:0][0m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'username') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[1.091ms] [34;1m[rows:0][0m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'email') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[1.101ms] [34;1m[rows:0][0m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'password_hash') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[1.090ms] [34;1m[rows:0][0m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'name') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[1.508ms] [34;1m[rows:0][0m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'phone') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[0.347ms] [34;1m[rows:0][0m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'department') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[0.238ms] [34;1m[rows:0][0m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'avatar') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[0.125ms] [34;1m[rows:0][0m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'status') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[0.122ms] [34;1m[rows:0][0m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'must_change_password') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[0.182ms] [34;1m[rows:0][0m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'mfa_enabled') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[0.127ms] [34;1m[rows:0][0m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'mfa_secret') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[0.141ms] [34;1m[rows:0][0m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'last_login_at') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[0.127ms] [34;1m[rows:0][0m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'last_login_ip') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[0.146ms] [34;1m[rows:0][0m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'login_fail_count') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[0.122ms] [34;1m[rows:0][0m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'locked_until') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[0.107ms] [34;1m[rows:0][0m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'password_expired_at') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[0.110ms] [34;1m[rows:0][0m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'preferences') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[0.173ms] [34;1m[rows:0][0m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'created_at') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[0.144ms] [34;1m[rows:0][0m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'updated_at') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[0.129ms] [34;1m[rows:0][0m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'created_by') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[0.150ms] [34;1m[rows:0][0m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'users' AND column_name = 'updated_by') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'users' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[3.231ms] [34;1m[rows:1][0m SELECT count(*) FROM pg_indexes WHERE tablename = 'users' AND indexname = 'idx_users_username' AND schemaname = CURRENT_SCHEMA()
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[0.430ms] [34;1m[rows:1][0m SELECT count(*) FROM pg_indexes WHERE tablename = 'users' AND indexname = 'idx_users_email' AND schemaname = CURRENT_SCHEMA()
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[0.431ms] [34;1m[rows:1][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'roles' AND table_type = 'BASE TABLE'
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[0.095ms] [34;1m[rows:1][0m SELECT CURRENT_DATABASE()
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[2.675ms] [34;1m[rows:-][0m SELECT c.column_name, c.is_nullable = 'YES', c.udt_name, c.character_maximum_length, c.numeric_precision, c.numeric_precision_radix, c.numeric_scale, c.datetime_precision, 8 * typlen, c.column_default, pd.description, c.identity_increment FROM information_schema.columns AS c JOIN pg_type AS pgt ON c.udt_name = pgt.typname LEFT JOIN pg_catalog.pg_description as pd ON pd.objsubid = c.ordinal_position AND pd.objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = c.table_name AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = c.table_schema)) where table_catalog = 'vm_monitoring' AND table_schema = CURRENT_SCHEMA() AND table_name = 'roles'
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[0.135ms] [34;1m[rows:-][0m SELECT * FROM "roles" LIMIT 5
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[3.528ms] [34;1m[rows:-][0m SELECT constraint_name FROM information_schema.table_constraints tc JOIN information_schema.constraint_column_usage AS ccu USING (constraint_schema, constraint_catalog, table_name, constraint_name) JOIN information_schema.columns AS c ON c.table_schema = tc.constraint_schema AND tc.table_name = c.table_name AND ccu.column_name = c.column_name WHERE constraint_type IN ('PRIMARY KEY', 'UNIQUE') AND c.table_catalog = 'vm_monitoring' AND c.table_schema = CURRENT_SCHEMA() AND c.table_name = 'roles' AND constraint_type = 'UNIQUE'
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[3.496ms] [34;1m[rows:-][0m SELECT c.column_name, constraint_name, constraint_type FROM information_schema.table_constraints tc JOIN information_schema.constraint_column_usage AS ccu USING (constraint_schema, constraint_catalog, table_name, constraint_name) JOIN information_schema.columns AS c ON c.table_schema = tc.constraint_schema AND tc.table_name = c.table_name AND ccu.column_name = c.column_name WHERE constraint_type IN ('PRIMARY KEY', 'UNIQUE') AND c.table_catalog = 'vm_monitoring' AND c.table_schema = CURRENT_SCHEMA() AND c.table_name = 'roles'
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[0.219ms] [34;1m[rows:-][0m SELECT a.attname as column_name, format_type(a.atttypid, a.atttypmod) AS data_type
+		FROM pg_attribute a JOIN pg_class b ON a.attrelid = b.oid AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA())
+		WHERE a.attnum > 0 -- hide internal columns
+		AND NOT a.attisdropped -- hide deleted columns
+		AND b.relname = 'roles'
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[0.192ms] [34;1m[rows:0][0m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'roles' AND column_name = 'id') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'roles' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[0.137ms] [34;1m[rows:0][0m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'roles' AND column_name = 'name') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'roles' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[0.151ms] [34;1m[rows:0][0m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'roles' AND column_name = 'description') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'roles' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[0.131ms] [34;1m[rows:0][0m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'roles' AND column_name = 'parent_id') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'roles' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[0.149ms] [34;1m[rows:0][0m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'roles' AND column_name = 'level') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'roles' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[0.108ms] [34;1m[rows:0][0m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'roles' AND column_name = 'path') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'roles' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[0.143ms] [34;1m[rows:0][0m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'roles' AND column_name = 'is_system') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'roles' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[0.123ms] [34;1m[rows:0][0m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'roles' AND column_name = 'created_at') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'roles' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[0.129ms] [34;1m[rows:0][0m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'roles' AND column_name = 'updated_at') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'roles' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[0.136ms] [34;1m[rows:0][0m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'roles' AND column_name = 'created_by') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'roles' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[0.153ms] [34;1m[rows:0][0m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'roles' AND column_name = 'updated_by') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'roles' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[0.610ms] [34;1m[rows:1][0m SELECT count(*) FROM INFORMATION_SCHEMA.table_constraints WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'roles' AND constraint_name = 'fk_roles_children'
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[0.301ms] [34;1m[rows:1][0m SELECT count(*) FROM pg_indexes WHERE tablename = 'roles' AND indexname = 'idx_roles_name' AND schemaname = CURRENT_SCHEMA()
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[0.313ms] [34;1m[rows:1][0m SELECT count(*) FROM pg_indexes WHERE tablename = 'roles' AND indexname = 'idx_roles_parent_id' AND schemaname = CURRENT_SCHEMA()
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[0.269ms] [34;1m[rows:1][0m SELECT count(*) FROM information_schema.tables WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'user_roles' AND table_type = 'BASE TABLE'
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[0.075ms] [34;1m[rows:1][0m SELECT CURRENT_DATABASE()
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[2.524ms] [34;1m[rows:-][0m SELECT c.column_name, c.is_nullable = 'YES', c.udt_name, c.character_maximum_length, c.numeric_precision, c.numeric_precision_radix, c.numeric_scale, c.datetime_precision, 8 * typlen, c.column_default, pd.description, c.identity_increment FROM information_schema.columns AS c JOIN pg_type AS pgt ON c.udt_name = pgt.typname LEFT JOIN pg_catalog.pg_description as pd ON pd.objsubid = c.ordinal_position AND pd.objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = c.table_name AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = c.table_schema)) where table_catalog = 'vm_monitoring' AND table_schema = CURRENT_SCHEMA() AND table_name = 'user_roles'
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[0.261ms] [34;1m[rows:-][0m SELECT * FROM "user_roles" LIMIT 5
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[3.073ms] [34;1m[rows:-][0m SELECT constraint_name FROM information_schema.table_constraints tc JOIN information_schema.constraint_column_usage AS ccu USING (constraint_schema, constraint_catalog, table_name, constraint_name) JOIN information_schema.columns AS c ON c.table_schema = tc.constraint_schema AND tc.table_name = c.table_name AND ccu.column_name = c.column_name WHERE constraint_type IN ('PRIMARY KEY', 'UNIQUE') AND c.table_catalog = 'vm_monitoring' AND c.table_schema = CURRENT_SCHEMA() AND c.table_name = 'user_roles' AND constraint_type = 'UNIQUE'
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[2.975ms] [34;1m[rows:-][0m SELECT c.column_name, constraint_name, constraint_type FROM information_schema.table_constraints tc JOIN information_schema.constraint_column_usage AS ccu USING (constraint_schema, constraint_catalog, table_name, constraint_name) JOIN information_schema.columns AS c ON c.table_schema = tc.constraint_schema AND tc.table_name = c.table_name AND ccu.column_name = c.column_name WHERE constraint_type IN ('PRIMARY KEY', 'UNIQUE') AND c.table_catalog = 'vm_monitoring' AND c.table_schema = CURRENT_SCHEMA() AND c.table_name = 'user_roles'
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[0.164ms] [34;1m[rows:-][0m SELECT a.attname as column_name, format_type(a.atttypid, a.atttypmod) AS data_type
+		FROM pg_attribute a JOIN pg_class b ON a.attrelid = b.oid AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA())
+		WHERE a.attnum > 0 -- hide internal columns
+		AND NOT a.attisdropped -- hide deleted columns
+		AND b.relname = 'user_roles'
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[0.135ms] [34;1m[rows:0][0m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'user_roles' AND column_name = 'user_id') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'user_roles' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[0.118ms] [34;1m[rows:0][0m SELECT description FROM pg_catalog.pg_description WHERE objsubid = (SELECT ordinal_position FROM information_schema.columns WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'user_roles' AND column_name = 'role_id') AND objoid = (SELECT oid FROM pg_catalog.pg_class WHERE relname = 'user_roles' AND relnamespace = (SELECT oid FROM pg_catalog.pg_namespace WHERE nspname = CURRENT_SCHEMA()))
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[0.428ms] [34;1m[rows:1][0m SELECT count(*) FROM INFORMATION_SCHEMA.table_constraints WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'user_roles' AND constraint_name = 'fk_user_roles_user'
+
+2026/02/07 11:39:22 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:809
+[0m[33m[0.443ms] [34;1m[rows:1][0m SELECT count(*) FROM INFORMATION_SCHEMA.table_constraints WHERE table_schema = CURRENT_SCHEMA() AND table_name = 'user_roles' AND constraint_name = 'fk_user_roles_role'
+✅ 数据库迁移完成
+[GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
+
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /health                   --> main.main.func2 (4 handlers)
+[GIN-debug] GET    /uploads/*filepath        --> github.com/gin-gonic/gin.(*RouterGroup).createStaticHandler.func1 (4 handlers)
+[GIN-debug] HEAD   /uploads/*filepath        --> github.com/gin-gonic/gin.(*RouterGroup).createStaticHandler.func1 (4 handlers)
+[GIN-debug] POST   /api/v1/auth/register     --> main.main.func3 (4 handlers)
+[GIN-debug] POST   /api/v1/auth/login        --> main.main.func4 (4 handlers)
+[GIN-debug] GET    /api/v1/users             --> main.main.func5 (5 handlers)
+[GIN-debug] DELETE /api/v1/users/:id         --> main.main.func6 (5 handlers)
+[GIN-debug] GET    /api/v1/auth/profile      --> main.main.func7 (5 handlers)
+[GIN-debug] PUT    /api/v1/auth/profile      --> main.main.func8 (5 handlers)
+[GIN-debug] POST   /api/v1/auth/avatar       --> main.main.func9 (5 handlers)
+[GIN-debug] POST   /api/v1/auth/logout       --> main.main.func10 (5 handlers)
+[GIN-debug] GET    /api/v1/vms               --> main.main.func11 (5 handlers)
+[GIN-debug] GET    /api/v1/vms/stats         --> main.main.func12 (5 handlers)
+[GIN-debug] GET    /api/v1/vms/:id           --> main.main.func13 (5 handlers)
+[GIN-debug] POST   /api/v1/vms               --> main.main.func14 (5 handlers)
+[GIN-debug] PUT    /api/v1/vms/:id           --> main.main.func15 (5 handlers)
+[GIN-debug] DELETE /api/v1/vms/:id           --> main.main.func16 (5 handlers)
+[GIN-debug] GET    /api/v1/vms/:id/metrics   --> main.main.func17 (5 handlers)
+[GIN-debug] GET    /api/v1/vms/metrics/all   --> main.main.func18 (5 handlers)
+[GIN-debug] GET    /api/v1/vms/:id/metrics/history --> main.main.func19 (5 handlers)
+[GIN-debug] GET    /api/v1/alerts/rules      --> main.main.func20 (5 handlers)
+[GIN-debug] GET    /api/v1/alerts/rules/:id  --> main.main.func21 (5 handlers)
+[GIN-debug] POST   /api/v1/alerts/rules      --> main.main.func22 (5 handlers)
+[GIN-debug] PUT    /api/v1/alerts/rules/:id  --> main.main.func23 (5 handlers)
+[GIN-debug] DELETE /api/v1/alerts/rules/:id  --> main.main.func24 (5 handlers)
+[GIN-debug] GET    /api/v1/alerts/records    --> main.main.func25 (5 handlers)
+[GIN-debug] GET    /api/v1/alerts/stats      --> main.main.func26 (5 handlers)
+[GIN-debug] POST   /api/v1/alerts/:id/acknowledge --> main.main.func27 (5 handlers)
+[GIN-debug] POST   /api/v1/alerts/:id/resolve --> main.main.func28 (5 handlers)
+[GIN-debug] POST   /api/v1/alerts/test       --> main.main.func29 (5 handlers)
+[GIN-debug] GET    /api/v1/permissions       --> main.main.func30 (5 handlers)
+[GIN-debug] GET    /api/v1/permissions/:id   --> main.main.func31 (5 handlers)
+[GIN-debug] POST   /api/v1/permissions       --> main.main.func32 (5 handlers)
+[GIN-debug] DELETE /api/v1/permissions/:id   --> main.main.func33 (5 handlers)
+[GIN-debug] GET    /api/v1/permissions/role/:roleId --> main.main.func34 (5 handlers)
+[GIN-debug] POST   /api/v1/permissions/role/:roleId --> main.main.func35 (5 handlers)
+[GIN-debug] GET    /api/v1/roles             --> main.main.func36 (5 handlers)
+[GIN-debug] GET    /api/v1/roles/:id         --> main.main.func37 (5 handlers)
+[GIN-debug] POST   /api/v1/roles             --> main.main.func38 (5 handlers)
+[GIN-debug] PUT    /api/v1/roles/:id         --> main.main.func39 (5 handlers)
+[GIN-debug] DELETE /api/v1/roles/:id         --> main.main.func40 (5 handlers)
+[GIN-debug] GET    /api/v1/roles/:id/users   --> main.main.func41 (5 handlers)
+[GIN-debug] POST   /api/v1/roles/users       --> main.main.func42 (5 handlers)
+[GIN-debug] GET    /api/v1/users/:userId/roles --> main.main.func43 (5 handlers)
+[GIN-debug] GET    /api/v1/users/:userId/permissions --> main.main.func44 (5 handlers)
+🚀 API服务器启动: http://localhost:8080
+[GIN-debug] [WARNING] You trusted all proxies, this is NOT safe. We recommend you to set a value.
+Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-proxies for details.
+[GIN-debug] Listening and serving HTTP on :8080
+
+2026/02/07 11:39:30 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:117
+[0m[33m[2.296ms] [34;1m[rows:1][0m SELECT * FROM "users" WHERE username = 'testuser4' OR email = 'testuser4' ORDER BY "users"."id" LIMIT 1
+[GIN] 2026/02/07 - 11:39:30 | 200 |   63.935416ms |             ::1 | POST     "/api/v1/auth/login"
+
+2026/02/07 11:39:30 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:218
+[0m[33m[2.338ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false
+
+2026/02/07 11:39:30 [31;1m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:221 [35;1msql: Scan error on column index 22, name "tags": json: cannot unmarshal array into Go value of type models.JSONMap; sql: Scan error on column index 22, name "tags": json: cannot unmarshal array into Go value of type models.JSONMap; sql: Scan error on column index 22, name "tags": json: cannot unmarshal array into Go value of type models.JSONMap; sql: Scan error on column index 22, name "tags": json: cannot unmarshal array into Go value of type models.JSONMap; sql: Scan error on column index 22, name "tags": json: cannot unmarshal array into Go value of type models.JSONMap; sql: Scan error on column index 22, name "tags": json: cannot unmarshal array into Go value of type models.JSONMap; sql: Scan error on column index 22, name "tags": json: cannot unmarshal array into Go value of type models.JSONMap; sql: Scan error on column index 22, name "tags": json: cannot unmarshal array into Go value of type models.JSONMap; sql: Scan error on column index 22, name "tags": json: cannot unmarshal array into Go value of type models.JSONMap; sql: Scan error on column index 22, name "tags": json: cannot unmarshal array into Go value of type models.JSONMap
+[0m[33m[1.146ms] [34;1m[rows:10][0m SELECT * FROM "vms" WHERE is_deleted = false ORDER BY created_at DESC LIMIT 10
+[GIN] 2026/02/07 - 11:39:30 | 200 |    3.747709ms |             ::1 | GET      "/api/v1/vms"
+
+2026/02/07 11:39:45 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:117
+[0m[33m[2.008ms] [34;1m[rows:1][0m SELECT * FROM "users" WHERE username = 'testuser4' OR email = 'testuser4' ORDER BY "users"."id" LIMIT 1
+[GIN] 2026/02/07 - 11:39:45 | 200 |   63.777959ms |             ::1 | POST     "/api/v1/auth/login"
+
+2026/02/07 11:39:45 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:218
+[0m[33m[0.353ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false
+
+2026/02/07 11:39:45 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:221
+[0m[33m[0.334ms] [34;1m[rows:10][0m SELECT * FROM "vms" WHERE is_deleted = false ORDER BY created_at DESC LIMIT 10
+[GIN] 2026/02/07 - 11:39:45 | 200 |       847.5µs |             ::1 | GET      "/api/v1/vms"
+
+2026/02/07 11:39:53 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:117
+[0m[33m[1.821ms] [34;1m[rows:1][0m SELECT * FROM "users" WHERE username = 'testuser4' OR email = 'testuser4' ORDER BY "users"."id" LIMIT 1
+[GIN] 2026/02/07 - 11:39:53 | 200 |   63.546834ms |             ::1 | POST     "/api/v1/auth/login"
+
+2026/02/07 11:39:53 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:218
+[0m[33m[0.477ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false
+
+2026/02/07 11:39:53 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:221
+[0m[33m[0.584ms] [34;1m[rows:10][0m SELECT * FROM "vms" WHERE is_deleted = false ORDER BY created_at DESC LIMIT 10
+[GIN] 2026/02/07 - 11:39:53 | 200 |    1.180709ms |             ::1 | GET      "/api/v1/vms"
+
+2026/02/07 11:39:53 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:1081
+[0m[33m[1.829ms] [34;1m[rows:-][0m SELECT recorded_at as timestamp, cpu_usage, memory_usage, disk_usage, disk_read_mbps, disk_write_mbps, network_in_mbps, network_out_mbps, temperature FROM "vm_metrics_history" WHERE vm_id = 'a5160282-b7ca-4d3d-a579-ee65ee8370a7' AND recorded_at >= '2026-02-06 11:39:53.24' ORDER BY recorded_at ASC
+[GIN] 2026/02/07 - 11:39:53 | 200 |    1.992167ms |             ::1 | GET      "/api/v1/vms/a5160282-b7ca-4d3d-a579-ee65ee8370a7/metrics/history?period=24h"
+
+2026/02/07 11:39:58 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:117
+[0m[33m[1.911ms] [34;1m[rows:1][0m SELECT * FROM "users" WHERE username = 'testuser4' OR email = 'testuser4' ORDER BY "users"."id" LIMIT 1
+[GIN] 2026/02/07 - 11:39:58 | 200 |   63.612084ms |             ::1 | POST     "/api/v1/auth/login"
+
+2026/02/07 11:39:58 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:416
+[0m[33m[1.746ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records"
+
+2026/02/07 11:39:58 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:418
+[0m[33m[0.407ms] [34;1m[rows:10][0m SELECT * FROM "alert_records" ORDER BY triggered_at DESC LIMIT 10
+[GIN] 2026/02/07 - 11:39:58 | 200 |    2.331916ms |             ::1 | GET      "/api/v1/alerts/records"
+
+2026/02/07 11:40:20 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:218
+[0m[33m[2.729ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false
+
+2026/02/07 11:40:20 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:221
+[0m[33m[1.057ms] [34;1m[rows:16][0m SELECT * FROM "vms" WHERE is_deleted = false ORDER BY created_at DESC LIMIT 20
+[GIN] 2026/02/07 - 11:40:20 | 200 |    4.056833ms |             ::1 | GET      "/api/v1/vms?page=1&pageSize=20"
+
+2026/02/07 11:40:20 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:1025
+[0m[33m[13.237ms] [34;1m[rows:-][0m 
+				SELECT 
+					v.id as vm_id,
+					v.name as vm_name,
+					m.cpu_usage,
+					m.memory_usage,
+					m.disk_usage,
+					m.disk_read_mbps,
+					m.disk_write_mbps,
+					m.network_in_mbps,
+					m.network_out_mbps,
+					m.temperature,
+					m.recorded_at
+				FROM vms v
+				LEFT JOIN vm_metrics m ON v.id = m.vm_id
+				WHERE v.is_deleted = false
+				ORDER BY m.recorded_at DESC
+			
+[GIN] 2026/02/07 - 11:40:20 | 200 |   13.595958ms |             ::1 | GET      "/api/v1/vms/metrics/all"
+
+2026/02/07 11:40:23 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:218
+[0m[33m[2.706ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false
+
+2026/02/07 11:40:23 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:221
+[0m[33m[1.534ms] [34;1m[rows:16][0m SELECT * FROM "vms" WHERE is_deleted = false ORDER BY created_at DESC LIMIT 20
+[GIN] 2026/02/07 - 11:40:23 | 200 |     4.90675ms |             ::1 | GET      "/api/v1/vms?page=1&pageSize=20"
+
+2026/02/07 11:40:23 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:1025
+[0m[33m[4.578ms] [34;1m[rows:-][0m 
+				SELECT 
+					v.id as vm_id,
+					v.name as vm_name,
+					m.cpu_usage,
+					m.memory_usage,
+					m.disk_usage,
+					m.disk_read_mbps,
+					m.disk_write_mbps,
+					m.network_in_mbps,
+					m.network_out_mbps,
+					m.temperature,
+					m.recorded_at
+				FROM vms v
+				LEFT JOIN vm_metrics m ON v.id = m.vm_id
+				WHERE v.is_deleted = false
+				ORDER BY m.recorded_at DESC
+			
+[GIN] 2026/02/07 - 11:40:23 | 200 |    5.077125ms |             ::1 | GET      "/api/v1/vms/metrics/all"
+[GIN] 2026/02/07 - 11:40:27 | 204 |       6.542µs |             ::1 | OPTIONS  "/api/v1/vms/stats"
+
+2026/02/07 11:40:27 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:424
+[0m[33m[1.312ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records"
+
+2026/02/07 11:40:27 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:425
+[0m[33m[0.641ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE status = 'active'
+
+2026/02/07 11:40:27 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:291
+[0m[33m[1.701ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false
+
+2026/02/07 11:40:27 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:426
+[0m[33m[0.790ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'critical'
+
+2026/02/07 11:40:27 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:427
+[0m[33m[0.331ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'warning'
+[GIN] 2026/02/07 - 11:40:27 | 200 |    3.581875ms |             ::1 | GET      "/api/v1/alerts/stats"
+
+2026/02/07 11:40:27 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:292
+[0m[33m[1.278ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false AND status = 'running'
+
+2026/02/07 11:40:27 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:293
+[0m[33m[0.134ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false AND status = 'poweredOff'
+
+2026/02/07 11:40:27 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:294
+[0m[33m[0.125ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false AND status = 'warning'
+[GIN] 2026/02/07 - 11:40:27 | 200 |     3.53875ms |             ::1 | GET      "/api/v1/vms/stats"
+
+2026/02/07 11:40:28 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:218
+[0m[33m[1.597ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false
+
+2026/02/07 11:40:28 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:1025
+[0m[33m[1.362ms] [34;1m[rows:-][0m 
+				SELECT 
+					v.id as vm_id,
+					v.name as vm_name,
+					m.cpu_usage,
+					m.memory_usage,
+					m.disk_usage,
+					m.disk_read_mbps,
+					m.disk_write_mbps,
+					m.network_in_mbps,
+					m.network_out_mbps,
+					m.temperature,
+					m.recorded_at
+				FROM vms v
+				LEFT JOIN vm_metrics m ON v.id = m.vm_id
+				WHERE v.is_deleted = false
+				ORDER BY m.recorded_at DESC
+			
+[GIN] 2026/02/07 - 11:40:28 | 200 |    1.734625ms |             ::1 | GET      "/api/v1/vms/metrics/all"
+
+2026/02/07 11:40:28 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:221
+[0m[33m[1.157ms] [34;1m[rows:16][0m SELECT * FROM "vms" WHERE is_deleted = false ORDER BY created_at DESC LIMIT 20
+[GIN] 2026/02/07 - 11:40:28 | 200 |    3.061041ms |             ::1 | GET      "/api/v1/vms?page=1&pageSize=20"
+[GIN] 2026/02/07 - 11:40:30 | 204 |       4.542µs |             ::1 | OPTIONS  "/api/v1/alerts/rules"
+
+2026/02/07 11:40:30 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:424
+[0m[33m[3.093ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records"
+
+2026/02/07 11:40:30 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:425
+[0m[33m[0.473ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE status = 'active'
+
+2026/02/07 11:40:30 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:426
+[0m[33m[0.632ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'critical'
+
+2026/02/07 11:40:30 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:427
+[0m[33m[0.121ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'warning'
+[GIN] 2026/02/07 - 11:40:30 | 200 |    4.700834ms |             ::1 | GET      "/api/v1/alerts/stats"
+[GIN] 2026/02/07 - 11:40:30 | 204 |      50.875µs |             ::1 | OPTIONS  "/api/v1/alerts/records"
+
+2026/02/07 11:40:30 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:324
+[0m[33m[0.978ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_rules"
+
+2026/02/07 11:40:30 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:326
+[0m[33m[0.293ms] [34;1m[rows:2][0m SELECT * FROM "alert_rules" ORDER BY created_at DESC LIMIT 10
+[GIN] 2026/02/07 - 11:40:30 | 200 |    1.438375ms |             ::1 | GET      "/api/v1/alerts/rules"
+
+2026/02/07 11:40:30 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:416
+[0m[33m[0.202ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records"
+
+2026/02/07 11:40:30 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:418
+[0m[33m[0.922ms] [34;1m[rows:10][0m SELECT * FROM "alert_records" ORDER BY triggered_at DESC LIMIT 10
+[GIN] 2026/02/07 - 11:40:30 | 200 |      1.4815ms |             ::1 | GET      "/api/v1/alerts/records"
+[GIN] 2026/02/07 - 11:40:46 | 204 |      17.458µs |             ::1 | OPTIONS  "/api/v1/auth/logout"
+[GIN] 2026/02/07 - 11:40:46 | 200 |     192.833µs |             ::1 | POST     "/api/v1/auth/logout"
+[GIN] 2026/02/07 - 11:40:55 | 204 |      12.125µs |             ::1 | OPTIONS  "/api/v1/auth/login"
+
+2026/02/07 11:40:55 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:117
+[0m[33m[3.962ms] [34;1m[rows:1][0m SELECT * FROM "users" WHERE username = 'testuser4' OR email = 'testuser4' ORDER BY "users"."id" LIMIT 1
+[GIN] 2026/02/07 - 11:40:55 | 200 |  106.085375ms |             ::1 | POST     "/api/v1/auth/login"
+
+2026/02/07 11:41:10 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:117
+[0m[33m[2.513ms] [34;1m[rows:1][0m SELECT * FROM "users" WHERE username = 'testuser4' OR email = 'testuser4' ORDER BY "users"."id" LIMIT 1
+[GIN] 2026/02/07 - 11:41:10 | 200 |   100.60725ms |             ::1 | POST     "/api/v1/auth/login"
+
+2026/02/07 11:41:21 [31;1m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:117 [35;1mrecord not found
+[0m[33m[2.085ms] [34;1m[rows:0][0m SELECT * FROM "users" WHERE username = 'Admin' OR email = 'Admin' ORDER BY "users"."id" LIMIT 1
+[GIN] 2026/02/07 - 11:41:21 | 401 |    2.435375ms |             ::1 | POST     "/api/v1/auth/login"
+[GIN] 2026/02/07 - 11:41:21 | 401 |      19.083µs |             ::1 | POST     "/api/v1/auth/logout"
+[GIN] 2026/02/07 - 11:41:21 | 401 |      11.709µs |             ::1 | POST     "/api/v1/auth/logout"
+[GIN] 2026/02/07 - 11:41:21 | 401 |      33.375µs |             ::1 | POST     "/api/v1/auth/logout"
+[GIN] 2026/02/07 - 11:41:21 | 401 |      16.417µs |             ::1 | POST     "/api/v1/auth/logout"
+
+2026/02/07 11:41:32 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:117
+[0m[33m[1.949ms] [34;1m[rows:1][0m SELECT * FROM "users" WHERE username = 'testuser4' OR email = 'testuser4' ORDER BY "users"."id" LIMIT 1
+[GIN] 2026/02/07 - 11:41:32 | 200 |  100.006292ms |             ::1 | POST     "/api/v1/auth/login"
+
+2026/02/07 11:42:04 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:117
+[0m[33m[1.828ms] [34;1m[rows:1][0m SELECT * FROM "users" WHERE username = 'testuser4' OR email = 'testuser4' ORDER BY "users"."id" LIMIT 1
+[GIN] 2026/02/07 - 11:42:04 | 200 |   63.642208ms |             ::1 | POST     "/api/v1/auth/login"
+
+2026/02/07 11:46:52 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:117
+[0m[33m[10.905ms] [34;1m[rows:1][0m SELECT * FROM "users" WHERE username = 'testuser4' OR email = 'testuser4' ORDER BY "users"."id" LIMIT 1
+[GIN] 2026/02/07 - 11:46:52 | 200 |  106.571083ms |             ::1 | POST     "/api/v1/auth/login"
+
+2026/02/07 11:46:52 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:291
+[0m[33m[0.415ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false
+
+2026/02/07 11:46:52 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:292
+[0m[33m[0.255ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false AND status = 'running'
+[GIN] 2026/02/07 - 11:46:52 | 204 |      12.125µs |             ::1 | OPTIONS  "/api/v1/alerts/stats"
+
+2026/02/07 11:46:52 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:293
+[0m[33m[0.283ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false AND status = 'poweredOff'
+
+2026/02/07 11:46:52 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:294
+[0m[33m[0.309ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false AND status = 'warning'
+[GIN] 2026/02/07 - 11:46:52 | 200 |     1.48075ms |             ::1 | GET      "/api/v1/vms/stats"
+
+2026/02/07 11:46:52 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:424
+[0m[33m[0.191ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records"
+
+2026/02/07 11:46:52 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:425
+[0m[33m[0.176ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE status = 'active'
+
+2026/02/07 11:46:52 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:426
+[0m[33m[0.113ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'critical'
+
+2026/02/07 11:46:52 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:427
+[0m[33m[0.114ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'warning'
+[GIN] 2026/02/07 - 11:46:52 | 200 |      700.25µs |             ::1 | GET      "/api/v1/alerts/stats"
+[GIN] 2026/02/07 - 11:46:54 | 204 |      11.125µs |             ::1 | OPTIONS  "/api/v1/vms?page=1&pageSize=20"
+[GIN] 2026/02/07 - 11:46:54 | 204 |      11.208µs |             ::1 | OPTIONS  "/api/v1/vms/metrics/all"
+
+2026/02/07 11:46:54 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:218
+[0m[33m[1.921ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false
+
+2026/02/07 11:46:54 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:221
+[0m[33m[0.723ms] [34;1m[rows:16][0m SELECT * FROM "vms" WHERE is_deleted = false ORDER BY created_at DESC LIMIT 20
+[GIN] 2026/02/07 - 11:46:54 | 200 |    3.159708ms |             ::1 | GET      "/api/v1/vms?page=1&pageSize=20"
+
+2026/02/07 11:46:54 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:1025
+[0m[33m[2.903ms] [34;1m[rows:-][0m 
+				SELECT 
+					v.id as vm_id,
+					v.name as vm_name,
+					m.cpu_usage,
+					m.memory_usage,
+					m.disk_usage,
+					m.disk_read_mbps,
+					m.disk_write_mbps,
+					m.network_in_mbps,
+					m.network_out_mbps,
+					m.temperature,
+					m.recorded_at
+				FROM vms v
+				LEFT JOIN vm_metrics m ON v.id = m.vm_id
+				WHERE v.is_deleted = false
+				ORDER BY m.recorded_at DESC
+			
+[GIN] 2026/02/07 - 11:46:54 | 200 |    3.320625ms |             ::1 | GET      "/api/v1/vms/metrics/all"
+
+2026/02/07 11:47:14 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:324
+[0m[33m[1.371ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_rules"
+
+2026/02/07 11:47:14 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:424
+[0m[33m[1.562ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records"
+
+2026/02/07 11:47:14 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:326
+[0m[33m[0.365ms] [34;1m[rows:2][0m SELECT * FROM "alert_rules" ORDER BY created_at DESC LIMIT 10
+[GIN] 2026/02/07 - 11:47:14 | 200 |    1.948334ms |             ::1 | GET      "/api/v1/alerts/rules"
+
+2026/02/07 11:47:14 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:425
+[0m[33m[0.387ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE status = 'active'
+
+2026/02/07 11:47:14 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:426
+[0m[33m[0.375ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'critical'
+
+2026/02/07 11:47:14 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:427
+[0m[33m[0.393ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'warning'
+[GIN] 2026/02/07 - 11:47:14 | 200 |     3.12625ms |             ::1 | GET      "/api/v1/alerts/stats"
+
+2026/02/07 11:47:14 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:416
+[0m[33m[6.756ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records"
+
+2026/02/07 11:47:14 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:418
+[0m[33m[2.915ms] [34;1m[rows:10][0m SELECT * FROM "alert_records" ORDER BY triggered_at DESC LIMIT 10
+[GIN] 2026/02/07 - 11:47:14 | 200 |   10.234708ms |             ::1 | GET      "/api/v1/alerts/records"
+
+2026/02/07 11:48:47 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:117
+[0m[33m[5.189ms] [34;1m[rows:1][0m SELECT * FROM "users" WHERE username = 'testuser4' OR email = 'testuser4' ORDER BY "users"."id" LIMIT 1
+[GIN] 2026/02/07 - 11:48:47 | 200 |   67.014458ms |             ::1 | POST     "/api/v1/auth/login"
+
+2026/02/07 11:48:47 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:424
+[0m[33m[0.256ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records"
+
+2026/02/07 11:48:47 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:425
+[0m[33m[0.512ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE status = 'active'
+
+2026/02/07 11:48:47 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:426
+[0m[33m[0.305ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'critical'
+
+2026/02/07 11:48:47 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:427
+[0m[33m[0.144ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'warning'
+[GIN] 2026/02/07 - 11:48:47 | 200 |    1.386416ms |             ::1 | GET      "/api/v1/alerts/stats"
+
+2026/02/07 11:49:09 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:424
+[0m[33m[1.516ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records"
+
+2026/02/07 11:49:09 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:425
+[0m[33m[0.308ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE status = 'active'
+
+2026/02/07 11:49:09 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:426
+[0m[33m[0.165ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'critical'
+
+2026/02/07 11:49:09 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:427
+[0m[33m[0.168ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'warning'
+[GIN] 2026/02/07 - 11:49:09 | 200 |    2.442292ms |             ::1 | GET      "/api/v1/alerts/stats"
+
+2026/02/07 11:49:09 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:416
+[0m[33m[1.630ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records"
+
+2026/02/07 11:49:09 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:418
+[0m[33m[0.515ms] [34;1m[rows:10][0m SELECT * FROM "alert_records" ORDER BY triggered_at DESC LIMIT 10
+[GIN] 2026/02/07 - 11:49:09 | 200 |    2.266292ms |             ::1 | GET      "/api/v1/alerts/records"
+
+2026/02/07 11:49:09 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:324
+[0m[33m[2.661ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_rules"
+
+2026/02/07 11:49:09 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:326
+[0m[33m[0.417ms] [34;1m[rows:2][0m SELECT * FROM "alert_rules" ORDER BY created_at DESC LIMIT 10
+[GIN] 2026/02/07 - 11:49:09 | 200 |    3.149292ms |             ::1 | GET      "/api/v1/alerts/rules"
+
+2026/02/07 11:49:33 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:424
+[0m[33m[1.456ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records"
+
+2026/02/07 11:49:33 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:324
+[0m[33m[2.342ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_rules"
+
+2026/02/07 11:49:33 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:416
+[0m[33m[1.703ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records"
+
+2026/02/07 11:49:33 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:425
+[0m[33m[0.507ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE status = 'active'
+
+2026/02/07 11:49:33 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:326
+[0m[33m[0.265ms] [34;1m[rows:2][0m SELECT * FROM "alert_rules" ORDER BY created_at DESC LIMIT 10
+[GIN] 2026/02/07 - 11:49:33 | 200 |    2.694333ms |             ::1 | GET      "/api/v1/alerts/rules"
+
+2026/02/07 11:49:33 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:426
+[0m[33m[0.423ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'critical'
+
+2026/02/07 11:49:33 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:418
+[0m[33m[0.603ms] [34;1m[rows:10][0m SELECT * FROM "alert_records" ORDER BY triggered_at DESC LIMIT 10
+[GIN] 2026/02/07 - 11:49:33 | 200 |    2.428083ms |             ::1 | GET      "/api/v1/alerts/records"
+
+2026/02/07 11:49:33 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:427
+[0m[33m[0.245ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'warning'
+[GIN] 2026/02/07 - 11:49:33 | 200 |    3.701292ms |             ::1 | GET      "/api/v1/alerts/stats"
+
+2026/02/07 11:50:05 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:416
+[0m[33m[2.292ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records"
+
+2026/02/07 11:50:05 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:424
+[0m[33m[3.514ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records"
+
+2026/02/07 11:50:05 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:418
+[0m[33m[1.302ms] [34;1m[rows:10][0m SELECT * FROM "alert_records" ORDER BY triggered_at DESC LIMIT 10
+[GIN] 2026/02/07 - 11:50:05 | 200 |    4.313792ms |             ::1 | GET      "/api/v1/alerts/records"
+
+2026/02/07 11:50:05 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:324
+[0m[33m[4.487ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_rules"
+
+2026/02/07 11:50:05 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:425
+[0m[33m[1.257ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE status = 'active'
+
+2026/02/07 11:50:05 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:426
+[0m[33m[0.244ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'critical'
+
+2026/02/07 11:50:05 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:326
+[0m[33m[0.418ms] [34;1m[rows:2][0m SELECT * FROM "alert_rules" ORDER BY created_at DESC LIMIT 10
+[GIN] 2026/02/07 - 11:50:05 | 200 |    5.088583ms |             ::1 | GET      "/api/v1/alerts/rules"
+
+2026/02/07 11:50:05 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:427
+[0m[33m[0.318ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'warning'
+[GIN] 2026/02/07 - 11:50:05 | 200 |    5.931375ms |             ::1 | GET      "/api/v1/alerts/stats"
+[GIN] 2026/02/07 - 11:50:56 | 204 |      59.041µs |             ::1 | OPTIONS  "/api/v1/alerts/rules"
+[GIN] 2026/02/07 - 11:50:56 | 204 |       28.25µs |             ::1 | OPTIONS  "/api/v1/alerts/records"
+
+2026/02/07 11:50:56 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:424
+[0m[33m[1.627ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records"
+
+2026/02/07 11:50:56 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:425
+[0m[33m[0.361ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE status = 'active'
+
+2026/02/07 11:50:56 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:426
+[0m[33m[0.142ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'critical'
+
+2026/02/07 11:50:56 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:427
+[0m[33m[0.137ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'warning'
+[GIN] 2026/02/07 - 11:50:56 | 200 |    3.021709ms |             ::1 | GET      "/api/v1/alerts/stats"
+
+2026/02/07 11:50:56 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:324
+[0m[33m[0.145ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_rules"
+
+2026/02/07 11:50:56 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:326
+[0m[33m[0.443ms] [34;1m[rows:2][0m SELECT * FROM "alert_rules" ORDER BY created_at DESC LIMIT 10
+[GIN] 2026/02/07 - 11:50:56 | 200 |     737.916µs |             ::1 | GET      "/api/v1/alerts/rules"
+
+2026/02/07 11:50:56 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:416
+[0m[33m[0.167ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records"
+
+2026/02/07 11:50:56 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:418
+[0m[33m[0.351ms] [34;1m[rows:10][0m SELECT * FROM "alert_records" ORDER BY triggered_at DESC LIMIT 10
+[GIN] 2026/02/07 - 11:50:56 | 200 |         743µs |             ::1 | GET      "/api/v1/alerts/records"
+
+2026/02/07 11:53:45 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:424
+[0m[33m[1.870ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records"
+
+2026/02/07 11:53:45 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:324
+[0m[33m[1.661ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_rules"
+
+2026/02/07 11:53:45 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:425
+[0m[33m[0.460ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE status = 'active'
+
+2026/02/07 11:53:45 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:416
+[0m[33m[1.825ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records"
+
+2026/02/07 11:53:45 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:326
+[0m[33m[0.442ms] [34;1m[rows:2][0m SELECT * FROM "alert_rules" ORDER BY created_at DESC LIMIT 10
+[GIN] 2026/02/07 - 11:53:45 | 200 |    2.229917ms |             ::1 | GET      "/api/v1/alerts/rules"
+
+2026/02/07 11:53:45 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:426
+[0m[33m[0.321ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'critical'
+
+2026/02/07 11:53:45 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:427
+[0m[33m[0.103ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'warning'
+[GIN] 2026/02/07 - 11:53:45 | 200 |      3.2055ms |             ::1 | GET      "/api/v1/alerts/stats"
+
+2026/02/07 11:53:45 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:418
+[0m[33m[0.553ms] [34;1m[rows:10][0m SELECT * FROM "alert_records" ORDER BY triggered_at DESC LIMIT 10
+[GIN] 2026/02/07 - 11:53:45 | 200 |    2.568417ms |             ::1 | GET      "/api/v1/alerts/records"
+[GIN] 2026/02/07 - 11:53:52 | 204 |       4.208µs |             ::1 | OPTIONS  "/api/v1/alerts/8703ed36-4e27-44b3-9f24-ef9f2a0e493b/acknowledge"
+
+2026/02/07 11:53:52 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:439
+[0m[33m[2.626ms] [34;1m[rows:1][0m SELECT * FROM "alert_records" WHERE id = '8703ed36-4e27-44b3-9f24-ef9f2a0e493b' ORDER BY "alert_records"."id" LIMIT 1
+
+2026/02/07 11:53:52 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:446
+[0m[33m[2.286ms] [34;1m[rows:1][0m UPDATE "alert_records" SET "acknowledged_at"='2026-02-07 11:53:52.334',"acknowledged_by"='3a2e28e4-759f-49b0-b4fe-f90d2769416f',"acknowledged_by_name"='testuser4',"status"='acknowledged',"updated_at"='2026-02-07 11:53:52.334' WHERE "id" = '8703ed36-4e27-44b3-9f24-ef9f2a0e493b'
+[GIN] 2026/02/07 - 11:53:52 | 200 |    5.023167ms |             ::1 | POST     "/api/v1/alerts/8703ed36-4e27-44b3-9f24-ef9f2a0e493b/acknowledge"
+
+2026/02/07 11:53:52 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:424
+[0m[33m[0.603ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records"
+
+2026/02/07 11:53:52 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:425
+[0m[33m[0.456ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE status = 'active'
+
+2026/02/07 11:53:52 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:426
+[0m[33m[0.182ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'critical'
+
+2026/02/07 11:53:52 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:427
+[0m[33m[0.165ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'warning'
+[GIN] 2026/02/07 - 11:53:52 | 200 |    1.537041ms |             ::1 | GET      "/api/v1/alerts/stats"
+
+2026/02/07 11:53:52 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:324
+[0m[33m[1.883ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_rules"
+
+2026/02/07 11:53:52 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:416
+[0m[33m[1.278ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records"
+
+2026/02/07 11:53:52 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:326
+[0m[33m[0.362ms] [34;1m[rows:2][0m SELECT * FROM "alert_rules" ORDER BY created_at DESC LIMIT 10
+[GIN] 2026/02/07 - 11:53:52 | 200 |    2.314875ms |             ::1 | GET      "/api/v1/alerts/rules"
+
+2026/02/07 11:53:52 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:418
+[0m[33m[0.482ms] [34;1m[rows:10][0m SELECT * FROM "alert_records" ORDER BY triggered_at DESC LIMIT 10
+[GIN] 2026/02/07 - 11:53:52 | 200 |      1.8425ms |             ::1 | GET      "/api/v1/alerts/records"
+[GIN] 2026/02/07 - 11:53:57 | 204 |      16.542µs |             ::1 | OPTIONS  "/api/v1/alerts/43771b47-1193-4082-b141-10bd3b254143/acknowledge"
+
+2026/02/07 11:53:57 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:439
+[0m[33m[4.761ms] [34;1m[rows:1][0m SELECT * FROM "alert_records" WHERE id = '43771b47-1193-4082-b141-10bd3b254143' ORDER BY "alert_records"."id" LIMIT 1
+
+2026/02/07 11:53:57 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:446
+[0m[33m[2.488ms] [34;1m[rows:1][0m UPDATE "alert_records" SET "acknowledged_at"='2026-02-07 11:53:57.109',"acknowledged_by"='3a2e28e4-759f-49b0-b4fe-f90d2769416f',"acknowledged_by_name"='testuser4',"status"='acknowledged',"updated_at"='2026-02-07 11:53:57.109' WHERE "id" = '43771b47-1193-4082-b141-10bd3b254143'
+[GIN] 2026/02/07 - 11:53:57 | 200 |    7.768583ms |             ::1 | POST     "/api/v1/alerts/43771b47-1193-4082-b141-10bd3b254143/acknowledge"
+
+2026/02/07 11:53:57 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:424
+[0m[33m[1.912ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records"
+
+2026/02/07 11:53:57 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:425
+[0m[33m[1.650ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE status = 'active'
+
+2026/02/07 11:53:57 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:324
+[0m[33m[4.338ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_rules"
+
+2026/02/07 11:53:57 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:326
+[0m[33m[1.401ms] [34;1m[rows:2][0m SELECT * FROM "alert_rules" ORDER BY created_at DESC LIMIT 10
+[GIN] 2026/02/07 - 11:53:57 | 200 |     6.15925ms |             ::1 | GET      "/api/v1/alerts/rules"
+
+2026/02/07 11:53:57 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:426
+[0m[33m[2.307ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'critical'
+
+2026/02/07 11:53:57 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:416
+[0m[33m[4.967ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records"
+
+2026/02/07 11:53:57 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:427
+[0m[33m[0.227ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'warning'
+[GIN] 2026/02/07 - 11:53:57 | 200 |    8.071375ms |             ::1 | GET      "/api/v1/alerts/stats"
+
+2026/02/07 11:53:57 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:418
+[0m[33m[0.582ms] [34;1m[rows:10][0m SELECT * FROM "alert_records" ORDER BY triggered_at DESC LIMIT 10
+[GIN] 2026/02/07 - 11:53:57 | 200 |    5.830791ms |             ::1 | GET      "/api/v1/alerts/records"
+
+2026/02/07 11:54:29 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:424
+[0m[33m[1.409ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records"
+
+2026/02/07 11:54:29 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:416
+[0m[33m[1.304ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records"
+
+2026/02/07 11:54:29 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:324
+[0m[33m[1.506ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_rules"
+
+2026/02/07 11:54:29 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:425
+[0m[33m[0.562ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE status = 'active'
+
+2026/02/07 11:54:29 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:418
+[0m[33m[0.555ms] [34;1m[rows:10][0m SELECT * FROM "alert_records" ORDER BY triggered_at DESC LIMIT 10
+[GIN] 2026/02/07 - 11:54:29 | 200 |    2.138958ms |             ::1 | GET      "/api/v1/alerts/records"
+
+2026/02/07 11:54:29 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:326
+[0m[33m[1.567ms] [34;1m[rows:2][0m SELECT * FROM "alert_rules" ORDER BY created_at DESC LIMIT 10
+
+2026/02/07 11:54:29 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:426
+[0m[33m[1.486ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'critical'
+[GIN] 2026/02/07 - 11:54:29 | 200 |       3.256ms |             ::1 | GET      "/api/v1/alerts/rules"
+
+2026/02/07 11:54:29 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:427
+[0m[33m[0.884ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'warning'
+[GIN] 2026/02/07 - 11:54:29 | 200 |    4.839958ms |             ::1 | GET      "/api/v1/alerts/stats"
+[GIN] 2026/02/07 - 11:54:37 | 204 |       3.625µs |             ::1 | OPTIONS  "/api/v1/alerts/e11baa89-5be5-43cd-9a85-d62d563f73ec/acknowledge"
+
+2026/02/07 11:54:37 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:439
+[0m[33m[1.871ms] [34;1m[rows:1][0m SELECT * FROM "alert_records" WHERE id = 'e11baa89-5be5-43cd-9a85-d62d563f73ec' ORDER BY "alert_records"."id" LIMIT 1
+
+2026/02/07 11:54:37 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:446
+[0m[33m[1.692ms] [34;1m[rows:1][0m UPDATE "alert_records" SET "acknowledged_at"='2026-02-07 11:54:37.833',"acknowledged_by"='3a2e28e4-759f-49b0-b4fe-f90d2769416f',"acknowledged_by_name"='testuser4',"status"='acknowledged',"updated_at"='2026-02-07 11:54:37.833' WHERE "id" = 'e11baa89-5be5-43cd-9a85-d62d563f73ec'
+[GIN] 2026/02/07 - 11:54:37 | 200 |    3.669709ms |             ::1 | POST     "/api/v1/alerts/e11baa89-5be5-43cd-9a85-d62d563f73ec/acknowledge"
+
+2026/02/07 11:54:37 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:424
+[0m[33m[3.111ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records"
+
+2026/02/07 11:54:37 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:324
+[0m[33m[2.002ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_rules"
+
+2026/02/07 11:54:37 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:416
+[0m[33m[0.943ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records"
+
+2026/02/07 11:54:37 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:326
+[0m[33m[0.390ms] [34;1m[rows:2][0m SELECT * FROM "alert_rules" ORDER BY created_at DESC LIMIT 10
+[GIN] 2026/02/07 - 11:54:37 | 200 |    2.529041ms |             ::1 | GET      "/api/v1/alerts/rules"
+
+2026/02/07 11:54:37 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:418
+[0m[33m[0.627ms] [34;1m[rows:10][0m SELECT * FROM "alert_records" ORDER BY triggered_at DESC LIMIT 10
+[GIN] 2026/02/07 - 11:54:37 | 200 |    2.418625ms |             ::1 | GET      "/api/v1/alerts/records"
+
+2026/02/07 11:54:37 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:425
+[0m[33m[1.496ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE status = 'active'
+
+2026/02/07 11:54:37 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:426
+[0m[33m[0.142ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'critical'
+
+2026/02/07 11:54:37 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:427
+[0m[33m[0.473ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'warning'
+[GIN] 2026/02/07 - 11:54:37 | 200 |    5.949917ms |             ::1 | GET      "/api/v1/alerts/stats"
+[GIN] 2026/02/07 - 21:08:32 | 204 |      13.125µs |             ::1 | OPTIONS  "/api/v1/alerts/549663ca-9411-4516-abef-d67db0ec7335/acknowledge"
+
+2026/02/07 21:08:32 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:439
+[0m[33m[2.825ms] [34;1m[rows:1][0m SELECT * FROM "alert_records" WHERE id = '549663ca-9411-4516-abef-d67db0ec7335' ORDER BY "alert_records"."id" LIMIT 1
+
+2026/02/07 21:08:32 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:446
+[0m[33m[2.236ms] [34;1m[rows:1][0m UPDATE "alert_records" SET "acknowledged_at"='2026-02-07 21:08:32.448',"acknowledged_by"='3a2e28e4-759f-49b0-b4fe-f90d2769416f',"acknowledged_by_name"='testuser4',"status"='acknowledged',"updated_at"='2026-02-07 21:08:32.448' WHERE "id" = '549663ca-9411-4516-abef-d67db0ec7335'
+[GIN] 2026/02/07 - 21:08:32 | 200 |    5.191375ms |             ::1 | POST     "/api/v1/alerts/549663ca-9411-4516-abef-d67db0ec7335/acknowledge"
+[GIN] 2026/02/07 - 21:08:32 | 204 |       2.458µs |             ::1 | OPTIONS  "/api/v1/alerts/stats"
+[GIN] 2026/02/07 - 21:08:32 | 204 |          14µs |             ::1 | OPTIONS  "/api/v1/alerts/rules"
+[GIN] 2026/02/07 - 21:08:32 | 204 |       6.292µs |             ::1 | OPTIONS  "/api/v1/alerts/records"
+
+2026/02/07 21:08:32 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:424
+[0m[33m[1.017ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records"
+
+2026/02/07 21:08:32 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:425
+[0m[33m[0.408ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE status = 'active'
+
+2026/02/07 21:08:32 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:426
+[0m[33m[0.204ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'critical'
+
+2026/02/07 21:08:32 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:427
+[0m[33m[0.130ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'warning'
+[GIN] 2026/02/07 - 21:08:32 | 200 |    1.874292ms |             ::1 | GET      "/api/v1/alerts/stats"
+
+2026/02/07 21:08:32 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:416
+[0m[33m[0.123ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records"
+
+2026/02/07 21:08:32 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:418
+[0m[33m[0.322ms] [34;1m[rows:10][0m SELECT * FROM "alert_records" ORDER BY triggered_at DESC LIMIT 10
+[GIN] 2026/02/07 - 21:08:32 | 200 |     539.834µs |             ::1 | GET      "/api/v1/alerts/records"
+
+2026/02/07 21:08:32 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:324
+[0m[33m[1.460ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_rules"
+
+2026/02/07 21:08:32 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:326
+[0m[33m[0.278ms] [34;1m[rows:2][0m SELECT * FROM "alert_rules" ORDER BY created_at DESC LIMIT 10
+[GIN] 2026/02/07 - 21:08:32 | 200 |    1.858833ms |             ::1 | GET      "/api/v1/alerts/rules"
+[GIN] 2026/02/07 - 21:08:34 | 204 |      13.958µs |             ::1 | OPTIONS  "/api/v1/alerts/f21aa39e-ec8d-444b-83f8-a0733453a892/acknowledge"
+
+2026/02/07 21:08:34 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:439
+[0m[33m[2.500ms] [34;1m[rows:1][0m SELECT * FROM "alert_records" WHERE id = 'f21aa39e-ec8d-444b-83f8-a0733453a892' ORDER BY "alert_records"."id" LIMIT 1
+
+2026/02/07 21:08:34 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:446
+[0m[33m[2.037ms] [34;1m[rows:1][0m UPDATE "alert_records" SET "acknowledged_at"='2026-02-07 21:08:34.846',"acknowledged_by"='3a2e28e4-759f-49b0-b4fe-f90d2769416f',"acknowledged_by_name"='testuser4',"status"='acknowledged',"updated_at"='2026-02-07 21:08:34.846' WHERE "id" = 'f21aa39e-ec8d-444b-83f8-a0733453a892'
+[GIN] 2026/02/07 - 21:08:34 | 200 |       5.108ms |             ::1 | POST     "/api/v1/alerts/f21aa39e-ec8d-444b-83f8-a0733453a892/acknowledge"
+
+2026/02/07 21:08:34 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:424
+[0m[33m[0.362ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records"
+
+2026/02/07 21:08:34 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:425
+[0m[33m[0.451ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE status = 'active'
+
+2026/02/07 21:08:34 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:324
+[0m[33m[0.254ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_rules"
+
+2026/02/07 21:08:34 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:326
+[0m[33m[0.447ms] [34;1m[rows:2][0m SELECT * FROM "alert_rules" ORDER BY created_at DESC LIMIT 10
+[GIN] 2026/02/07 - 21:08:34 | 200 |      967.25µs |             ::1 | GET      "/api/v1/alerts/rules"
+
+2026/02/07 21:08:34 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:416
+[0m[33m[0.201ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records"
+
+2026/02/07 21:08:34 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:418
+[0m[33m[0.697ms] [34;1m[rows:10][0m SELECT * FROM "alert_records" ORDER BY triggered_at DESC LIMIT 10
+[GIN] 2026/02/07 - 21:08:34 | 200 |     2.04375ms |             ::1 | GET      "/api/v1/alerts/records"
+
+2026/02/07 21:08:34 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:426
+[0m[33m[3.432ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'critical'
+
+2026/02/07 21:08:34 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:427
+[0m[33m[0.586ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'warning'
+[GIN] 2026/02/07 - 21:08:34 | 200 |    5.348334ms |             ::1 | GET      "/api/v1/alerts/stats"
+
+2026/02/07 21:12:36 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:424
+[0m[33m[1.371ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records"
+
+2026/02/07 21:12:36 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:425
+[0m[33m[0.254ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE status = 'active'
+
+2026/02/07 21:12:36 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:426
+[0m[33m[0.198ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'critical'
+
+2026/02/07 21:12:36 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:324
+[0m[33m[1.348ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_rules"
+
+2026/02/07 21:12:36 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:427
+[0m[33m[0.110ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'warning'
+[GIN] 2026/02/07 - 21:12:36 | 200 |    2.232375ms |             ::1 | GET      "/api/v1/alerts/stats"
+
+2026/02/07 21:12:36 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:326
+[0m[33m[0.203ms] [34;1m[rows:2][0m SELECT * FROM "alert_rules" ORDER BY created_at DESC LIMIT 10
+[GIN] 2026/02/07 - 21:12:36 | 200 |    1.649584ms |             ::1 | GET      "/api/v1/alerts/rules"
+
+2026/02/07 21:12:36 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:416
+[0m[33m[1.567ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records"
+
+2026/02/07 21:12:36 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:418
+[0m[33m[0.724ms] [34;1m[rows:10][0m SELECT * FROM "alert_records" ORDER BY triggered_at DESC LIMIT 10
+[GIN] 2026/02/07 - 21:12:36 | 200 |    2.392833ms |             ::1 | GET      "/api/v1/alerts/records"
+[GIN] 2026/02/07 - 21:13:04 | 204 |       6.958µs |             ::1 | OPTIONS  "/api/v1/users"
+[GIN] 2026/02/07 - 21:13:04 | 204 |       6.208µs |             ::1 | OPTIONS  "/api/v1/roles"
+[GIN] 2026/02/07 - 21:13:04 | 204 |      17.417µs |             ::1 | OPTIONS  "/api/v1/permissions"
+
+2026/02/07 21:13:04 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:856
+[0m[33m[0.625ms] [34;1m[rows:2][0m SELECT * FROM "user_roles" WHERE "user_roles"."user_id" IN ('d0a90074-6e35-4bc0-aed6-91f994324894','3a2e28e4-759f-49b0-b4fe-f90d2769416f')
+
+2026/02/07 21:13:04 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:856
+[0m[33m[0.406ms] [34;1m[rows:2][0m SELECT * FROM "roles" WHERE "roles"."id" IN ('11111111-1111-1111-1111-111111111111','22222222-2222-2222-2222-222222222222')
+
+2026/02/07 21:13:04 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:856
+[0m[33m[2.974ms] [34;1m[rows:2][0m SELECT * FROM "users"
+[GIN] 2026/02/07 - 21:13:04 | 200 |    3.131666ms |             ::1 | GET      "/api/v1/users"
+
+2026/02/07 21:13:04 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:498
+[0m[33m[2.297ms] [34;1m[rows:22][0m SELECT * FROM "permissions" ORDER BY resource, action
+[GIN] 2026/02/07 - 21:13:04 | 200 |    2.363708ms |             ::1 | GET      "/api/v1/permissions"
+
+2026/02/07 21:13:04 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:602
+[0m[33m[0.895ms] [34;1m[rows:37][0m SELECT * FROM "role_permissions" WHERE "role_permissions"."role_id" IN ('11111111-1111-1111-1111-111111111111','22222222-2222-2222-2222-222222222222','33333333-3333-3333-3333-333333333333')
+
+2026/02/07 21:13:04 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:602
+[0m[33m[0.448ms] [34;1m[rows:22][0m SELECT * FROM "permissions" WHERE "permissions"."id" IN ('vm:read','vm:write','vm:admin','alert:read','alert:write','alert:admin','history:read','history:export','user:read','user:write','user:admin','system:read','system:admin','vm:delete','vm:metrics','alert:acknowledge','alert:resolve','user:delete','role:read','role:write','system:settings','system:logs')
+
+2026/02/07 21:13:04 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:602
+[0m[33m[4.212ms] [34;1m[rows:3][0m SELECT * FROM "roles" ORDER BY level ASC
+
+2026/02/07 21:13:04 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:606
+[0m[33m[0.546ms] [34;1m[rows:1][0m SELECT count(*) FROM "user_roles" WHERE role_id = '11111111-1111-1111-1111-111111111111'
+
+2026/02/07 21:13:04 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:606
+[0m[33m[0.104ms] [34;1m[rows:1][0m SELECT count(*) FROM "user_roles" WHERE role_id = '22222222-2222-2222-2222-222222222222'
+
+2026/02/07 21:13:04 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:606
+[0m[33m[0.132ms] [34;1m[rows:1][0m SELECT count(*) FROM "user_roles" WHERE role_id = '33333333-3333-3333-3333-333333333333'
+[GIN] 2026/02/07 - 21:13:04 | 200 |    5.150625ms |             ::1 | GET      "/api/v1/roles"
+[GIN] 2026/02/07 - 21:13:13 | 204 |       6.833µs |             ::1 | OPTIONS  "/api/v1/vms?page=1&pageSize=20"
+[GIN] 2026/02/07 - 21:13:13 | 204 |       4.292µs |             ::1 | OPTIONS  "/api/v1/vms/metrics/all"
+
+2026/02/07 21:13:13 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:1025
+[0m[33m[1.360ms] [34;1m[rows:-][0m 
+				SELECT 
+					v.id as vm_id,
+					v.name as vm_name,
+					m.cpu_usage,
+					m.memory_usage,
+					m.disk_usage,
+					m.disk_read_mbps,
+					m.disk_write_mbps,
+					m.network_in_mbps,
+					m.network_out_mbps,
+					m.temperature,
+					m.recorded_at
+				FROM vms v
+				LEFT JOIN vm_metrics m ON v.id = m.vm_id
+				WHERE v.is_deleted = false
+				ORDER BY m.recorded_at DESC
+			
+[GIN] 2026/02/07 - 21:13:13 | 200 |    1.503667ms |             ::1 | GET      "/api/v1/vms/metrics/all"
+
+2026/02/07 21:13:13 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:218
+[0m[33m[2.890ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false
+
+2026/02/07 21:13:13 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:221
+[0m[33m[0.686ms] [34;1m[rows:16][0m SELECT * FROM "vms" WHERE is_deleted = false ORDER BY created_at DESC LIMIT 20
+[GIN] 2026/02/07 - 21:13:13 | 200 |    3.987042ms |             ::1 | GET      "/api/v1/vms?page=1&pageSize=20"
+[GIN] 2026/02/07 - 21:15:51 | 204 |      15.292µs |             ::1 | OPTIONS  "/api/v1/vms/stats"
+
+2026/02/07 21:15:51 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:424
+[0m[33m[1.447ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records"
+
+2026/02/07 21:15:51 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:425
+[0m[33m[0.234ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE status = 'active'
+
+2026/02/07 21:15:51 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:291
+[0m[33m[1.471ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false
+
+2026/02/07 21:15:51 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:426
+[0m[33m[0.206ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'critical'
+
+2026/02/07 21:15:51 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:292
+[0m[33m[0.212ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false AND status = 'running'
+
+2026/02/07 21:15:51 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:427
+[0m[33m[0.213ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'warning'
+[GIN] 2026/02/07 - 21:15:51 | 200 |    2.255166ms |             ::1 | GET      "/api/v1/alerts/stats"
+
+2026/02/07 21:15:51 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:293
+[0m[33m[0.190ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false AND status = 'poweredOff'
+
+2026/02/07 21:15:51 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:294
+[0m[33m[0.233ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false AND status = 'warning'
+[GIN] 2026/02/07 - 21:15:51 | 200 |    2.201542ms |             ::1 | GET      "/api/v1/vms/stats"
+
+2026/02/07 21:15:53 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:218
+[0m[33m[1.352ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false
+
+2026/02/07 21:15:53 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:221
+[0m[33m[0.596ms] [34;1m[rows:16][0m SELECT * FROM "vms" WHERE is_deleted = false ORDER BY created_at DESC LIMIT 20
+[GIN] 2026/02/07 - 21:15:53 | 200 |      2.2335ms |             ::1 | GET      "/api/v1/vms?page=1&pageSize=20"
+
+2026/02/07 21:15:53 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:1025
+[0m[33m[2.465ms] [34;1m[rows:-][0m 
+				SELECT 
+					v.id as vm_id,
+					v.name as vm_name,
+					m.cpu_usage,
+					m.memory_usage,
+					m.disk_usage,
+					m.disk_read_mbps,
+					m.disk_write_mbps,
+					m.network_in_mbps,
+					m.network_out_mbps,
+					m.temperature,
+					m.recorded_at
+				FROM vms v
+				LEFT JOIN vm_metrics m ON v.id = m.vm_id
+				WHERE v.is_deleted = false
+				ORDER BY m.recorded_at DESC
+			
+[GIN] 2026/02/07 - 21:15:53 | 200 |    2.653458ms |             ::1 | GET      "/api/v1/vms/metrics/all"
+[GIN] 2026/02/07 - 21:16:04 | 204 |       8.417µs |             ::1 | OPTIONS  "/api/v1/vms?page=1&pageSize=20&keyword=110"
+
+2026/02/07 21:16:04 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:218
+[0m[33m[4.129ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false AND ((name LIKE '%110%' OR ip::text LIKE '%110%'))
+
+2026/02/07 21:16:04 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:221
+[0m[33m[1.327ms] [34;1m[rows:1][0m SELECT * FROM "vms" WHERE is_deleted = false AND ((name LIKE '%110%' OR ip::text LIKE '%110%')) ORDER BY created_at DESC LIMIT 20
+[GIN] 2026/02/07 - 21:16:04 | 200 |     5.91775ms |             ::1 | GET      "/api/v1/vms?page=1&pageSize=20&keyword=110"
+[GIN] 2026/02/07 - 21:16:08 | 204 |      50.083µs |             ::1 | OPTIONS  "/api/v1/vms?page=1&pageSize=20&keyword="
+
+2026/02/07 21:16:08 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:218
+[0m[33m[2.161ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false
+
+2026/02/07 21:16:08 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:221
+[0m[33m[1.370ms] [34;1m[rows:16][0m SELECT * FROM "vms" WHERE is_deleted = false ORDER BY created_at DESC LIMIT 20
+[GIN] 2026/02/07 - 21:16:08 | 200 |    4.153042ms |             ::1 | GET      "/api/v1/vms?page=1&pageSize=20&keyword="
+[GIN] 2026/02/07 - 21:16:20 | 204 |      12.958µs |             ::1 | OPTIONS  "/api/v1/vms?page=1&pageSize=20&keyword=linux"
+
+2026/02/07 21:16:20 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:218
+[0m[33m[1.749ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false AND ((name LIKE '%linux%' OR ip::text LIKE '%linux%'))
+
+2026/02/07 21:16:20 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:221
+[0m[33m[0.720ms] [34;1m[rows:0][0m SELECT * FROM "vms" WHERE is_deleted = false AND ((name LIKE '%linux%' OR ip::text LIKE '%linux%')) ORDER BY created_at DESC LIMIT 20
+[GIN] 2026/02/07 - 21:16:20 | 200 |    2.989709ms |             ::1 | GET      "/api/v1/vms?page=1&pageSize=20&keyword=linux"
+
+2026/02/07 21:16:24 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:218
+[0m[33m[1.531ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false
+
+2026/02/07 21:16:24 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:221
+[0m[33m[0.382ms] [34;1m[rows:16][0m SELECT * FROM "vms" WHERE is_deleted = false ORDER BY created_at DESC LIMIT 20
+[GIN] 2026/02/07 - 21:16:24 | 200 |    2.071667ms |             ::1 | GET      "/api/v1/vms?page=1&pageSize=20&keyword="
+
+2026/02/07 21:17:19 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:856
+[0m[33m[0.636ms] [34;1m[rows:2][0m SELECT * FROM "user_roles" WHERE "user_roles"."user_id" IN ('d0a90074-6e35-4bc0-aed6-91f994324894','3a2e28e4-759f-49b0-b4fe-f90d2769416f')
+
+2026/02/07 21:17:19 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:498
+[0m[33m[1.836ms] [34;1m[rows:22][0m SELECT * FROM "permissions" ORDER BY resource, action
+[GIN] 2026/02/07 - 21:17:19 | 200 |    2.084833ms |             ::1 | GET      "/api/v1/permissions"
+
+2026/02/07 21:17:19 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:602
+[0m[33m[1.260ms] [34;1m[rows:37][0m SELECT * FROM "role_permissions" WHERE "role_permissions"."role_id" IN ('11111111-1111-1111-1111-111111111111','22222222-2222-2222-2222-222222222222','33333333-3333-3333-3333-333333333333')
+
+2026/02/07 21:17:19 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:856
+[0m[33m[1.172ms] [34;1m[rows:2][0m SELECT * FROM "roles" WHERE "roles"."id" IN ('11111111-1111-1111-1111-111111111111','22222222-2222-2222-2222-222222222222')
+
+2026/02/07 21:17:19 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:856
+[0m[33m[4.271ms] [34;1m[rows:2][0m SELECT * FROM "users"
+[GIN] 2026/02/07 - 21:17:19 | 200 |    4.500208ms |             ::1 | GET      "/api/v1/users"
+
+2026/02/07 21:17:19 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:602
+[0m[33m[0.887ms] [34;1m[rows:22][0m SELECT * FROM "permissions" WHERE "permissions"."id" IN ('vm:read','vm:write','vm:admin','alert:read','alert:write','alert:admin','history:read','history:export','user:read','user:write','user:admin','system:read','system:admin','vm:delete','vm:metrics','alert:acknowledge','alert:resolve','user:delete','role:read','role:write','system:settings','system:logs')
+
+2026/02/07 21:17:19 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:602
+[0m[33m[4.006ms] [34;1m[rows:3][0m SELECT * FROM "roles" ORDER BY level ASC
+
+2026/02/07 21:17:19 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:606
+[0m[33m[0.690ms] [34;1m[rows:1][0m SELECT count(*) FROM "user_roles" WHERE role_id = '11111111-1111-1111-1111-111111111111'
+
+2026/02/07 21:17:19 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:606
+[0m[33m[0.124ms] [34;1m[rows:1][0m SELECT count(*) FROM "user_roles" WHERE role_id = '22222222-2222-2222-2222-222222222222'
+
+2026/02/07 21:17:19 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:606
+[0m[33m[0.127ms] [34;1m[rows:1][0m SELECT count(*) FROM "user_roles" WHERE role_id = '33333333-3333-3333-3333-333333333333'
+[GIN] 2026/02/07 - 21:17:19 | 200 |       5.306ms |             ::1 | GET      "/api/v1/roles"
+[GIN] 2026/02/07 - 21:18:12 | 204 |      15.083µs |             ::1 | OPTIONS  "/api/v1/auth/register"
+[GIN] 2026/02/07 - 21:18:12 | 400 |      89.167µs |             ::1 | POST     "/api/v1/auth/register"
+[GIN] 2026/02/07 - 21:18:24 | 400 |     220.333µs |             ::1 | POST     "/api/v1/auth/register"
+
+2026/02/07 21:18:59 [31;1m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:93 [35;1mrecord not found
+[0m[33m[2.828ms] [34;1m[rows:0][0m SELECT * FROM "users" WHERE username = 'dawanglong' ORDER BY "users"."id" LIMIT 1
+
+2026/02/07 21:18:59 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:103
+[0m[33m[3.393ms] [34;1m[rows:1][0m INSERT INTO "users" ("username","email","password_hash","name","phone","department","avatar","status","must_change_password","mfa_enabled","mfa_secret","last_login_at","last_login_ip","login_fail_count","locked_until","password_expired_at","preferences","created_at","updated_at","created_by","updated_by","id") VALUES ('dawanglong','111@qq.com','$2a$10$kLCyzK0j6OuUDpm1u2Aie.Ot/uyIyk4eelte8RoElk0z/3ejT92kO','gx',NULL,NULL,NULL,'active',false,false,NULL,NULL,NULL,0,NULL,NULL,'{zh-CN light Asia/Shanghai YYYY-MM-DD}','2026-02-07 21:18:59.434','2026-02-07 21:18:59.434',NULL,NULL,'37d95f77-fe08-4d82-abe3-d17dc7617ce4') RETURNING "id"
+[GIN] 2026/02/07 - 21:18:59 | 201 |  104.231709ms |             ::1 | POST     "/api/v1/auth/register"
+
+2026/02/07 21:18:59 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:856
+[0m[33m[0.404ms] [34;1m[rows:2][0m SELECT * FROM "user_roles" WHERE "user_roles"."user_id" IN ('d0a90074-6e35-4bc0-aed6-91f994324894','3a2e28e4-759f-49b0-b4fe-f90d2769416f','37d95f77-fe08-4d82-abe3-d17dc7617ce4')
+
+2026/02/07 21:18:59 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:856
+[0m[33m[0.324ms] [34;1m[rows:2][0m SELECT * FROM "roles" WHERE "roles"."id" IN ('11111111-1111-1111-1111-111111111111','22222222-2222-2222-2222-222222222222')
+
+2026/02/07 21:18:59 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:856
+[0m[33m[1.316ms] [34;1m[rows:3][0m SELECT * FROM "users"
+[GIN] 2026/02/07 - 21:18:59 | 200 |    1.376875ms |             ::1 | GET      "/api/v1/users"
+
+2026/02/07 21:18:59 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:602
+[0m[33m[0.346ms] [34;1m[rows:37][0m SELECT * FROM "role_permissions" WHERE "role_permissions"."role_id" IN ('11111111-1111-1111-1111-111111111111','22222222-2222-2222-2222-222222222222','33333333-3333-3333-3333-333333333333')
+
+2026/02/07 21:18:59 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:602
+[0m[33m[0.285ms] [34;1m[rows:22][0m SELECT * FROM "permissions" WHERE "permissions"."id" IN ('vm:read','vm:write','vm:admin','alert:read','alert:write','alert:admin','history:read','history:export','user:read','user:write','user:admin','system:read','system:admin','vm:delete','vm:metrics','alert:acknowledge','alert:resolve','user:delete','role:read','role:write','system:settings','system:logs')
+
+2026/02/07 21:18:59 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:602
+[0m[33m[0.889ms] [34;1m[rows:3][0m SELECT * FROM "roles" ORDER BY level ASC
+
+2026/02/07 21:18:59 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:606
+[0m[33m[0.164ms] [34;1m[rows:1][0m SELECT count(*) FROM "user_roles" WHERE role_id = '11111111-1111-1111-1111-111111111111'
+
+2026/02/07 21:18:59 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:606
+[0m[33m[0.146ms] [34;1m[rows:1][0m SELECT count(*) FROM "user_roles" WHERE role_id = '22222222-2222-2222-2222-222222222222'
+
+2026/02/07 21:18:59 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:606
+[0m[33m[0.127ms] [34;1m[rows:1][0m SELECT count(*) FROM "user_roles" WHERE role_id = '33333333-3333-3333-3333-333333333333'
+[GIN] 2026/02/07 - 21:18:59 | 200 |      1.4265ms |             ::1 | GET      "/api/v1/roles"
+
+2026/02/07 21:18:59 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:498
+[0m[33m[1.371ms] [34;1m[rows:22][0m SELECT * FROM "permissions" ORDER BY resource, action
+[GIN] 2026/02/07 - 21:18:59 | 200 |    1.427583ms |             ::1 | GET      "/api/v1/permissions"
+[GIN] 2026/02/07 - 21:19:17 | 204 |      16.667µs |             ::1 | OPTIONS  "/api/v1/roles/users"
+
+2026/02/07 21:19:17 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:741
+[0m[33m[2.975ms] [34;1m[rows:0][0m DELETE FROM "user_roles" WHERE user_id = '37d95f77-fe08-4d82-abe3-d17dc7617ce4'
+
+2026/02/07 21:19:17 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:749
+[0m[33m[4.401ms] [34;1m[rows:1][0m INSERT INTO "user_roles" ("user_id","role_id","created_at","id") VALUES ('37d95f77-fe08-4d82-abe3-d17dc7617ce4','33333333-3333-3333-3333-333333333333','2026-02-07 21:19:17.858','7c20f232-c422-4571-95bf-e0992e7a3910') RETURNING "id"
+[GIN] 2026/02/07 - 21:19:17 | 200 |    8.163708ms |             ::1 | POST     "/api/v1/roles/users"
+
+2026/02/07 21:19:17 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:856
+[0m[33m[2.528ms] [34;1m[rows:3][0m SELECT * FROM "user_roles" WHERE "user_roles"."user_id" IN ('d0a90074-6e35-4bc0-aed6-91f994324894','3a2e28e4-759f-49b0-b4fe-f90d2769416f','37d95f77-fe08-4d82-abe3-d17dc7617ce4')
+
+2026/02/07 21:19:17 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:856
+[0m[33m[1.398ms] [34;1m[rows:3][0m SELECT * FROM "roles" WHERE "roles"."id" IN ('11111111-1111-1111-1111-111111111111','22222222-2222-2222-2222-222222222222','33333333-3333-3333-3333-333333333333')
+
+2026/02/07 21:19:17 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:602
+[0m[33m[1.194ms] [34;1m[rows:37][0m SELECT * FROM "role_permissions" WHERE "role_permissions"."role_id" IN ('11111111-1111-1111-1111-111111111111','22222222-2222-2222-2222-222222222222','33333333-3333-3333-3333-333333333333')
+
+2026/02/07 21:19:17 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:856
+[0m[33m[5.214ms] [34;1m[rows:3][0m SELECT * FROM "users"
+[GIN] 2026/02/07 - 21:19:17 | 200 |      5.6175ms |             ::1 | GET      "/api/v1/users"
+
+2026/02/07 21:19:17 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:602
+[0m[33m[0.788ms] [34;1m[rows:22][0m SELECT * FROM "permissions" WHERE "permissions"."id" IN ('vm:read','vm:write','vm:admin','alert:read','alert:write','alert:admin','history:read','history:export','user:read','user:write','user:admin','system:read','system:admin','vm:delete','vm:metrics','alert:acknowledge','alert:resolve','user:delete','role:read','role:write','system:settings','system:logs')
+
+2026/02/07 21:19:17 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:602
+[0m[33m[5.302ms] [34;1m[rows:3][0m SELECT * FROM "roles" ORDER BY level ASC
+
+2026/02/07 21:19:17 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:606
+[0m[33m[0.162ms] [34;1m[rows:1][0m SELECT count(*) FROM "user_roles" WHERE role_id = '11111111-1111-1111-1111-111111111111'
+
+2026/02/07 21:19:17 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:606
+[0m[33m[0.127ms] [34;1m[rows:1][0m SELECT count(*) FROM "user_roles" WHERE role_id = '22222222-2222-2222-2222-222222222222'
+
+2026/02/07 21:19:17 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:606
+[0m[33m[0.116ms] [34;1m[rows:1][0m SELECT count(*) FROM "user_roles" WHERE role_id = '33333333-3333-3333-3333-333333333333'
+[GIN] 2026/02/07 - 21:19:17 | 200 |    6.108792ms |             ::1 | GET      "/api/v1/roles"
+
+2026/02/07 21:19:17 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:498
+[0m[33m[11.065ms] [34;1m[rows:22][0m SELECT * FROM "permissions" ORDER BY resource, action
+[GIN] 2026/02/07 - 21:19:17 | 200 |   11.419208ms |             ::1 | GET      "/api/v1/permissions"
+
+2026/02/07 21:20:05 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:1025
+[0m[33m[1.316ms] [34;1m[rows:-][0m 
+				SELECT 
+					v.id as vm_id,
+					v.name as vm_name,
+					m.cpu_usage,
+					m.memory_usage,
+					m.disk_usage,
+					m.disk_read_mbps,
+					m.disk_write_mbps,
+					m.network_in_mbps,
+					m.network_out_mbps,
+					m.temperature,
+					m.recorded_at
+				FROM vms v
+				LEFT JOIN vm_metrics m ON v.id = m.vm_id
+				WHERE v.is_deleted = false
+				ORDER BY m.recorded_at DESC
+			
+[GIN] 2026/02/07 - 21:20:05 | 200 |    1.530792ms |             ::1 | GET      "/api/v1/vms/metrics/all"
+
+2026/02/07 21:20:05 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:218
+[0m[33m[2.605ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false
+
+2026/02/07 21:20:05 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:221
+[0m[33m[0.937ms] [34;1m[rows:16][0m SELECT * FROM "vms" WHERE is_deleted = false ORDER BY created_at DESC LIMIT 20
+[GIN] 2026/02/07 - 21:20:05 | 200 |    3.920375ms |             ::1 | GET      "/api/v1/vms?page=1&pageSize=20&keyword="
+[GIN] 2026/02/07 - 21:20:10 | 204 |       4.083µs |             ::1 | OPTIONS  "/api/v1/vms?page=2&pageSize=20&keyword="
+
+2026/02/07 21:20:10 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:218
+[0m[33m[1.538ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false
+
+2026/02/07 21:20:10 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:221
+[0m[33m[0.412ms] [34;1m[rows:0][0m SELECT * FROM "vms" WHERE is_deleted = false ORDER BY created_at DESC LIMIT 20 OFFSET 20
+[GIN] 2026/02/07 - 21:20:10 | 200 |     2.05475ms |             ::1 | GET      "/api/v1/vms?page=2&pageSize=20&keyword="
+
+2026/02/07 21:20:11 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:218
+[0m[33m[1.565ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false
+
+2026/02/07 21:20:11 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:221
+[0m[33m[0.387ms] [34;1m[rows:16][0m SELECT * FROM "vms" WHERE is_deleted = false ORDER BY created_at DESC LIMIT 20
+[GIN] 2026/02/07 - 21:20:11 | 200 |    2.106333ms |             ::1 | GET      "/api/v1/vms?page=1&pageSize=20&keyword="
+[GIN] 2026/02/07 - 21:20:17 | 204 |       6.625µs |             ::1 | OPTIONS  "/api/v1/alerts/stats"
+[GIN] 2026/02/07 - 21:20:17 | 204 |       5.625µs |             ::1 | OPTIONS  "/api/v1/alerts/rules"
+[GIN] 2026/02/07 - 21:20:17 | 204 |      24.666µs |             ::1 | OPTIONS  "/api/v1/alerts/records?sortBy=&sortOrder=asc"
+
+2026/02/07 21:20:17 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:324
+[0m[33m[1.234ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_rules"
+
+2026/02/07 21:20:17 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:326
+[0m[33m[0.270ms] [34;1m[rows:2][0m SELECT * FROM "alert_rules" ORDER BY created_at DESC LIMIT 10
+[GIN] 2026/02/07 - 21:20:17 | 200 |    1.671125ms |             ::1 | GET      "/api/v1/alerts/rules"
+
+2026/02/07 21:20:17 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:424
+[0m[33m[2.310ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records"
+
+2026/02/07 21:20:17 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:416
+[0m[33m[0.117ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records"
+
+2026/02/07 21:20:17 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:418
+[0m[33m[0.341ms] [34;1m[rows:10][0m SELECT * FROM "alert_records" ORDER BY triggered_at DESC LIMIT 10
+[GIN] 2026/02/07 - 21:20:17 | 200 |     614.166µs |             ::1 | GET      "/api/v1/alerts/records?sortBy=&sortOrder=asc"
+
+2026/02/07 21:20:17 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:425
+[0m[33m[0.733ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE status = 'active'
+
+2026/02/07 21:20:17 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:426
+[0m[33m[0.282ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'critical'
+
+2026/02/07 21:20:17 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:427
+[0m[33m[0.122ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'warning'
+[GIN] 2026/02/07 - 21:20:17 | 200 |     3.66325ms |             ::1 | GET      "/api/v1/alerts/stats"
+
+2026/02/07 21:21:47 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:856
+[0m[33m[0.809ms] [34;1m[rows:3][0m SELECT * FROM "user_roles" WHERE "user_roles"."user_id" IN ('d0a90074-6e35-4bc0-aed6-91f994324894','3a2e28e4-759f-49b0-b4fe-f90d2769416f','37d95f77-fe08-4d82-abe3-d17dc7617ce4')
+
+2026/02/07 21:21:47 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:602
+[0m[33m[0.248ms] [34;1m[rows:37][0m SELECT * FROM "role_permissions" WHERE "role_permissions"."role_id" IN ('11111111-1111-1111-1111-111111111111','22222222-2222-2222-2222-222222222222','33333333-3333-3333-3333-333333333333')
+
+2026/02/07 21:21:47 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:602
+[0m[33m[0.510ms] [34;1m[rows:22][0m SELECT * FROM "permissions" WHERE "permissions"."id" IN ('vm:read','vm:write','vm:admin','alert:read','alert:write','alert:admin','history:read','history:export','user:read','user:write','user:admin','system:read','system:admin','vm:delete','vm:metrics','alert:acknowledge','alert:resolve','user:delete','role:read','role:write','system:settings','system:logs')
+
+2026/02/07 21:21:47 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:602
+[0m[33m[2.624ms] [34;1m[rows:3][0m SELECT * FROM "roles" ORDER BY level ASC
+
+2026/02/07 21:21:47 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:856
+[0m[33m[1.218ms] [34;1m[rows:3][0m SELECT * FROM "roles" WHERE "roles"."id" IN ('11111111-1111-1111-1111-111111111111','22222222-2222-2222-2222-222222222222','33333333-3333-3333-3333-333333333333')
+
+2026/02/07 21:21:47 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:856
+[0m[33m[4.713ms] [34;1m[rows:3][0m SELECT * FROM "users"
+
+2026/02/07 21:21:47 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:606
+[0m[33m[0.171ms] [34;1m[rows:1][0m SELECT count(*) FROM "user_roles" WHERE role_id = '11111111-1111-1111-1111-111111111111'
+[GIN] 2026/02/07 - 21:21:47 | 200 |    4.889583ms |             ::1 | GET      "/api/v1/users"
+
+2026/02/07 21:21:47 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:606
+[0m[33m[0.158ms] [34;1m[rows:1][0m SELECT count(*) FROM "user_roles" WHERE role_id = '22222222-2222-2222-2222-222222222222'
+
+2026/02/07 21:21:47 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:606
+[0m[33m[0.155ms] [34;1m[rows:1][0m SELECT count(*) FROM "user_roles" WHERE role_id = '33333333-3333-3333-3333-333333333333'
+[GIN] 2026/02/07 - 21:21:47 | 200 |    3.418625ms |             ::1 | GET      "/api/v1/roles"
+
+2026/02/07 21:21:47 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:498
+[0m[33m[4.714ms] [34;1m[rows:22][0m SELECT * FROM "permissions" ORDER BY resource, action
+[GIN] 2026/02/07 - 21:21:47 | 200 |    4.988125ms |             ::1 | GET      "/api/v1/permissions"
+
+2026/02/07 21:21:50 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:324
+[0m[33m[1.389ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_rules"
+
+2026/02/07 21:21:50 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:326
+[0m[33m[0.396ms] [34;1m[rows:2][0m SELECT * FROM "alert_rules" ORDER BY created_at DESC LIMIT 10
+[GIN] 2026/02/07 - 21:21:50 | 200 |    2.004708ms |             ::1 | GET      "/api/v1/alerts/rules"
+
+2026/02/07 21:21:50 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:416
+[0m[33m[1.447ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records"
+
+2026/02/07 21:21:50 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:424
+[0m[33m[2.733ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records"
+
+2026/02/07 21:21:50 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:418
+[0m[33m[0.479ms] [34;1m[rows:10][0m SELECT * FROM "alert_records" ORDER BY triggered_at DESC LIMIT 10
+[GIN] 2026/02/07 - 21:21:50 | 200 |    2.131417ms |             ::1 | GET      "/api/v1/alerts/records?sortBy=&sortOrder=asc"
+
+2026/02/07 21:21:50 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:425
+[0m[33m[0.676ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE status = 'active'
+
+2026/02/07 21:21:50 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:426
+[0m[33m[0.246ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'critical'
+
+2026/02/07 21:21:50 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:427
+[0m[33m[0.135ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'warning'
+[GIN] 2026/02/07 - 21:21:50 | 200 |    3.975958ms |             ::1 | GET      "/api/v1/alerts/stats"
+
+2026/02/07 21:22:03 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:424
+[0m[33m[1.226ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records"
+
+2026/02/07 21:22:03 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:425
+[0m[33m[0.192ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE status = 'active'
+
+2026/02/07 21:22:03 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:426
+[0m[33m[0.175ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'critical'
+
+2026/02/07 21:22:03 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:291
+[0m[33m[2.365ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false
+
+2026/02/07 21:22:03 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:427
+[0m[33m[0.137ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'warning'
+[GIN] 2026/02/07 - 21:22:03 | 200 |    1.902333ms |             ::1 | GET      "/api/v1/alerts/stats"
+
+2026/02/07 21:22:03 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:292
+[0m[33m[0.259ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false AND status = 'running'
+
+2026/02/07 21:22:03 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:293
+[0m[33m[0.137ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false AND status = 'poweredOff'
+
+2026/02/07 21:22:03 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:294
+[0m[33m[0.120ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false AND status = 'warning'
+[GIN] 2026/02/07 - 21:22:03 | 200 |    3.013792ms |             ::1 | GET      "/api/v1/vms/stats"
+
+2026/02/07 21:22:33 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:291
+[0m[33m[1.739ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false
+
+2026/02/07 21:22:33 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:292
+[0m[33m[0.306ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false AND status = 'running'
+
+2026/02/07 21:22:33 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:293
+[0m[33m[0.207ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false AND status = 'poweredOff'
+
+2026/02/07 21:22:33 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:424
+[0m[33m[1.453ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records"
+
+2026/02/07 21:22:33 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:294
+[0m[33m[0.237ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false AND status = 'warning'
+[GIN] 2026/02/07 - 21:22:33 | 200 |    3.042083ms |             ::1 | GET      "/api/v1/vms/stats"
+
+2026/02/07 21:22:33 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:425
+[0m[33m[0.288ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE status = 'active'
+
+2026/02/07 21:22:33 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:426
+[0m[33m[0.191ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'critical'
+
+2026/02/07 21:22:33 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:427
+[0m[33m[0.184ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'warning'
+[GIN] 2026/02/07 - 21:22:33 | 200 |    2.428375ms |             ::1 | GET      "/api/v1/alerts/stats"
+
+2026/02/07 21:23:03 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:291
+[0m[33m[1.971ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false
+
+2026/02/07 21:23:03 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:424
+[0m[33m[1.908ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records"
+
+2026/02/07 21:23:03 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:292
+[0m[33m[1.101ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false AND status = 'running'
+
+2026/02/07 21:23:03 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:425
+[0m[33m[0.293ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE status = 'active'
+
+2026/02/07 21:23:03 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:293
+[0m[33m[0.199ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false AND status = 'poweredOff'
+
+2026/02/07 21:23:03 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:426
+[0m[33m[0.204ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'critical'
+
+2026/02/07 21:23:03 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:294
+[0m[33m[0.196ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false AND status = 'warning'
+[GIN] 2026/02/07 - 21:23:03 | 200 |       4.242ms |             ::1 | GET      "/api/v1/vms/stats"
+
+2026/02/07 21:23:03 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:427
+[0m[33m[0.232ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'warning'
+[GIN] 2026/02/07 - 21:23:03 | 200 |    3.017791ms |             ::1 | GET      "/api/v1/alerts/stats"
+
+2026/02/07 21:23:33 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:291
+[0m[33m[1.865ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false
+
+2026/02/07 21:23:33 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:292
+[0m[33m[0.309ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false AND status = 'running'
+
+2026/02/07 21:23:33 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:424
+[0m[33m[1.480ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records"
+
+2026/02/07 21:23:33 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:293
+[0m[33m[0.256ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false AND status = 'poweredOff'
+
+2026/02/07 21:23:33 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:294
+[0m[33m[0.208ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false AND status = 'warning'
+[GIN] 2026/02/07 - 21:23:33 | 200 |       3.628ms |             ::1 | GET      "/api/v1/vms/stats"
+
+2026/02/07 21:23:33 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:425
+[0m[33m[0.914ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE status = 'active'
+
+2026/02/07 21:23:33 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:426
+[0m[33m[0.252ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'critical'
+
+2026/02/07 21:23:33 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:427
+[0m[33m[0.142ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'warning'
+[GIN] 2026/02/07 - 21:23:33 | 200 |    3.073584ms |             ::1 | GET      "/api/v1/alerts/stats"
+
+2026/02/07 21:24:03 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:291
+[0m[33m[1.422ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false
+
+2026/02/07 21:24:03 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:292
+[0m[33m[0.373ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false AND status = 'running'
+
+2026/02/07 21:24:03 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:424
+[0m[33m[1.254ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records"
+
+2026/02/07 21:24:03 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:293
+[0m[33m[0.307ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false AND status = 'poweredOff'
+
+2026/02/07 21:24:03 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:425
+[0m[33m[0.379ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE status = 'active'
+
+2026/02/07 21:24:03 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:294
+[0m[33m[0.438ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false AND status = 'warning'
+[GIN] 2026/02/07 - 21:24:03 | 200 |    2.697125ms |             ::1 | GET      "/api/v1/vms/stats"
+
+2026/02/07 21:24:03 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:426
+[0m[33m[0.403ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'critical'
+
+2026/02/07 21:24:03 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:427
+[0m[33m[0.146ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'warning'
+[GIN] 2026/02/07 - 21:24:03 | 200 |    2.285666ms |             ::1 | GET      "/api/v1/alerts/stats"
+
+2026/02/07 21:24:33 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:291
+[0m[33m[1.386ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false
+
+2026/02/07 21:24:33 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:292
+[0m[33m[0.128ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false AND status = 'running'
+
+2026/02/07 21:24:33 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:293
+[0m[33m[0.096ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false AND status = 'poweredOff'
+
+2026/02/07 21:24:33 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:294
+[0m[33m[0.101ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false AND status = 'warning'
+[GIN] 2026/02/07 - 21:24:33 | 200 |    1.883042ms |             ::1 | GET      "/api/v1/vms/stats"
+
+2026/02/07 21:24:33 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:424
+[0m[33m[1.160ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records"
+
+2026/02/07 21:24:33 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:425
+[0m[33m[0.163ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE status = 'active'
+
+2026/02/07 21:24:33 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:426
+[0m[33m[0.108ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'critical'
+
+2026/02/07 21:24:33 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:427
+[0m[33m[0.112ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'warning'
+[GIN] 2026/02/07 - 21:24:33 | 200 |    1.620667ms |             ::1 | GET      "/api/v1/alerts/stats"
+
+2026/02/07 21:25:03 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:291
+[0m[33m[1.370ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false
+
+2026/02/07 21:25:03 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:424
+[0m[33m[1.347ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records"
+
+2026/02/07 21:25:03 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:292
+[0m[33m[0.229ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false AND status = 'running'
+
+2026/02/07 21:25:03 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:293
+[0m[33m[0.107ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false AND status = 'poweredOff'
+
+2026/02/07 21:25:03 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:425
+[0m[33m[0.170ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE status = 'active'
+
+2026/02/07 21:25:03 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:294
+[0m[33m[0.089ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false AND status = 'warning'
+[GIN] 2026/02/07 - 21:25:03 | 200 |    2.715167ms |             ::1 | GET      "/api/v1/vms/stats"
+
+2026/02/07 21:25:03 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:426
+[0m[33m[0.117ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'critical'
+
+2026/02/07 21:25:03 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:427
+[0m[33m[0.099ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'warning'
+[GIN] 2026/02/07 - 21:25:03 | 200 |    1.823667ms |             ::1 | GET      "/api/v1/alerts/stats"
+
+2026/02/07 21:25:33 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:291
+[0m[33m[2.759ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false
+
+2026/02/07 21:25:33 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:292
+[0m[33m[0.529ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false AND status = 'running'
+
+2026/02/07 21:25:33 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:424
+[0m[33m[2.771ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records"
+
+2026/02/07 21:25:33 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:293
+[0m[33m[0.265ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false AND status = 'poweredOff'
+
+2026/02/07 21:25:33 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:294
+[0m[33m[0.139ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false AND status = 'warning'
+[GIN] 2026/02/07 - 21:25:33 | 200 |    5.459375ms |             ::1 | GET      "/api/v1/vms/stats"
+
+2026/02/07 21:25:33 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:425
+[0m[33m[0.544ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE status = 'active'
+
+2026/02/07 21:25:33 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:426
+[0m[33m[0.186ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'critical'
+
+2026/02/07 21:25:33 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:427
+[0m[33m[0.143ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'warning'
+[GIN] 2026/02/07 - 21:25:33 | 200 |    3.977417ms |             ::1 | GET      "/api/v1/alerts/stats"
+[GIN] 2026/02/07 - 21:26:10 | 204 |      49.708µs |             ::1 | OPTIONS  "/api/v1/vms/stats"
+
+2026/02/07 21:26:10 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:424
+[0m[33m[2.046ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records"
+
+2026/02/07 21:26:10 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:425
+[0m[33m[0.590ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE status = 'active'
+
+2026/02/07 21:26:10 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:426
+[0m[33m[0.175ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'critical'
+
+2026/02/07 21:26:10 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:427
+[0m[33m[0.152ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'warning'
+[GIN] 2026/02/07 - 21:26:10 | 200 |    3.454333ms |             ::1 | GET      "/api/v1/alerts/stats"
+
+2026/02/07 21:26:10 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:291
+[0m[33m[1.269ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false
+
+2026/02/07 21:26:10 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:292
+[0m[33m[0.148ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false AND status = 'running'
+
+2026/02/07 21:26:10 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:293
+[0m[33m[0.157ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false AND status = 'poweredOff'
+
+2026/02/07 21:26:10 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:294
+[0m[33m[0.185ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false AND status = 'warning'
+[GIN] 2026/02/07 - 21:26:10 | 200 |      2.0165ms |             ::1 | GET      "/api/v1/vms/stats"
+
+2026/02/07 21:26:59 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:291
+[0m[33m[1.342ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false
+
+2026/02/07 21:26:59 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:292
+[0m[33m[0.254ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false AND status = 'running'
+
+2026/02/07 21:26:59 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:293
+[0m[33m[0.242ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false AND status = 'poweredOff'
+
+2026/02/07 21:26:59 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:294
+[0m[33m[0.220ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false AND status = 'warning'
+[GIN] 2026/02/07 - 21:26:59 | 200 |       2.499ms |             ::1 | GET      "/api/v1/vms/stats"
+
+2026/02/07 21:26:59 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:424
+[0m[33m[1.625ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records"
+
+2026/02/07 21:26:59 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:425
+[0m[33m[0.299ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE status = 'active'
+
+2026/02/07 21:26:59 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:426
+[0m[33m[0.311ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'critical'
+
+2026/02/07 21:26:59 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:427
+[0m[33m[0.132ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'warning'
+[GIN] 2026/02/07 - 21:26:59 | 200 |    2.606625ms |             ::1 | GET      "/api/v1/alerts/stats"
+
+2026/02/07 21:27:58 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:291
+[0m[33m[1.970ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false
+
+2026/02/07 21:27:58 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:292
+[0m[33m[0.402ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false AND status = 'running'
+
+2026/02/07 21:27:58 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:293
+[0m[33m[0.387ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false AND status = 'poweredOff'
+
+2026/02/07 21:27:58 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:424
+[0m[33m[1.784ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records"
+
+2026/02/07 21:27:58 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:294
+[0m[33m[0.306ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false AND status = 'warning'
+[GIN] 2026/02/07 - 21:27:58 | 200 |      3.8815ms |             ::1 | GET      "/api/v1/vms/stats"
+
+2026/02/07 21:27:58 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:425
+[0m[33m[0.483ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE status = 'active'
+
+2026/02/07 21:27:58 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:426
+[0m[33m[0.188ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'critical'
+
+2026/02/07 21:27:58 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:427
+[0m[33m[0.142ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'warning'
+[GIN] 2026/02/07 - 21:27:58 | 200 |     2.96525ms |             ::1 | GET      "/api/v1/alerts/stats"
+
+2026/02/07 21:29:20 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:291
+[0m[33m[1.641ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false
+
+2026/02/07 21:29:20 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:424
+[0m[33m[2.654ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records"
+
+2026/02/07 21:29:20 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:292
+[0m[33m[0.317ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false AND status = 'running'
+
+2026/02/07 21:29:20 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:293
+[0m[33m[0.241ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false AND status = 'poweredOff'
+
+2026/02/07 21:29:20 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:425
+[0m[33m[0.432ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE status = 'active'
+
+2026/02/07 21:29:20 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:294
+[0m[33m[0.342ms] [34;1m[rows:1][0m SELECT count(*) FROM "vms" WHERE is_deleted = false AND status = 'warning'
+
+2026/02/07 21:29:20 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:426
+[0m[33m[0.292ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'critical'
+[GIN] 2026/02/07 - 21:29:20 | 200 |    4.811625ms |             ::1 | GET      "/api/v1/vms/stats"
+
+2026/02/07 21:29:20 [32m/Users/weihua/PJ/vm-monitor-system/server/complete_api_server.go:427
+[0m[33m[0.282ms] [34;1m[rows:1][0m SELECT count(*) FROM "alert_records" WHERE severity = 'warning'
+[GIN] 2026/02/07 - 21:29:20 | 200 |    4.049583ms |             ::1 | GET      "/api/v1/alerts/stats"

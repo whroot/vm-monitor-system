@@ -1,18 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Plus, Search, Filter, MoreVertical, Server, X, Check, Network } from 'lucide-react';
+import React, { useEffect, useState, useRef } from 'react';
+import { Plus, Search, Filter, MoreVertical, Server, X, Check, Network, Download, FileSpreadsheet } from 'lucide-react';
 import { useVMStore } from '../../stores/vmStore';
 import { VM, VMMetrics } from '../../types/api';
+
+type ExportFormat = 'csv' | 'json';
 
 const VMList: React.FC = () => {
   const { vms, total, isLoading, fetchVMs, queryParams, setQueryParams, createVM, metrics, fetchAllMetrics } = useVMStore();
   const [searchTerm, setSearchTerm] = useState('');
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showFilterModal, setShowFilterModal] = useState(false);
-  const [newVM, setNewVM] = useState({
+  const [showExportModal, setShowExportModal] = useState(false);
+  const [exportFormat, setExportFormat] = useState<ExportFormat>('csv');
+  const [exporting, setExporting] = useState(false);
+  const searchTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const lastSearchTermRef = useRef('');
+  const [newVM, setNewVM] = useState<{
+    name: string;
+    ip: string;
+    os: 'Linux' | 'Windows';
+  }>({
     name: '',
     ip: '',
-    osType: 'Linux',
+    os: 'Linux',
   });
   const [creating, setCreating] = useState(false);
   const [filters, setFilters] = useState({
@@ -20,20 +30,38 @@ const VMList: React.FC = () => {
     os: '',
   });
 
+  // 初始加载
   useEffect(() => {
-    fetchVMs();
     fetchAllMetrics();
-  }, [fetchVMs, fetchAllMetrics]);
-
-  const handleSearch = () => {
-    setQueryParams({ keyword: searchTerm, page: 1 });
     fetchVMs();
-  };
+  }, []);
+
+  // 防抖搜索：输入停止300ms后自动搜索
+  useEffect(() => {
+    if (searchTerm === lastSearchTermRef.current) return;
+    
+    lastSearchTermRef.current = searchTerm;
+    
+    if (searchTimerRef.current) {
+      clearTimeout(searchTimerRef.current);
+    }
+    
+    searchTimerRef.current = setTimeout(() => {
+      setQueryParams({ keyword: searchTerm, page: 1 });
+      fetchVMs();
+    }, 300);
+    
+    return () => {
+      if (searchTimerRef.current) {
+        clearTimeout(searchTimerRef.current);
+      }
+    };
+  }, [searchTerm, fetchVMs, setQueryParams]);
 
   const handleApplyFilters = () => {
     setQueryParams({ 
-      status: filters.status || undefined, 
-      os: filters.os || undefined,
+      status: (filters.status as 'online' | 'offline' | 'error' | undefined) || undefined, 
+      os: (filters.os as 'Linux' | 'Windows' | undefined) || undefined,
       page: 1 
     });
     fetchVMs();
@@ -57,10 +85,10 @@ const VMList: React.FC = () => {
       await createVM({
         name: newVM.name,
         ip: newVM.ip,
-        osType: newVM.osType as 'Linux' | 'Windows',
+        os: newVM.os,
       });
       setShowCreateModal(false);
-      setNewVM({ name: '', ip: '', osType: 'Linux' });
+      setNewVM({ name: '', ip: '', os: 'Linux' });
     } catch (error) {
       console.error('创建VM失败:', error);
       alert('创建VM失败');
@@ -104,17 +132,123 @@ const VMList: React.FC = () => {
     return 'text-success';
   };
 
+  const handleExport = async () => {
+    if (vms.length === 0) return;
+    setExporting(true);
+    try {
+      const timestamp = new Date().toISOString().slice(0, 10);
+      
+      if (exportFormat === 'csv') {
+        exportCSV(timestamp);
+      } else {
+        exportJSON(timestamp);
+      }
+    } finally {
+      setExporting(false);
+      setShowExportModal(false);
+    }
+  };
+
+  const exportCSV = (timestamp: string) => {
+    const headers = ['名称', 'IP地址', '操作系统', '状态', 'CPU(%)', '内存(%)', '磁盘(%)', '网络入站(MB/s)', '网络出站(MB/s)', '创建时间', '宿主机', '数据中心', '集群'];
+    const rows: string[][] = [headers];
+
+    vms.forEach(vm => {
+      const vmMetrics = getVMMetrics(vm.id);
+      const row = [
+        vm.name,
+        vm.ip || '-',
+        vm.os || '-',
+        getStatusText(vm.status),
+        vmMetrics?.cpuUsage.toFixed(1) || '-',
+        vmMetrics?.memoryUsage.toFixed(1) || '-',
+        vmMetrics?.diskUsage.toFixed(1) || '-',
+        vmMetrics?.networkInMbps.toFixed(1) || '-',
+        vmMetrics?.networkOutMbps.toFixed(1) || '-',
+        vm.createdAt ? new Date(vm.createdAt).toLocaleString() : '-',
+        vm.hostName || '-',
+        vm.datacenterName || '-',
+        vm.clusterName || '-',
+      ];
+      rows.push(row);
+    });
+
+    const csvContent = rows.map(row => row.map(cell => `"${cell}"`).join(',')).join('\n');
+    downloadFile(csvContent, `vm-list-${timestamp}.csv`, 'text/csv');
+  };
+
+  const exportJSON = (timestamp: string) => {
+    const exportData = {
+      exportTime: new Date().toISOString(),
+      totalCount: vms.length,
+      vms: vms.map(vm => {
+        const vmMetrics = getVMMetrics(vm.id);
+        return {
+          id: vm.id,
+          name: vm.name,
+          ip: vm.ip || null,
+          os: vm.os,
+          status: vm.status,
+          cpuCores: vm.cpuCores,
+          memoryGB: vm.memoryGB,
+          diskGB: vm.diskGB,
+          metrics: {
+            cpuUsage: vmMetrics?.cpuUsage || null,
+            memoryUsage: vmMetrics?.memoryUsage || null,
+            diskUsage: vmMetrics?.diskUsage || null,
+            networkInMbps: vmMetrics?.networkInMbps || null,
+            networkOutMbps: vmMetrics?.networkOutMbps || null,
+          },
+          host: {
+            id: vm.hostId,
+            name: vm.hostName,
+          },
+          location: {
+            datacenter: vm.datacenterName,
+            cluster: vm.clusterName,
+          },
+          createdAt: vm.createdAt,
+        };
+      }),
+    };
+
+    const jsonContent = JSON.stringify(exportData, null, 2);
+    downloadFile(jsonContent, `vm-list-${timestamp}.json`, 'application/json');
+  };
+
+  const downloadFile = (content: string, filename: string, mimeType: string) => {
+    const blob = new Blob([content], { type: mimeType });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="space-y-6 animate-fade-in">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-white">虚拟机管理</h1>
-        <button
-          onClick={() => setShowCreateModal(true)}
-          className="btn-primary flex items-center gap-2"
-        >
-          <Plus className="w-4 h-4" />
-          新建VM
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={() => setShowExportModal(true)}
+            disabled={vms.length === 0}
+            className="btn-secondary flex items-center gap-2 disabled:opacity-50"
+          >
+            <Download className="w-4 h-4" />
+            导出
+          </button>
+          <button
+            onClick={() => setShowCreateModal(true)}
+            className="btn-primary flex items-center gap-2"
+          >
+            <Plus className="w-4 h-4" />
+            新建VM
+          </button>
+        </div>
       </div>
 
       <div className="flex gap-4">
@@ -122,12 +256,16 @@ const VMList: React.FC = () => {
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted" />
           <input
             type="text"
-            placeholder="搜索虚拟机..."
+            placeholder="搜索虚拟机...（实时搜索）"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
             className="input pl-12"
           />
+          {isLoading && (
+            <div className="absolute right-4 top-1/2 -translate-y-1/2">
+              <div className="w-4 h-4 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
+            </div>
+          )}
         </div>
         <button 
           onClick={() => setShowFilterModal(true)}
@@ -314,8 +452,8 @@ const VMList: React.FC = () => {
               <div>
                 <label className="block text-sm text-text-muted mb-1">操作系统</label>
                 <select
-                  value={newVM.osType}
-                  onChange={(e) => setNewVM({ ...newVM, osType: e.target.value })}
+                  value={newVM.os}
+                  onChange={(e) => setNewVM({ ...newVM, os: e.target.value as 'Linux' | 'Windows' })}
                   className="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-primary"
                 >
                   <option value="Linux">Linux</option>
@@ -406,6 +544,99 @@ const VMList: React.FC = () => {
                 <Check className="w-4 h-4" />
                 应用筛选
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showExportModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-gray-800 rounded-xl p-6 w-full max-w-md animate-fade-in">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-medium text-white flex items-center gap-2">
+                <FileSpreadsheet className="w-5 h-5" />
+                导出虚拟机列表
+              </h3>
+              <button
+                onClick={() => setShowExportModal(false)}
+                className="p-1 hover:bg-gray-700 rounded transition-colors"
+              >
+                <X className="w-5 h-5 text-text-muted" />
+              </button>
+            </div>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm text-text-muted mb-2">导出格式</label>
+                <div className="flex gap-3">
+                  <button
+                    onClick={() => setExportFormat('csv')}
+                    className={`flex-1 py-3 rounded-lg border transition-colors flex items-center justify-center gap-2 ${
+                      exportFormat === 'csv'
+                        ? 'bg-primary/20 border-primary text-primary'
+                        : 'border-border text-text-secondary hover:text-white'
+                    }`}
+                  >
+                    <FileSpreadsheet className="w-4 h-4" />
+                    CSV
+                  </button>
+                  <button
+                    onClick={() => setExportFormat('json')}
+                    className={`flex-1 py-3 rounded-lg border transition-colors flex items-center justify-center gap-2 ${
+                      exportFormat === 'json'
+                        ? 'bg-primary/20 border-primary text-primary'
+                        : 'border-border text-text-secondary hover:text-white'
+                    }`}
+                  >
+                    <FileSpreadsheet className="w-4 h-4" />
+                    JSON
+                  </button>
+                </div>
+              </div>
+
+              <div className="bg-gray-700/50 rounded-lg p-4">
+                <div className="text-sm text-text-muted mb-2">导出信息</div>
+                <div className="space-y-1 text-sm">
+                  <div className="flex justify-between">
+                    <span className="text-text-muted">虚拟机数量:</span>
+                    <span className="text-white">{vms.length}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-text-muted">包含实时指标:</span>
+                    <span className="text-white">{metrics.length > 0 ? '是' : '否'}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-text-muted">包含位置信息:</span>
+                    <span className="text-white">是</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex justify-end gap-3 mt-6">
+                <button
+                  onClick={() => setShowExportModal(false)}
+                  className="px-4 py-2 text-text-muted hover:text-white transition-colors"
+                >
+                  取消
+                </button>
+                <button
+                  onClick={handleExport}
+                  disabled={exporting}
+                  className="btn-primary flex items-center gap-2"
+                >
+                  {exporting ? (
+                    <>
+                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      导出中...
+                    </>
+                  ) : (
+                    <>
+                      <Download className="w-4 h-4" />
+                      导出
+                    </>
+                  )}
+                </button>
+              </div>
             </div>
           </div>
         </div>

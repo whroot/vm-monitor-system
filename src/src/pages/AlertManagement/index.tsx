@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { AlertCircle, Plus, Bell, Check, X, Clock, Server } from 'lucide-react';
+import { AlertCircle, Plus, Bell, Check, X, Server, ChevronUp, ChevronDown } from 'lucide-react';
 import { alertApi, AlertRule, AlertRecord, AlertStats } from '../../api/alert';
 
 type AlertTab = 'records' | 'rules';
+type SortOrder = 'asc' | 'desc';
 
 const AlertManagement: React.FC = () => {
   const { t } = useTranslation();
@@ -13,11 +14,12 @@ const AlertManagement: React.FC = () => {
   const [records, setRecords] = useState<AlertRecord[]>([]);
   const [loading, setLoading] = useState(true);
   const [showRuleModal, setShowRuleModal] = useState(false);
-  const [selectedRule, setSelectedRule] = useState<AlertRule | null>(null);
+  const [sortBy, setSortBy] = useState<string>('');
+  const [sortOrder, setSortOrder] = useState<SortOrder>('asc');
 
   useEffect(() => {
     loadData();
-  }, []);
+  }, [sortBy, sortOrder]);
 
   const loadData = async () => {
     setLoading(true);
@@ -25,7 +27,7 @@ const AlertManagement: React.FC = () => {
       const [statsData, rulesData, recordsData] = await Promise.all([
         alertApi.getStats(),
         alertApi.listRules(),
-        alertApi.listRecords(),
+        alertApi.listRecords({ sortBy, sortOrder }),
       ]);
       setStats(statsData);
       setRules(rulesData.rules || []);
@@ -110,6 +112,30 @@ const AlertManagement: React.FC = () => {
     }
   };
 
+  const handleSort = (field: string) => {
+    if (sortBy === field) {
+      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortBy(field);
+      setSortOrder('asc');
+    }
+  };
+
+  const getSortIcon = (field: string) => {
+    if (sortBy !== field) return null;
+    return sortOrder === 'asc' ? <ChevronUp className="w-3 h-3 ml-1" /> : <ChevronDown className="w-3 h-3 ml-1" />;
+  };
+
+  const SortableHeader: React.FC<{ field: string; label: string }> = ({ field, label }) => (
+    <th
+      className="pb-3 font-medium cursor-pointer hover:text-white transition-colors flex items-center"
+      onClick={() => handleSort(field)}
+    >
+      {label}
+      {getSortIcon(field)}
+    </th>
+  );
+
   if (loading) {
     return <div className="text-white p-8">加载中...</div>;
   }
@@ -130,7 +156,6 @@ const AlertManagement: React.FC = () => {
         </button>
       </div>
 
-      {/* Alert Stats */}
       <div className="grid grid-cols-4 gap-6">
         <div className="card text-center">
           <div className="w-12 h-12 bg-danger/20 rounded-xl flex items-center justify-center mx-auto mb-3">
@@ -144,25 +169,24 @@ const AlertManagement: React.FC = () => {
             <AlertCircle className="w-6 h-6 text-warning" />
           </div>
           <div className="text-3xl font-bold text-warning">{stats?.Warning || 0}</div>
-          <div className="text-sm text-text-muted">高优先级</div>
+          <div className="text-sm text-text-muted">警告告警</div>
         </div>
         <div className="card text-center">
           <div className="w-12 h-12 bg-info/20 rounded-xl flex items-center justify-center mx-auto mb-3">
             <AlertCircle className="w-6 h-6 text-info" />
           </div>
-          <div className="text-3xl font-bold text-info">{(stats?.Active || 0) - (stats?.Critical || 0) - (stats?.Warning || 0)}</div>
-          <div className="text-sm text-text-muted">中等优先级</div>
+          <div className="text-3xl font-bold text-info">{stats?.Active || 0}</div>
+          <div className="text-sm text-text-muted">活跃告警</div>
         </div>
         <div className="card text-center">
           <div className="w-12 h-12 bg-success/20 rounded-xl flex items-center justify-center mx-auto mb-3">
             <AlertCircle className="w-6 h-6 text-success" />
           </div>
-          <div className="text-3xl font-bold text-success">{stats?.Total || rules.length}</div>
-          <div className="text-sm text-text-muted">规则总数</div>
+          <div className="text-3xl font-bold text-success">{stats?.Total || 0}</div>
+          <div className="text-sm text-text-muted">告警总数</div>
         </div>
       </div>
 
-      {/* Alert List */}
       <div className="card">
         <div className="flex gap-4 mb-6">
           <button
@@ -187,7 +211,6 @@ const AlertManagement: React.FC = () => {
           </button>
         </div>
 
-        {/* Alert Records Tab */}
         {activeTab === 'records' && (
           <div className="overflow-x-auto">
             {records.length === 0 ? (
@@ -198,14 +221,14 @@ const AlertManagement: React.FC = () => {
               <table className="w-full">
                 <thead>
                   <tr className="text-left text-text-muted text-sm border-b border-gray-700">
-                    <th className="pb-3 font-medium">告警名称</th>
+                    <SortableHeader field="ruleName" label="告警名称" />
                     <th className="pb-3 font-medium">虚拟机</th>
                     <th className="pb-3 font-medium">指标</th>
-                    <th className="pb-3 font-medium">触发值</th>
+                    <SortableHeader field="triggerValue" label="触发值" />
                     <th className="pb-3 font-medium">阈值</th>
-                    <th className="pb-3 font-medium">级别</th>
-                    <th className="pb-3 font-medium">状态</th>
-                    <th className="pb-3 font-medium">触发时间</th>
+                    <SortableHeader field="severity" label="级别" />
+                    <SortableHeader field="status" label="状态" />
+                    <SortableHeader field="triggeredAt" label="触发时间" />
                     <th className="pb-3 font-medium text-right">操作</th>
                   </tr>
                 </thead>
@@ -263,7 +286,6 @@ const AlertManagement: React.FC = () => {
           </div>
         )}
 
-        {/* Alert Rules Tab */}
         {activeTab === 'rules' && (
           <div className="overflow-x-auto">
             {rules.length === 0 ? (
@@ -333,7 +355,6 @@ const AlertManagement: React.FC = () => {
         )}
       </div>
 
-      {/* Create Rule Modal */}
       {showRuleModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-gray-800 rounded-xl p-6 w-full max-w-md animate-fade-in">

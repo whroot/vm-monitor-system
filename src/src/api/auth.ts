@@ -18,8 +18,7 @@ export const authApi = {
       }
       throw new Error('用户名或密码错误');
     }
-    const response = await apiClient.post('/auth/login', data) as unknown;
-    const loginData = response as { user: User; accessToken: string; refreshToken: string; expiresIn: number; tokenType: string };
+    const loginData = await apiClient.post('/auth/login', data) as { user: User; accessToken: string; refreshToken: string; expiresIn: number; tokenType: string };
     return {
       user: loginData.user,
       accessToken: loginData.accessToken,
@@ -47,10 +46,9 @@ export const authApi = {
 
   getMe: async (): Promise<{ user: User; permissions: string[] }> => {
     if (MOCK_MODE) return { user: null as unknown as User, permissions: [] };
-    const response = await apiClient.get('/auth/profile') as unknown;
-    const data = response as User;
+    const apiResponse = await apiClient.get('/auth/profile') as User;
     return {
-      user: data,
+      user: apiResponse,
       permissions: ['vm:read', 'vm:write', 'alert:read', 'alert:write', 'user:read', 'user:write'],
     };
   },
@@ -73,19 +71,19 @@ export const authApi = {
 
   listUsers: async (): Promise<any[]> => {
     if (MOCK_MODE) return [];
-    const response = await apiClient.get('/users') as unknown;
-    return response as any[];
+    const response = await apiClient.get('/users') as any[];
+    return response;
   },
 
   deleteUser: async (userId: string): Promise<void> => {
     if (MOCK_MODE) return;
-    await apiClient.delete(`/users/${userId}`);
+    await apiClient.delete(`/users/${userId}`, { data: {} });
   },
 
   updateProfile: async (data: { name?: string; email?: string; phone?: string; department?: string }): Promise<Partial<User>> => {
     if (MOCK_MODE) return data;
-    const response = await apiClient.put('/auth/profile', data) as { user: User };
-    return response.user;
+    const apiResponse = await apiClient.put('/auth/profile', data) as User;
+    return apiResponse;
   },
 
   uploadAvatar: async (formData: FormData): Promise<{ avatarUrl: string }> => {

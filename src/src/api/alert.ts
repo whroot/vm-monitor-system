@@ -1,5 +1,7 @@
 import apiClient from './client';
-import { AlertRecord } from '../types/api';
+import { AlertRecord as AlertRecordType } from '../types/api';
+
+export type AlertRecord = AlertRecordType;
 
 const MOCK_MODE = false;
 
@@ -110,18 +112,74 @@ export const alertApi = {
     await apiClient.delete(`/alerts/rules/${id}`);
   },
 
-  listRecords: async (params?: { page?: number; pageSize?: number }): Promise<AlertListResponse> => {
+  listRecords: async (params?: { page?: number; pageSize?: number; sortBy?: string; sortOrder?: 'asc' | 'desc' }): Promise<AlertListResponse> => {
     if (MOCK_MODE) {
+      let sortedRecords = [...mockAlerts];
+      if (params?.sortBy) {
+        sortedRecords.sort((a: AlertRecord, b: AlertRecord) => {
+          let aVal: any = a[params.sortBy as keyof AlertRecord];
+          let bVal: any = b[params.sortBy as keyof AlertRecord];
+          if (aVal === undefined) aVal = '';
+          if (bVal === undefined) bVal = '';
+          if (typeof aVal === 'string') aVal = aVal.toLowerCase();
+          if (typeof bVal === 'string') bVal = bVal.toLowerCase();
+          if (aVal < bVal) return params.sortOrder === 'asc' ? -1 : 1;
+          if (aVal > bVal) return params.sortOrder === 'asc' ? 1 : -1;
+          return 0;
+        });
+      }
       return {
-        records: mockAlerts,
+        records: sortedRecords,
         total: mockAlerts.length,
         page: 1,
         pageSize: 10,
       };
     }
-    const response = await apiClient.get('/alerts/records', { params }) as { records: AlertRecord[]; total: number; page: number; pageSize: number };
+    const response = await apiClient.get('/alerts/records', { params }) as { 
+      records: Array<{
+        ID: string;
+        RuleID: string;
+        RuleName: string;
+        VMID?: string;
+        VMName?: string;
+        Metric: string;
+        Severity: 'low' | 'medium' | 'high' | 'critical';
+        TriggerValue: number;
+        Threshold: number;
+        TriggeredAt: string;
+        Status: 'active' | 'acknowledged' | 'resolved' | 'ignored';
+        AcknowledgedByName?: string;
+        AcknowledgedAt?: string;
+        Resolution?: string;
+        ResolvedByName?: string;
+        ResolvedAt?: string;
+      }>; 
+      total: number; 
+      page: number; 
+      pageSize: number 
+    };
+    
+    const records: AlertRecord[] = response.records.map(r => ({
+      id: r.ID,
+      ruleId: r.RuleID,
+      ruleName: r.RuleName,
+      vmId: r.VMID,
+      vmName: r.VMName,
+      metric: r.Metric,
+      severity: r.Severity,
+      triggerValue: r.TriggerValue,
+      threshold: r.Threshold,
+      triggeredAt: r.TriggeredAt,
+      status: r.Status,
+      acknowledgedByName: r.AcknowledgedByName,
+      acknowledgedAt: r.AcknowledgedAt,
+      resolution: r.Resolution,
+      resolvedByName: r.ResolvedByName,
+      resolvedAt: r.ResolvedAt,
+    }));
+    
     return {
-      records: response.records,
+      records,
       total: response.total,
       page: response.page,
       pageSize: response.pageSize,

@@ -149,7 +149,7 @@ export const useAuthStore = create<AuthState>()(
         try {
           const updatedUser = await authApi.updateProfile(data);
           set((state) => ({
-            user: state.user ? { ...state.user, ...updatedUser } : updatedUser,
+            user: state.user ? { ...state.user, ...(updatedUser as Partial<User>) } : state.user,
             isLoading: false,
           }));
         } catch (error) {

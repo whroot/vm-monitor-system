@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
 import { Users, Shield, Plus, Edit, Trash2, Check, X, Key } from 'lucide-react';
 import { permissionApi, Role, Permission } from '../../api/permission';
 import { authApi } from '../../api/auth';
@@ -13,15 +12,12 @@ interface User {
   roles: Role[];
 }
 
-const mockUsers: User[] = [];
-
 const UserManagement: React.FC = () => {
-  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<'users' | 'roles'>('users');
   const [users, setUsers] = useState<User[]>([]);
   const [roles, setRoles] = useState<Role[]>([]);
   const [permissions, setPermissions] = useState<Permission[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [, setLoading] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [selectedRole, setSelectedRole] = useState<Role | null>(null);
   const [showRoleModal, setShowRoleModal] = useState(false);

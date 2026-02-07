@@ -870,11 +870,13 @@ func main() {
 				c.JSON(404, gin.H{"code": 404, "message": "用户不存在"})
 				return
 			}
-			if err := db.Unscoped().Delete(&user).Error; err != nil {
+
+			// 使用CASCADE删除用户
+			if err := db.Exec("DELETE FROM users WHERE id = ?", id).Error; err != nil {
 				c.JSON(500, gin.H{"code": 500, "message": "删除失败: " + err.Error()})
 				return
 			}
-			c.JSON(200, gin.H{"code": 200, "message": "删除成功"})
+			c.JSON(200, gin.H{"code": 200, "message": "删除成功", "data": gin.H{"deleted": true}})
 		})
 		api.GET("/auth/profile", func(c *gin.Context) {
 			userID, _ := c.Get("userId")
@@ -980,6 +982,121 @@ func main() {
 			c.JSON(200, gin.H{"code": 200, "message": "登出成功"})
 		})
 
+		// 仪表盘路由
+		api.GET("/dashboard/overview", func(c *gin.Context) {
+			var totalVMs, onlineVMs, offlineVMs, warningVMs, criticalVMs int64
+			db.Model(&models.VM{}).Count(&totalVMs)
+			db.Model(&models.VM{}).Where("status = ?", "online").Count(&onlineVMs)
+			db.Model(&models.VM{}).Where("status = ?", "offline").Count(&offlineVMs)
+			db.Model(&models.VM{}).Where("status = ?", "warning").Count(&warningVMs)
+			db.Model(&models.VM{}).Where("status = ?", "critical").Count(&criticalVMs)
+
+			summary := gin.H{"totalVMs": totalVMs, "onlineVMs": onlineVMs, "offlineVMs": offlineVMs, "warningVMs": warningVMs, "criticalVMs": criticalVMs}
+
+			healthScore := float64(95)
+			if totalVMs > 0 {
+				onlineRate := float64(onlineVMs) / float64(totalVMs) * 100
+				healthScore = onlineRate*0.3 + (100-float64(warningVMs)*2-float64(criticalVMs)*5)*0.7
+				if healthScore > 100 {
+					healthScore = 100
+				}
+			}
+
+			systemStatus := "healthy"
+			if healthScore >= 70 && healthScore < 90 {
+				systemStatus = "warning"
+			} else if healthScore < 70 {
+				systemStatus = "critical"
+			}
+
+			metrics := gin.H{
+				"cpu":     gin.H{"usagePercent": 65.5, "trend": "stable", "trendValue": 2.5},
+				"memory":  gin.H{"usagePercent": 72.3, "trend": "up", "trendValue": 1.8},
+				"disk":    gin.H{"usagePercent": 58.2, "trend": "stable", "trendValue": 0.5},
+				"network": gin.H{"inboundMbps": 125.5, "outboundMbps": 89.3, "trend": "up", "trendValue": 5.2},
+			}
+
+			c.JSON(200, gin.H{"code": 200, "healthScore": healthScore, "healthTrend": "stable", "lastUpdated": time.Now().Format(time.RFC3339), "systemStatus": systemStatus, "summary": summary, "metrics": metrics})
+		})
+
+		api.GET("/dashboard/vm-status", func(c *gin.Context) {
+			var totalCount int64
+			db.Model(&models.VM{}).Count(&totalCount)
+			if totalCount == 0 {
+				c.JSON(200, gin.H{"code": 200, "distribution": []gin.H{}, "byGroup": []gin.H{}, "byOS": []gin.H{}})
+				return
+			}
+			statuses := []struct {
+				Status string
+				Color  string
+			}{{"online", "#00d4aa"}, {"offline", "#607d8b"}, {"warning", "#ff9800"}, {"critical", "#f44336"}}
+			distribution := make([]gin.H, 0)
+			for _, s := range statuses {
+				var count int64
+				db.Model(&models.VM{}).Where("status = ?", s.Status).Count(&count)
+				distribution = append(distribution, gin.H{"status": s.Status, "count": count, "percent": float64(count) / float64(totalCount) * 100, "color": s.Color})
+			}
+			c.JSON(200, gin.H{"code": 200, "distribution": distribution, "byGroup": []gin.H{}, "byOS": []gin.H{}})
+		})
+
+		api.GET("/dashboard/alerts", func(c *gin.Context) {
+			limit := 5
+			if l, err := strconv.Atoi(c.Query("limit")); err == nil && l > 0 && l <= 20 {
+				limit = l
+			}
+			var records []models.AlertRecord
+			db.Order("created_at DESC").Limit(limit).Find(&records)
+			alerts := make([]gin.H, 0)
+			for _, r := range records {
+				vmName := ""
+				if r.VMName != nil {
+					vmName = *r.VMName
+				}
+				alerts = append(alerts, gin.H{"id": r.ID, "vmId": r.VMID, "vmName": vmName, "vmIP": "", "alertType": r.Metric, "severity": r.Severity, "message": fmt.Sprintf("%s 触发告警", r.Metric), "value": fmt.Sprintf("%.1f%%", r.TriggerValue), "threshold": fmt.Sprintf("%.1f%%", r.Threshold), "occurredAt": r.TriggeredAt.Format(time.RFC3339), "status": r.Status, "acknowledged": r.AcknowledgedBy != nil})
+			}
+			c.JSON(200, gin.H{"code": 200, "alerts": alerts, "total": len(alerts), "unreadCount": 0})
+		})
+
+		api.GET("/dashboard/health-trend", func(c *gin.Context) {
+			period := c.DefaultQuery("period", "7d")
+			dataPoints := make([]gin.H, 0)
+			if period == "24h" {
+				for i := 23; i >= 0; i-- {
+					timestamp := time.Now().Add(-time.Duration(i) * time.Hour)
+					dataPoints = append(dataPoints, gin.H{"timestamp": timestamp.Format(time.RFC3339), "score": 90.0 + float64(10-i%5)})
+				}
+			} else {
+				for i := 6; i >= 0; i-- {
+					timestamp := time.Now().AddDate(0, 0, -i)
+					dataPoints = append(dataPoints, gin.H{"timestamp": timestamp.Format(time.RFC3339), "score": 88.0 + float64(i*2%5)})
+				}
+			}
+			currentScore := 95.0
+			if len(dataPoints) > 0 {
+				currentScore = dataPoints[len(dataPoints)-1]["score"].(float64)
+			}
+			c.JSON(200, gin.H{"code": 200, "period": period, "currentScore": currentScore, "trend": "stable", "dataPoints": dataPoints})
+		})
+
+		api.GET("/dashboard/problem-vms", func(c *gin.Context) {
+			limit := 20
+			if l, err := strconv.Atoi(c.Query("limit")); err == nil && l > 0 && l <= 100 {
+				limit = l
+			}
+			var vms []models.VM
+			db.Where("status IN ?", []string{"warning", "critical"}).Order("updated_at DESC").Limit(limit).Find(&vms)
+			problemVMs := make([]gin.H, 0)
+			for _, v := range vms {
+				issues := make([]gin.H, 0)
+				groupName := ""
+				if v.Group != nil {
+					groupName = v.Group.Name
+				}
+				problemVMs = append(problemVMs, gin.H{"vmId": v.ID, "vmName": v.Name, "vmIP": v.IP, "group": groupName, "severity": v.Status, "issues": issues, "firstDetected": v.UpdatedAt.Format(time.RFC3339), "duration": "N/A"})
+			}
+			c.JSON(200, gin.H{"code": 200, "total": len(problemVMs), "vms": problemVMs})
+		})
+
 		api.GET("/vms", func(c *gin.Context) { vmHandler.List(c) })
 		api.GET("/vms/stats", func(c *gin.Context) { vmHandler.GetStats(c) })
 		api.GET("/vms/:id", func(c *gin.Context) { vmHandler.Get(c) })
@@ -1043,21 +1160,48 @@ func main() {
 		api.GET("/vms/:id/metrics/history", func(c *gin.Context) {
 			id := c.Param("id")
 			period := c.DefaultQuery("period", "24h")
+			startTimeParam := c.Query("startTime")
+			endTimeParam := c.Query("endTime")
 
 			var hours int
-			switch period {
-			case "1h":
-				hours = 1
-			case "6h":
-				hours = 6
-			case "24h":
-				hours = 24
-			case "7d":
-				hours = 168
-			case "30d":
-				hours = 720
-			default:
-				hours = 24
+			var startTime, endTime time.Time
+			now := time.Now()
+
+			if startTimeParam != "" && endTimeParam != "" {
+				// 自定义时间段
+				if st, err := time.Parse(time.RFC3339, startTimeParam); err == nil {
+					startTime = st
+				}
+				if et, err := time.Parse(time.RFC3339, endTimeParam); err == nil {
+					endTime = et
+				}
+				if startTime.IsZero() {
+					startTime = now.Add(-24 * time.Hour)
+				}
+				if endTime.IsZero() {
+					endTime = now
+				}
+				if startTime.After(endTime) {
+					startTime, endTime = endTime, startTime
+				}
+			} else {
+				// 使用预设时间段
+				switch period {
+				case "1h":
+					hours = 1
+				case "6h":
+					hours = 6
+				case "24h":
+					hours = 24
+				case "7d":
+					hours = 168
+				case "30d":
+					hours = 720
+				default:
+					hours = 24
+				}
+				startTime = now.Add(-time.Duration(hours) * time.Hour)
+				endTime = now
 			}
 
 			var history []struct {
@@ -1072,11 +1216,9 @@ func main() {
 				Temperature float64   `json:"temperature"`
 			}
 
-			startTime := time.Now().Add(-time.Duration(hours) * time.Hour)
-
 			rows, err := db.Table("vm_metrics_history").
 				Select("recorded_at as timestamp, cpu_usage, memory_usage, disk_usage, disk_read_mbps, disk_write_mbps, network_in_mbps, network_out_mbps, temperature").
-				Where("vm_id = ? AND recorded_at >= ?", id, startTime).
+				Where("vm_id = ? AND recorded_at >= ? AND recorded_at <= ?", id, startTime, endTime).
 				Order("recorded_at ASC").
 				Rows()
 
@@ -1100,8 +1242,10 @@ func main() {
 			}
 
 			c.JSON(200, gin.H{"code": 200, "message": "获取成功", "data": gin.H{
-				"period":  period,
-				"metrics": history,
+				"period":    period,
+				"metrics":   history,
+				"startTime": startTime.Format(time.RFC3339),
+				"endTime":   endTime.Format(time.RFC3339),
 			}})
 		})
 
